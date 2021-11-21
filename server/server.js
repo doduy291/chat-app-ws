@@ -11,6 +11,7 @@ import { globalErrorHandler, notFoundError } from './src/utils/errorHandler.js';
 // ======= import router =======
 import accountRouter from './src/routers/account.router.js';
 import userRouter from './src/routers/user.router.js';
+import contactRouter from './src/routers/contact.router.js';
 
 // ======= configs =======
 const app = express();
@@ -55,6 +56,7 @@ app.get('/', (req, res) => {
 });
 app.use('/api/auth', accountRouter);
 app.use('/api/user', userRouter);
+app.use('/api/contact', contactRouter);
 
 // ======= error handle =======
 app.use(notFoundError);

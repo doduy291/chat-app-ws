@@ -4,43 +4,36 @@ import { useSelector, useDispatch } from 'react-redux';
 import GlobalLoading from './components/UI/GlobalLoading';
 import Navigation from './components/Navigation/index';
 import AuthPage from './pages/AuthPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 import { renderPrivateRoutes } from './configs/router.config';
-import NotFoundPage from './pages/NotFoundPage';
 
 import { getUserInfo } from './redux/actions/user.action';
 
 const App = () => {
-  const [loading, setLoading] = useState(true); // Used to load the entire page
+  const { isLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.user);
 
   useEffect(() => {
-    setLoading(false);
     dispatch(getUserInfo());
-    // return () => {};
   }, [dispatch]);
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <GlobalLoading />
       ) : (
         <BrowserRouter>
           <div className="chat-app">
             <Suspense fallback={<GlobalLoading />}>
               <Switch>
-                <Route exact path={['/login', '/signup']}>
-                  <AuthPage isAuth={isAuthenticated} />
+                <Route exact path={['/login*', '/signup']}>
+                  <AuthPage />
                 </Route>
-                <Route exact path={['/', '/setting']}>
+                <Route exact path={['/', '/setting', '/contact']}>
                   <Navigation />
-                  <Switch>{renderPrivateRoutes(isAuthenticated)}</Switch>
+                  <Switch>{renderPrivateRoutes()}</Switch>
                 </Route>
-                <Route path="*">
-                  <Switch>
-                    <Route component={NotFoundPage} />
-                  </Switch>
-                </Route>
+                <Route component={NotFoundPage} />
               </Switch>
             </Suspense>
           </div>

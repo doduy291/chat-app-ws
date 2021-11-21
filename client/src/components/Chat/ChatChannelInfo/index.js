@@ -10,6 +10,7 @@ import {
   Download,
   DoDisturbOnOutlined,
   DoDisturbOffOutlined,
+  PersonAddDisabled,
   Logout,
 } from '@mui/icons-material';
 import { ChannelInfoWrapper, GeneralInfo, AboutInfo, SharedFiles, SharedImgs, Notification } from './styles';
@@ -30,8 +31,8 @@ const ChatChannelInfo = ({ isShowed }) => {
         <Avatar className="general-info__avatar" />
         <div className="general-info__name">Channel Name</div>
         <div className="general-info__buttons">
-          <div className="circle fill person-remove">
-            <PersonRemove />
+          <div className="circle fill">
+            <PersonAdd />
           </div>
           <div className="circle fill">
             <Call />

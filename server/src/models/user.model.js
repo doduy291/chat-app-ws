@@ -1,6 +1,29 @@
 import mongoose from 'mongoose';
 
-const STATUS_TYPES = ['online', 'offline', 'sleep'];
+const ACTIVE_TYPES = ['online', 'offline', 'sleep'];
+const REQUEST_STATUS_TYPES = [
+  0, //'requested'
+  1, // 'pending'
+];
+
+const contactRequests = {
+  _id: false,
+  requester: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
+  recipient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
+  status: {
+    type: Number,
+    enum: REQUEST_STATUS_TYPES,
+    default: '0',
+  },
+};
 
 const userSchema = new mongoose.Schema(
   {
@@ -16,9 +39,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
-    status: {
+    active: {
       type: String,
-      enum: STATUS_TYPES,
+      enum: ACTIVE_TYPES,
       default: 'offline',
     },
     accountId: {
@@ -26,11 +49,19 @@ const userSchema = new mongoose.Schema(
       ref: 'account',
       required: true,
     },
+    contacts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+      },
+    ],
+    contactRequests: [contactRequests],
   },
   {
     timestamps: true,
   }
 );
+
 const userModel = mongoose.model('user', userSchema);
 
 export default userModel;

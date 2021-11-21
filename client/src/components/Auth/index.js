@@ -4,11 +4,11 @@ import { renderPublicRoutes } from '../../configs/router.config';
 import { AuthWrapper } from './styles';
 import bgImage from '../../assets/images/bg-img.jpg';
 
-const Auth = ({ isAuth }) => {
+const Auth = () => {
   return (
     <>
       <AuthWrapper style={{ backgroundImage: `url(${bgImage})` }}>
-        <Switch>{renderPublicRoutes(isAuth)}</Switch>
+        <Switch>{renderPublicRoutes()}</Switch>
       </AuthWrapper>
     </>
   );

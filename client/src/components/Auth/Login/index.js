@@ -7,7 +7,7 @@ import { postLogin } from '../../../redux/actions/auth.action';
 import { emailValidation, passwordValidation } from '../../../validation/auth.validation';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-const Login = ({ isAuth }) => {
+const Login = () => {
   const [isShown, setIsShow] = useState(false);
   const [isVisibility, setIsVisibility] = useState(false);
 
@@ -20,7 +20,7 @@ const Login = ({ isAuth }) => {
     formState: { errors },
     setError,
   } = useForm();
-
+  console.log(location);
   const redirectPath = location.search ? location.search.split('=')[1] : '/';
   const loginHandler = async (data) => {
     dispatch(postLogin(data));
@@ -31,8 +31,12 @@ const Login = ({ isAuth }) => {
     if (errorMsg) {
       setError(errorMsg?.name, { type: 'server', message: errorMsg?.message });
     }
-    if (isLogged || isAuth) window.location.href = redirectPath;
-  }, [redirectPath, isLogged, isAuth, errorMsg, setError]);
+    if (isLogged) {
+      setTimeout(() => {
+        window.location.href = redirectPath;
+      }, 1500);
+    }
+  }, [redirectPath, isLogged, errorMsg, setError]);
   return (
     <>
       <AuthContainer className={isShown && 'is-shown'}>

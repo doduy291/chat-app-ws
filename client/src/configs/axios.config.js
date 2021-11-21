@@ -13,12 +13,12 @@ const axiosClient = axios.create({
 
 // ! In case that get error, use another option to replace
 // ! ex: const options = (token) => { headers: { Authorization: token }}
-const authSetHeader = (token) => {
-  axiosClient.interceptors.request.use((config) => {
-    config.headers['Authorization'] = token ? `Bearer ${token}` : '';
-    return config;
-  });
-  return axiosClient;
-};
+// const authSetHeader = (token) => {
+//   axiosClient.interceptors.request.use((config) => {
+//     config.headers['Authorization'] = token ? `Bearer ${token}` : '';
+//     return config;
+//   });
+//   return axiosClient;
+// };
 
-export { axiosClient, authSetHeader };
+export { axiosClient };

@@ -5,6 +5,7 @@ const baseURL = '/api/user';
 
 export const getUserInfo = createAsyncThunk('user/getUserInfo', async () => {
   const { data } = await axiosClient.get(`${baseURL}/user-info`);
+
   console.log(data);
   return data;
 });

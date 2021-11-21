@@ -9,6 +9,7 @@ import { ErrorResponse } from '../utils/errorHandler.js';
 export const postSignUp = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
 
+  if (!username) throw new ErrorResponse(400, 'Cannot create account, try again');
   // Check account existence
   const doesExistAccount = await AccountModel.exists({ email });
   if (doesExistAccount) {
@@ -24,7 +25,7 @@ export const postSignUp = asyncHandler(async (req, res) => {
 
   // Set cookie with JWT
   const token = await encodedToken(newUser.accountId);
-  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: false });
+  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
   return res.status(201).json({
     message: 'Account was created successfully',
   });
@@ -43,9 +44,8 @@ export const postLogin = asyncHandler(async (req, res) => {
 
   // Set cookie with JWT
   const token = await encodedToken(account._id);
-  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: false });
+  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
   return res.status(200).json({
     message: 'Login succesfully',
-    token,
   });
 });
