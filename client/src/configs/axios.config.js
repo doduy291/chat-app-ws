@@ -11,14 +11,25 @@ const axiosClient = axios.create({
   withCredentials: true, // Use to pass cookie from server to browser
 });
 
-// ! In case that get error, use another option to replace
-// ! ex: const options = (token) => { headers: { Authorization: token }}
-// const authSetHeader = (token) => {
-//   axiosClient.interceptors.request.use((config) => {
-//     config.headers['Authorization'] = token ? `Bearer ${token}` : '';
-//     return config;
-//   });
-//   return axiosClient;
-// };
+// axiosClient.interceptors.response.use(
+//   (response) => {
+//     const config = response.config;
+
+//     // Routes don't need to check Token
+//     if (config.url.indexOf('/login') >= 0) {
+//       return response;
+//     }
+//     const { statusCode, message } = response.data;
+//     if (statusCode && statusCode === 401) {
+//       if (message === 'jwt expired') {
+//         console.log('Token is out of expired', message);
+//       }
+//     }
+//     return response;
+//   },
+//   (err) => {
+//     return Promise.reject(err);
+//   }
+// );
 
 export { axiosClient };

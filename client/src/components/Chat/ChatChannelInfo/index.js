@@ -31,13 +31,13 @@ const ChatChannelInfo = ({ isShowed }) => {
         <Avatar className="general-info__avatar" />
         <div className="general-info__name">Channel Name</div>
         <div className="general-info__buttons">
-          <div className="circle fill">
+          <div className="circle">
             <PersonAdd />
           </div>
-          <div className="circle fill">
+          <div className="circle">
             <Call />
           </div>
-          <div className="circle fill">
+          <div className="circle">
             <Videocam />
           </div>
         </div>

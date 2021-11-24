@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const SidebarWrapper = styled.div`
   display: flex;
@@ -23,21 +23,9 @@ export const SidebarWrapper = styled.div`
     align-items: center;
     padding: 6px 1.5rem;
     width: 100%;
-    color: #424645;
     cursor: pointer;
     transition: all 0.25s ease;
 
-    .channel__avatar {
-      width: 32px;
-      height: 32px;
-    }
-    .channel__name {
-      margin-left: 10px;
-      font-size: 14px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-    }
     &:hover {
       background-color: var(--main-lighter-color2);
     }
@@ -47,8 +35,24 @@ export const SidebarWrapper = styled.div`
 
       .circle {
         background-color: #1bab6f;
+        color: #fff;
+      }
+
+      .channel__name {
+        color: #fff;
       }
     }
+  }
+  .channel__avatar {
+    width: 32px;
+    height: 32px;
+  }
+  .channel__name {
+    margin-left: 10px;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 `;
 

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const AuthWrapper = styled.div`
   display: flex;
@@ -30,6 +30,8 @@ export const Form = styled.form`
 
   .form__title {
     color: #fff;
+    font-size: 1.5rem;
+    font-weight: 600;
   }
   .form-block {
     margin-top: 20px;
@@ -41,6 +43,7 @@ export const Form = styled.form`
     font-weight: 600;
     text-transform: uppercase;
     margin-bottom: 3px;
+    color: #fff;
   }
   .form__input {
     width: 100%;
@@ -117,6 +120,7 @@ export const Form = styled.form`
     .MuiSvgIcon-root {
       position: absolute;
       right: 10px;
+      color: #fff;
     }
   }
 `;

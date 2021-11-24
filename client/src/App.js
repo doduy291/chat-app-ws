@@ -1,13 +1,13 @@
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import GlobalLoading from './components/UI/GlobalLoading';
+
+import GlobalLoading from './components/UI/GlobalLoading/index';
 import Navigation from './components/Navigation/index';
 import AuthPage from './pages/AuthPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 import { renderPrivateRoutes } from './configs/router.config';
-
 import { getUserInfo } from './redux/actions/user.action';
 
 const App = () => {
@@ -26,7 +26,7 @@ const App = () => {
           <div className="chat-app">
             <Suspense fallback={<GlobalLoading />}>
               <Switch>
-                <Route exact path={['/login*', '/signup']}>
+                <Route exact path={['/login', '/signup']}>
                   <AuthPage />
                 </Route>
                 <Route exact path={['/', '/setting', '/contact']}>

@@ -5,8 +5,8 @@ import { NavWrapper, NavLogo, NavMenu } from './styles';
 import logo from '../../assets/images/logo.png';
 
 const menuItems = [
-  { icon: <Forum />, title: 'Home', active: '', url: '/login' },
-  { icon: <ContactPage />, title: 'Contact', active: true, url: '/' },
+  { icon: <Forum />, title: 'Home', active: '', url: '/' },
+  { icon: <ContactPage />, title: 'Contact', active: true, url: '/contact' },
   { icon: <Settings />, title: 'Settings', active: '', url: '/setting' },
 ];
 

@@ -25,7 +25,7 @@ export const postSignUp = asyncHandler(async (req, res) => {
 
   // Set cookie with JWT
   const token = await encodedToken(newUser.accountId);
-  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, secure: true });
   return res.status(201).json({
     message: 'Account was created successfully',
   });
@@ -44,7 +44,7 @@ export const postLogin = asyncHandler(async (req, res) => {
 
   // Set cookie with JWT
   const token = await encodedToken(account._id);
-  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, secure: true });
   return res.status(200).json({
     message: 'Login succesfully',
   });

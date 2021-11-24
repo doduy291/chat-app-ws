@@ -5,6 +5,10 @@
   --main-lighter-color2: rgba(219, 239, 230, 0.9);
   --main-brighter-color: #11e98e;
   --danger-color: #ff6161;
+  --font-default-color: #101a14;
+  --background-color: #f4f7f4;
+  --background-color2: #fafafa;
+  --icon-default-color: #9ba09e;
 }
 
 * {
@@ -50,7 +54,9 @@ input,
 textarea {
   outline: 0;
 }
-
+div {
+  color: var(--font-default-color);
+}
 #root {
   height: 100%;
 }

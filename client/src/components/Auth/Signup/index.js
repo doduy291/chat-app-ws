@@ -7,7 +7,7 @@ import { emailValidation, passwordValidation, usernameValidation } from '../../.
 import { postSignup } from '../../../redux/actions/auth.action';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-const Signup = () => {
+const Signup = ({ isAuth }) => {
   const [isShown, setIsShown] = useState(false);
   const [isVisibility, setIsVisibility] = useState(false);
 
@@ -31,12 +31,15 @@ const Signup = () => {
     if (errorMsg) {
       setError(errorMsg?.name, { type: 'server', message: errorMsg?.message });
     }
-    if (isLogged) {
-      setTimeout(() => {
-        window.location.href = redirectPath;
-      }, 1500);
+    if (isLogged || isAuth) {
+      setTimeout(
+        () => {
+          window.location.href = redirectPath;
+        },
+        isLogged ? 1500 : 0
+      );
     }
-  }, [redirectPath, isLogged, errorMsg, setError]);
+  }, [redirectPath, isLogged, errorMsg, setError, isAuth]);
   return (
     <>
       <AuthContainer className={isShown && 'is-shown'}>

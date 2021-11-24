@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const NavWrapper = styled.nav`
   display: flex;
   flex-direction: column;
-  width: 70px;
+  min-width: 70px;
   min-height: 100%;
   background: #fafafa;
   border-right: 1px solid #e5e5e5;

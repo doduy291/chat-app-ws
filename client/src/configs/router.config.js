@@ -10,17 +10,17 @@ const ContactPage = React.lazy(() => import('../pages/ContactPage'));
 const SettingPage = React.lazy(() => import('../pages/SettingPage'));
 
 // Route List
-const routePublicListFn = () => {
+const routePublicListFn = (isAuthenticated) => {
   return [
     {
       path: '/login',
       exact: false,
-      page: <Login />,
+      page: <Login isAuth={isAuthenticated} />,
     },
     {
       path: '/signup',
       exact: false,
-      page: <Signup />,
+      page: <Signup isAuth={isAuthenticated} />,
     },
   ];
 };
@@ -46,8 +46,8 @@ const routePrivateListFn = () => {
 };
 
 // Public Routes
-export const renderPublicRoutes = () => {
-  const routeList = routePublicListFn();
+export const renderPublicRoutes = (isAuthenticated) => {
+  const routeList = routePublicListFn(isAuthenticated);
   return routeList.map((route, index) => {
     const { path, exact, page } = route;
     return <Route path={path} exact={exact} key={index} render={() => page} />;

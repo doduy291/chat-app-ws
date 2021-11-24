@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const ChannelInfoWrapper = styled.div`
   display: ${(props) => (props.sidebarInfo ? 'block' : 'none')};
@@ -40,7 +40,6 @@ export const GeneralInfo = styled.div`
   .general-info__buttons {
     display: flex;
     column-gap: 20px;
-    color: #898989;
     margin-top: 1.5rem;
 
     .circle {
@@ -54,15 +53,14 @@ export const GeneralInfo = styled.div`
       border: 1px solid #ebebeb;
       cursor: pointer;
       transition: 0.4s;
+      color: var(--icon-default-color);
 
       &:hover {
         border: 1px solid var(--main-color);
         color: #fff;
-      }
-      &.fill:hover {
         box-shadow: inset 0 0 0 2em var(--main-color);
       }
-      &.person-remove:hover {
+      &.remove:hover {
         box-shadow: inset 0 0 0 2em var(--danger-color);
         border: 1px solid var(--danger-color);
       }

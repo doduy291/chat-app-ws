@@ -52,14 +52,12 @@ export const postAcceptRequest = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    console.log(newContact);
     // Check with find()
     const checkContactAdded = newContact.contacts.findIndex((e) => e === recipiantId);
     console.log(checkContactAdded);
     if (checkContactAdded === -1) {
       // * Recipient's side
       await UserModel.updateOne({ _id: recipiantId }, { $addToSet: { contacts: requesterId } });
-      console.log('test2');
     }
   } else {
     throw new ErrorResponse(400, 'Failed to accept');

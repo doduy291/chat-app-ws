@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const ChatWrapper = styled.div`
   position: relative;
@@ -65,7 +65,7 @@ export const HeaderRight = styled.div`
   column-gap: 10px;
 
   .MuiSvgIcon-root {
-    color: #9ba09e;
+    color: var(--icon-default-color);
     cursor: pointer;
 
     &:hover {
@@ -78,7 +78,7 @@ export const ChatView = styled.div`
   display: flex;
   position: relative;
   width: 100%;
-  background-color: #f4f7f4;
+  background-color: var(--background-color);
   flex: 1 1 auto;
 
   .blur-back {
@@ -171,6 +171,7 @@ export const ChatViewContainer = styled.div`
   }
   &::-webkit-scrollbar-track {
     background: #f1f2f3;
+    border-radius: 6px;
   }
 `;
 export const ChatFooter = styled.div`
@@ -198,7 +199,6 @@ export const ChatFooter = styled.div`
     border-radius: 5px;
     border: 1px solid #dde0dc;
     background-color: #ffffff;
-    color: #898989;
   }
 
   .textarea {
@@ -229,6 +229,7 @@ export const ChatFooter = styled.div`
     text-overflow: ellipsis;
     padding: 12px;
     cursor: text;
+    color: var(--icon-default-color);
   }
 
   .textarea-buttons {
@@ -238,6 +239,7 @@ export const ChatFooter = styled.div`
 
     .MuiSvgIcon-root {
       cursor: pointer;
+      color: var(--icon-default-color);
 
       &:hover {
         color: var(--main-color);
