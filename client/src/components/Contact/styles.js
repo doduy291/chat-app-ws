@@ -41,6 +41,20 @@ export const ContactWrapper = styled.div`
     height: 30px;
     width: 100%;
   }
+  .count {
+    font-size: 15px;
+    text-align: center;
+    margin-left: 10px;
+    border-radius: 10px;
+    padding: 0 10px;
+    background-color: var(--main-lighter-color2);
+  }
+  .MuiBadge-badge {
+    min-width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background-color: #0ce318;
+  }
 `;
 
 export const ContactSidebar = styled.div`
@@ -189,7 +203,7 @@ export const ContactTabContent = styled.div`
     padding-right: calc(24px - 0.5em);
     padding-bottom: 2rem;
 
-    &.tabContent__list--online {
+    &.tabContent__list--square {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       grid-auto-rows: minmax(170px, 220px);
@@ -214,11 +228,11 @@ export const ContactTabContent = styled.div`
     margin-bottom: 10px;
     cursor: pointer;
 
-    &.tabContent__item--pending {
+    &.tabContent__item--spread {
       flex-direction: row;
       justify-content: space-between;
     }
-    &.tabContent__item--online {
+    &.tabContent__item--square {
       margin-bottom: 0;
       justify-content: center;
     }
@@ -227,7 +241,7 @@ export const ContactTabContent = styled.div`
     }
   }
   .tabContent__user {
-    &.tabContent__user--pending {
+    &.tabContent__user--spread {
       display: flex;
       align-items: center;
     }
@@ -238,7 +252,7 @@ export const ContactTabContent = styled.div`
   .tabContent__name {
     font-size: 15px;
     margin-top: 5px;
-    &.tabContent__name--pending {
+    &.tabContent__name--spread {
       margin-left: 10px;
     }
   }

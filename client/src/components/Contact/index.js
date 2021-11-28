@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { Suspense, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Tabs, Tab, Avatar } from '@mui/material';
 import { PeopleAlt, Search } from '@mui/icons-material';
-
-import OnlineTab from './TabContent/OnlineTab';
-import PendingTab from './TabContent/PendingTab';
-import BlockedTab from './TabContent/BlockedTab';
+import { ContactWrapper, ContactSidebar, ContactTab, ContactHeader, ContactTabContent } from './styles';
+import { getAllContacts } from '../../redux/actions/contact.action';
 
 import TabPanel from '../UI/TabPanel/index';
-import { ContactWrapper, ContactSidebar, ContactTab, ContactHeader, ContactTabContent } from './styles';
+import GlobalLoading from '../UI/GlobalLoading';
+import OnlineTab from './TabContent/OnlineTab';
+const PendingTab = React.lazy(() => import('./TabContent/PendingTab'));
+const BlockedTab = React.lazy(() => import('./TabContent/BlockedTab'));
 
 const a11yProps = (index) => {
   return {
@@ -17,30 +19,41 @@ const a11yProps = (index) => {
 };
 
 const Contact = () => {
+  const { isLoading, contacts } = useSelector((state) => state.contact);
   const [value, setValue] = React.useState(0);
+
+  const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  useEffect(() => {
+    dispatch(getAllContacts());
+  }, [dispatch]);
   return (
     <ContactWrapper>
       <ContactSidebar className="contact-sidebar">
         <div className="contact-sidebar__title">
           Contacts
           <PeopleAlt />
+          <div className="count">{contacts?.length}</div>
         </div>
         <div className="contact-sidebar__search">
           <input type="text" className="contact-sidebar__input" placeholder="Search contact" />
           <Search />
         </div>
         <div className="contact-sidebar__list">
-          {[...Array(15)].map((x, i) => (
-            <div className="contact-sidebar__item" key={i}>
-              <Avatar />
-              <div className="contact-sidebar__name">Username</div>
-            </div>
-          ))}
+          {isLoading ? (
+            <GlobalLoading />
+          ) : (
+            contacts.map((element, i) => (
+              <div className="contact-sidebar__item" key={i}>
+                <Avatar />
+                <div className="contact-sidebar__name">{element.username}</div>
+              </div>
+            ))
+          )}
         </div>
       </ContactSidebar>
       <ContactTab>
@@ -53,13 +66,17 @@ const Contact = () => {
         </ContactHeader>
         <ContactTabContent className="contact__tabContent">
           <TabPanel value={value} index={0}>
-            <OnlineTab />
+            {isLoading ? <GlobalLoading /> : <OnlineTab contacts={contacts} />}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <PendingTab />
+            <Suspense fallback={<GlobalLoading />}>
+              <PendingTab />
+            </Suspense>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <BlockedTab />
+            <Suspense fallback={<GlobalLoading />}>
+              <BlockedTab />
+            </Suspense>
           </TabPanel>
         </ContactTabContent>
       </ContactTab>

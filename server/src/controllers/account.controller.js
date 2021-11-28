@@ -6,6 +6,7 @@ import { encodedToken } from '../utils/jwt.helper.js';
 import { ErrorResponse } from '../utils/errorHandler.js';
 // @ErrorHandle structure:  ErrorResponse(status, {name: 'field input', message: 'error message'})
 
+// ******* SIGN UP *******
 export const postSignUp = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
 
@@ -25,12 +26,13 @@ export const postSignUp = asyncHandler(async (req, res) => {
 
   // Set cookie with JWT
   const token = await encodedToken(newUser.accountId);
-  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, secure: true });
+  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
   return res.status(201).json({
     message: 'Account was created successfully',
   });
 });
 
+// ******* LOGIN *******
 export const postLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -44,7 +46,7 @@ export const postLogin = asyncHandler(async (req, res) => {
 
   // Set cookie with JWT
   const token = await encodedToken(account._id);
-  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, secure: true });
+  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
   return res.status(200).json({
     message: 'Login succesfully',
   });

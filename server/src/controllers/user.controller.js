@@ -2,6 +2,7 @@ import asyncHandler from '../utils/asyncHandler.js';
 
 import { ErrorResponse } from '../utils/errorHandler.js';
 
+// ******* GET USER INFORMATION *******
 export const getUserInfo = asyncHandler(async (req, res) => {
   const isLogged = res.locals.isLogged;
   if (!isLogged) throw new ErrorResponse(401, 'You have not logged in yet');

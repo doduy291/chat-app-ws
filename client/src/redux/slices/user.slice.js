@@ -5,6 +5,7 @@ const initialState = {
   username: '',
   avatar: '',
   isLoading: true,
+  isAuthenticated: false,
 };
 
 const userSlice = createSlice({
@@ -16,10 +17,11 @@ const userSlice = createSlice({
       state.isLoading = true;
     },
     [getUserInfo.fulfilled]: (state, action) => {
+      const { username, avatar } = action.payload.user;
       state.isLoading = false;
       state.isAuthenticated = true;
-      state.username = action.payload.user.username;
-      state.avatar = action.payload.user.avatar;
+      state.username = username;
+      state.avatar = avatar;
     },
     [getUserInfo.rejected]: (state, action) => {
       state.isLoading = false;
