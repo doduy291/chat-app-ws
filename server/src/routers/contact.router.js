@@ -14,7 +14,7 @@ router.get('/all-contacts', authProtect, getAllContacts);
 router.get('/pendings', authProtect, getPendingRequest);
 router.post('/send-request', authProtect, postSendRequest);
 router.post('/accept-request', authProtect, postAcceptRequest);
-router.delete('/delete-pending-request', authProtect, deletePendingRequest);
-router.delete('/delete-contact', authProtect, deleteContact);
+router.put('/delete-pending-request', authProtect, deletePendingRequest);
+router.put('/delete-contact', authProtect, deleteContact);
 
 export default router;

@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 
 // Import Pages
 import HomePage from '../pages/HomePage';
-import Login from '../components/Auth/Login/index';
-import Signup from '../components/Auth/Signup/index';
+import Login from '../containers/Auth/Login/index';
+import Signup from '../containers/Auth/Signup/index';
 const ContactPage = React.lazy(() => import('../pages/ContactPage'));
 const SettingPage = React.lazy(() => import('../pages/SettingPage'));
 
@@ -29,17 +29,27 @@ const routePrivateListFn = () => {
   return [
     {
       path: '/setting',
-      exact: true,
+      exact: false,
       page: <SettingPage />,
     },
     {
       path: '/contact',
-      exact: true,
+      exact: false,
       page: <ContactPage />,
     },
     {
-      path: '/',
+      path: '/channel',
+      exact: false,
+      page: <HomePage />,
+    },
+    {
+      path: '/channel/:id',
       exact: true,
+      page: <HomePage />,
+    },
+    {
+      path: '/',
+      exact: false,
       page: <HomePage />,
     },
   ];

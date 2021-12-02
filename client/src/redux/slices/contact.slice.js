@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllContacts, getPendingRequest, postAcceptRequest } from '../actions/contact.action';
+import { getAllContacts, getPendingRequest, postAcceptRequest, deletePendingRequest } from '../actions/contact.action';
 
 const initialState = {
   isLoading: true,
@@ -34,6 +34,14 @@ const contactSlice = createSlice({
       state.success = true;
     },
     [postAcceptRequest.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.errorMsg = action.payload?.message;
+    },
+    [deletePendingRequest.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.success = true;
+    },
+    [deletePendingRequest.rejected]: (state, action) => {
       state.isLoading = false;
       state.errorMsg = action.payload?.message;
     },

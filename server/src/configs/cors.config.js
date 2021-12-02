@@ -6,7 +6,7 @@ const corsConfig = {
   origin: process.env.NODE_ENV === 'development' ? process.env.CLIENT_LOCAL_BASE_URL : process.env.CLIENT_BASE_URL,
 
   // Configures the Access-Control-Allow-Methods
-  methods: 'GET, POST, PUT, PATCH, OPTIONS',
+  methods: 'GET, POST, PUT, OPTIONS',
 
   //Configures the Access-Control-Allow-Headers
   allowedHeaders:

@@ -56,6 +56,12 @@ const userSchema = new mongoose.Schema(
       },
     ],
     contactRequests: [contactRequests],
+    chatChannels: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'channel',
+      },
+    ],
   },
   {
     timestamps: true,

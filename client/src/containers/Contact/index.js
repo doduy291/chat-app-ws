@@ -5,8 +5,8 @@ import { PeopleAlt, Search } from '@mui/icons-material';
 import { ContactWrapper, ContactSidebar, ContactTab, ContactHeader, ContactTabContent } from './styles';
 import { getAllContacts } from '../../redux/actions/contact.action';
 
-import TabPanel from '../UI/TabPanel/index';
-import GlobalLoading from '../UI/GlobalLoading';
+import TabPanel from '../../components/UI/TabPanel/index';
+import GlobalLoading from '../../components/UI/GlobalLoading/index';
 import OnlineTab from './TabContent/OnlineTab';
 const PendingTab = React.lazy(() => import('./TabContent/PendingTab'));
 const BlockedTab = React.lazy(() => import('./TabContent/BlockedTab'));
@@ -30,6 +30,7 @@ const Contact = () => {
 
   useEffect(() => {
     dispatch(getAllContacts());
+    return () => {};
   }, [dispatch]);
   return (
     <ContactWrapper>

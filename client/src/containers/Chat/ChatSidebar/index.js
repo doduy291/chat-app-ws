@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { SidebarWrapper, Title, DMContainer, ChannelContainer } from './styles';
 import { Avatar, Badge } from '@mui/material';
+import { getListChannels } from '../../../redux/actions/channel.action';
+import { Link } from 'react-router-dom';
+
 const Sidebar = () => {
+  const { channels } = useSelector((state) => state.channel);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getListChannels());
+    return () => {};
+  }, [dispatch]);
   return (
     <SidebarWrapper>
       <div className="channel">
@@ -29,22 +40,15 @@ const Sidebar = () => {
         </DMContainer>
         <ChannelContainer>
           <span className="channel__title">CHANNELS</span>
-          <div className="channel__item active">
-            <div className="circle">#</div>
-            <div className="channel__name">Channel name</div>
-          </div>
-          <div className="channel__item">
-            <div className="circle">#</div>
-            <div className="channel__name">Channel name</div>
-          </div>
-          <div className="channel__item">
-            <div className="circle">#</div>
-            <div className="channel__name">Channel name</div>
-          </div>
-          <div className="channel__item">
-            <div className="circle">#</div>
-            <div className="channel__name">Channel name</div>
-          </div>
+          {channels &&
+            channels.map((element, i) => (
+              <Link to={`/channel/${element._id}`} key={i}>
+                <div className="channel__item active">
+                  <div className="circle">#</div>
+                  <div className="channel__name">{element.channelName}</div>
+                </div>
+              </Link>
+            ))}
         </ChannelContainer>
       </div>
     </SidebarWrapper>

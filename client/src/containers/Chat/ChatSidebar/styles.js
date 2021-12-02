@@ -42,10 +42,16 @@ export const SidebarWrapper = styled.div`
         color: #fff;
       }
     }
+    .MuiBadge-badge {
+      min-width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background-color: #22b534;
+    }
   }
   .channel__avatar {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
   }
   .channel__name {
     margin-left: 10px;

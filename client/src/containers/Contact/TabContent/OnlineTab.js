@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ChatBubble, Call } from '@mui/icons-material';
 import { OnlineTabContent } from '../styles';
 import { Avatar, Badge } from '@mui/material';

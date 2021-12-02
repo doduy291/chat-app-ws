@@ -16,6 +16,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getUserInfo());
+    return () => {};
   }, [dispatch]);
   return (
     <>
@@ -29,7 +30,7 @@ const App = () => {
                 <Route exact path={['/login', '/signup']}>
                   <AuthPage />
                 </Route>
-                <Route exact path={['/', '/setting', '/contact']}>
+                <Route exact path={['/', '/channel', '/channel/:id', '/setting', '/contact']}>
                   <Navigation />
                   <Switch>{renderPrivateRoutes()}</Switch>
                 </Route>

@@ -117,7 +117,9 @@ export const postAcceptRequest = asyncHandler(async (req, res) => {
 // ******* DELETE PENDING CONTACT REQUEST *******
 export const deletePendingRequest = asyncHandler(async (req, res) => {
   const recipientId = req.user._id;
+
   const { requesterId } = req.body;
+
   const recipientRemove = await UserModel.findOneAndUpdate(
     { _id: recipientId, contactRequests: { $elemMatch: { requester: requesterId, status: 1 } } },
     {

@@ -12,6 +12,7 @@ import { globalErrorHandler, notFoundError } from './src/utils/errorHandler.js';
 import accountRouter from './src/routers/account.router.js';
 import userRouter from './src/routers/user.router.js';
 import contactRouter from './src/routers/contact.router.js';
+import channelRouter from './src/routers/channel.router.js';
 
 // ======= configs =======
 const app = express();
@@ -57,6 +58,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', accountRouter);
 app.use('/api/user', userRouter);
 app.use('/api/contact', contactRouter);
+app.use('/api/channel', channelRouter);
 
 // ======= error handle =======
 app.use(notFoundError);
