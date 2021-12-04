@@ -47,14 +47,16 @@ export const HeaderLeft = styled.div`
     display: flex;
     align-items: center;
     column-gap: 8px;
+    color: var(--main-color);
 
     span {
       font-weight: 500;
     }
 
-    .chat-header__avatar {
+    .MuiAvatar-root {
       width: 32px;
       height: 32px;
+      font-size: 1rem;
     }
   }
 `;

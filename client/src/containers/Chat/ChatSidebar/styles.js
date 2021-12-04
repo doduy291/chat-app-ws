@@ -19,8 +19,6 @@ export const SidebarWrapper = styled.div`
     padding: 0 1.5rem;
   }
   .channel__item {
-    display: flex;
-    align-items: center;
     padding: 6px 1.5rem;
     width: 100%;
     cursor: pointer;
@@ -32,6 +30,7 @@ export const SidebarWrapper = styled.div`
     &.active {
       color: #fff;
       background-color: var(--main-color);
+      pointer-events: none;
 
       .circle {
         background-color: #1bab6f;
@@ -42,12 +41,26 @@ export const SidebarWrapper = styled.div`
         color: #fff;
       }
     }
-    .MuiBadge-badge {
-      min-width: 13px;
-      height: 13px;
-      border-radius: 50%;
-      background-color: #22b534;
+    .MuiBadge-root {
+      .MuiBadge-badge {
+        min-width: 13px;
+        height: 13px;
+        border-radius: 50%;
+      }
+      &.online > .MuiBadge-badge {
+        background-color: #22b534;
+      }
+      &.offline > .MuiBadge-badge {
+        background-color: transparent;
+      }
+      &.busy > .MuiBadge-badge {
+        background-color: #faa81a;
+      }
     }
+  }
+  .channel__link {
+    display: flex;
+    align-items: center;
   }
   .channel__avatar {
     width: 40px;

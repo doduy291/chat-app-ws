@@ -13,7 +13,6 @@ import { getUserInfo } from './redux/actions/user.action';
 const App = () => {
   const { isLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getUserInfo());
     return () => {};
@@ -30,7 +29,7 @@ const App = () => {
                 <Route exact path={['/login', '/signup']}>
                   <AuthPage />
                 </Route>
-                <Route exact path={['/', '/channel', '/channel/:id', '/setting', '/contact']}>
+                <Route exact path={['/', '/channel', '/channel/:channelId', '/setting', '/contact']}>
                   <Navigation />
                   <Switch>{renderPrivateRoutes()}</Switch>
                 </Route>

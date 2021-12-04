@@ -43,7 +43,7 @@ const routePrivateListFn = () => {
       page: <HomePage />,
     },
     {
-      path: '/channel/:id',
+      path: '/channel/:channelId',
       exact: true,
       page: <HomePage />,
     },

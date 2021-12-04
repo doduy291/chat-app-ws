@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const ACTIVE_TYPES = ['online', 'offline', 'sleep'];
+const ACTIVE_TYPES = ['online', 'offline', 'busy'];
 const REQUEST_STATUS_TYPES = [
   0, //'requested'
   1, // 'pending'

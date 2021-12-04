@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Avatar, Accordion, AccordionSummary, AccordionDetails, Switch } from '@mui/material';
 import {
   Call,
@@ -22,6 +23,7 @@ import img2 from '../../../assets/shared-imgs/shared-imgs-3.jpg';
 import img4 from '../../../assets/shared-imgs/shared-imgs-4.jpg';
 
 const ChatChannelInfo = ({ isShowed }) => {
+  const { detailChannel } = useSelector((state) => state.channel);
   return (
     <ChannelInfoWrapper className="channel-info" sidebarInfo={isShowed.showSidebarInfo}>
       <div className="close" onClick={() => isShowed.setShowSidebarInfo(false)}>
@@ -29,7 +31,10 @@ const ChatChannelInfo = ({ isShowed }) => {
       </div>
       <GeneralInfo className="general-info">
         <Avatar className="general-info__avatar" />
-        <div className="general-info__name">Channel Name</div>
+        <div className="general-info__name">
+          {' '}
+          {detailChannel.channelType === 'direct' ? detailChannel.members[0].username : detailChannel.channelName}
+        </div>
         <div className="general-info__buttons">
           <div className="circle">
             <PersonAdd />
@@ -137,10 +142,14 @@ const ChatChannelInfo = ({ isShowed }) => {
           <DoDisturbOnOutlined />
         </div>
         <div className="line"></div>
-        <div className="about-info__item about-info__item--red">
-          <span>Leave the channel</span>
-          <Logout />
-        </div>
+        {detailChannel.channelType === 'direct' ? (
+          ''
+        ) : (
+          <div className="about-info__item about-info__item--red">
+            <span>Leave the channel</span>
+            <Logout />
+          </div>
+        )}
       </AboutInfo>
     </ChannelInfoWrapper>
   );

@@ -53,7 +53,12 @@ export const ContactWrapper = styled.div`
     min-width: 13px;
     height: 13px;
     border-radius: 50%;
-    background-color: #22b534;
+    &.online {
+      background-color: #22b534;
+    }
+    &.offline {
+      background-color: #22b534;
+    }
   }
 `;
 
