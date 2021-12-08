@@ -1,9 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SidebarWrapper, Title, DMContainer, ChannelContainer } from './styles';
+import {
+  SidebarWrapper,
+  SidebarTitle,
+  DMContainer,
+  ChannelContainer,
+  ChannelTitle,
+  ChannelItem,
+  ChannelLink,
+  ChannelName,
+} from './styles';
 import { Avatar, Badge } from '@mui/material';
 import { getListGroupChannels, getListDMs } from '../../../redux/actions/channel.action';
-import { Link } from 'react-router-dom';
 
 const Sidebar = ({ channelId }) => {
   const { channels, DMs } = useSelector((state) => state.channel);
@@ -18,31 +26,31 @@ const Sidebar = ({ channelId }) => {
   return (
     <SidebarWrapper>
       <div className="channel">
-        <Title>Chat Room</Title>
+        <SidebarTitle>Chat Room</SidebarTitle>
         <DMContainer>
-          <span className="channel__title">DIRECT MESSAGES</span>
+          <ChannelTitle className="channel__title">DIRECT MESSAGES</ChannelTitle>
           {DMs &&
             DMs.map((element, i) => (
-              <div className={`channel__item ${channelId === element._id ? 'active' : ''}`} key={i}>
-                <Link to={`/channel/${element._id}`} className="channel__link">
+              <ChannelItem className={`channel__item ${channelId === element._id ? 'active' : ''}`} key={i}>
+                <ChannelLink to={`/channel/${element._id}`} className="channel__link">
                   <Badge overlap="circular" badgeContent=" " variant="dot" className={`${element.members[0].active}`}>
                     <Avatar className="channel__avatar" />
                   </Badge>
-                  <div className="channel__name">{element.members[0].username}</div>
-                </Link>
-              </div>
+                  <ChannelName className="channel__name">{element.members[0].username}</ChannelName>
+                </ChannelLink>
+              </ChannelItem>
             ))}
         </DMContainer>
         <ChannelContainer>
-          <span className="channel__title">CHANNELS</span>
+          <ChannelTitle className="channel__title">CHANNELS</ChannelTitle>
           {channels &&
             channels.map((element, i) => (
-              <div className={`channel__item ${channelId === element._id ? 'active' : ''}`} key={i}>
-                <Link to={`/channel/${element._id}`} className="channel__link">
+              <ChannelItem className={`channel__item ${channelId === element._id ? 'active' : ''}`} key={i}>
+                <ChannelLink to={`/channel/${element._id}`} className="channel__link">
                   <div className="circle">#</div>
-                  <div className="channel__name">{element.channelName}</div>
-                </Link>
-              </div>
+                  <ChannelName className="channel__name">{element.channelName}</ChannelName>
+                </ChannelLink>
+              </ChannelItem>
             ))}
         </ChannelContainer>
       </div>

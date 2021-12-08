@@ -2,7 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { SignupContainer, Form, AuthContainer } from '../styles';
+import {
+  SignupContainer,
+  Form,
+  AuthContainer,
+  FormTitle,
+  FormLabel,
+  FormInput,
+  FormTextLink,
+  FormButton,
+  FormPasswordWrapper,
+} from '../styles';
 import { emailValidation, passwordValidation, usernameValidation } from '../../../validation/auth.validation';
 import { postSignup } from '../../../redux/actions/auth.action';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -45,9 +55,9 @@ const Signup = ({ isAuth }) => {
       <AuthContainer className={isShown && 'is-shown'}>
         <SignupContainer>
           <Form onSubmit={handleSubmit(signupHandler)}>
-            <h3 className="form__title">Create an account</h3>
+            <FormTitle className="form__title">Create an account</FormTitle>
             <div className="form-block">
-              <div className="form__label">
+              <FormLabel className="form__label">
                 Email
                 {errors?.email?.message && (
                   <span className="form__errorMessage">
@@ -55,15 +65,15 @@ const Signup = ({ isAuth }) => {
                     {errors.email.message}
                   </span>
                 )}
-              </div>
-              <input
+              </FormLabel>
+              <FormInput
                 {...register('email', { ...emailValidation.signup })}
                 className={`form__input ${errors?.email?.message && 'form__input--error'}`}
                 type="text"
               />
             </div>
             <div className="form-block">
-              <div className="form__label">
+              <FormLabel className="form__label">
                 Username
                 {errors?.username?.message && (
                   <span className="form__errorMessage">
@@ -71,15 +81,15 @@ const Signup = ({ isAuth }) => {
                     {errors.username.message}
                   </span>
                 )}
-              </div>
-              <input
+              </FormLabel>
+              <FormInput
                 {...register('username', { ...usernameValidation.signup })}
                 className={`form__input ${errors?.username?.message && 'form__input--error'}`}
                 type="text"
               />
             </div>
             <div className="form-block">
-              <div className="form__label">
+              <FormLabel className="form__label">
                 Password
                 {errors?.password?.message && (
                   <span className="form__errorMessage">
@@ -87,9 +97,9 @@ const Signup = ({ isAuth }) => {
                     {errors.password.message}
                   </span>
                 )}
-              </div>
-              <div className="form__password">
-                <input
+              </FormLabel>
+              <FormPasswordWrapper className="form__password">
+                <FormInput
                   {...register('password', { ...passwordValidation.signup })}
                   className={`form__input ${errors?.password?.message && 'form__input--error'}`}
                   type={!isVisibility ? 'password' : 'text'}
@@ -99,15 +109,15 @@ const Signup = ({ isAuth }) => {
                 ) : (
                   <Visibility onClick={() => setIsVisibility((currentState) => !currentState)} />
                 )}
-              </div>
+              </FormPasswordWrapper>
             </div>
-            <button className="form__button" type="submit">
+            <FormButton className="form__button" type="submit">
               Sign Up
-            </button>
-            <div className="form__text-link">
+            </FormButton>
+            <FormTextLink className="form__text-link">
               <span>Have already an account? </span>
               <Link to="/login">Login</Link>
-            </div>
+            </FormTextLink>
           </Form>
         </SignupContainer>
       </AuthContainer>

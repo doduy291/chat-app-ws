@@ -1,14 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-
 import { AvatarGroup, Avatar } from '@mui/material';
-
 import { Info, MoreVert, Settings, Mood, AttachFile, Send } from '@mui/icons-material';
-import { ChatWrapper, ChatHeader, HeaderLeft, HeaderRight, ChatView, ChatViewContainer, ChatFooter } from './styles';
 
-const ChatContent = ({ setShowSidebarInfo, channelId }) => {
+import {
+  ChatWrapper,
+  ChatHeader,
+  HeaderLeft,
+  HeaderRight,
+  ChatView,
+  ChatViewContainer,
+  ChatFooter,
+  ChatHeaderTitle,
+  ChatHeaderMemberCount,
+  ChatViewContent,
+  ChatMsg,
+  ChatMsgTimestamp,
+  ChatMsgText,
+  ChatMsgTyping,
+  ChatFooterContainer,
+  ChatFooterTextarea,
+  ChatFooterSend,
+  Textarea,
+  TextareaCustom,
+  TextareaButtons,
+} from './styles';
+
+const ChatContent = ({ setShowSidebarInfo }) => {
   const { detailChannel } = useSelector((state) => state.channel);
-
+  const ws = useRef();
   useEffect(() => {
     // Disable pressing Enter to go down a line
     let textarea = document.querySelector('.textarea__custom');
@@ -17,25 +37,45 @@ const ChatContent = ({ setShowSidebarInfo, channelId }) => {
     });
   }, []);
 
+  useEffect(() => {
+    ws.current = new WebSocket(
+      process.env.NODE_ENV === 'development'
+        ? process.env.REACT_APP_API_LOCAL_SOCKET_URL
+        : process.env.REACT_APP_API_SOCKEt_URL
+    );
+    ws.current.onopen = () => {
+      console.log('Connected WebSocket from Server ✅');
+    };
+    ws.current.onmessage = (message) => {
+      console.log(`New message: ${message.data}`);
+    };
+    ws.current.onclose = () => {
+      console.log('Disconnected WebSocket from Server ❌');
+    };
+    setTimeout(() => {
+      ws.current.send(JSON.stringify({ message: 'Helloooooooooo server' }));
+    }, 2000);
+  }, []);
+
   return (
     <>
       <ChatWrapper>
         <ChatHeader className="chat-header overlap-top">
           <HeaderLeft className="chat-header__left">
-            <div className="chat-header__title">
+            <ChatHeaderTitle className="chat-header__title">
               {detailChannel.channelType === 'direct' ? detailChannel.members[0].username : detailChannel.channelName}
-            </div>
+            </ChatHeaderTitle>
             {detailChannel.channelType === 'group' ? (
               <>
                 <div className="dot"></div>
-                <div className="chat-header__member-count">
+                <ChatHeaderMemberCount className="chat-header__member-count">
                   <AvatarGroup max={3}>
                     {detailChannel.members.map((element, i) => (
                       <Avatar className="chat-header__avatar" key={i} />
                     ))}
                   </AvatarGroup>
                   <span>+{detailChannel.members.filter((element) => element.active === 'online').length} Online</span>
-                </div>
+                </ChatHeaderMemberCount>
               </>
             ) : (
               ''
@@ -51,9 +91,9 @@ const ChatContent = ({ setShowSidebarInfo, channelId }) => {
         <ChatView className="chat-view">
           <div className="blur-back"></div>
           <ChatViewContainer className="chat-view__container scroller">
-            <div className="chat-view__content">
-              <div className="chat-msg chat-msg--you">
-                <span className="chat-msg__text chat-msg__text--you">
+            <ChatViewContent className="chat-view__content">
+              <ChatMsg className="chat-msg chat-msg--you">
+                <ChatMsgText className="chat-msg__text chat-msg__text--you">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio accusamus veritatis nobis optio Lorem
                   ipsum dolor sit amet consectetur, adipisicing elit. Consectetur ea debitis blanditiis quam. Dolorem
                   impedit officia, nisi eum quas sunt et expedita doloribus iste a nobis, consequatur esse vitae odit!
@@ -66,14 +106,14 @@ const ChatContent = ({ setShowSidebarInfo, channelId }) => {
                   quasi possimus, id quidem minus consectetur ipsa? Lorem ipsum dolor sit amet consectetur adipisicing
                   elit. Architecto, distinctio necessitatibus consequatur omnis at voluptas dolor ratione, laudantium,
                   quibusdam id perferendis asperiores veniam. Doloribus beatae nesciunt repellat culpa ullam aspernatur!
-                </span>
-              </div>
-              <div className="chat-msg__timestamp chat-msg__timestamp--you">
+                </ChatMsgText>
+              </ChatMsg>
+              <ChatMsgTimestamp className="chat-msg__timestamp chat-msg__timestamp--you">
                 Username <span className="datetime">3:35pm</span>
-              </div>
+              </ChatMsgTimestamp>
 
-              <div className="chat-msg ">
-                <span className="chat-msg__text ">
+              <ChatMsg className="chat-msg ">
+                <ChatMsgText className="chat-msg__text ">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio accusamus veritatis nobis optio Lorem
                   ipsum dolor sit amet consectetur, adipisicing elit. Consectetur ea debitis blanditiis quam. Dolorem
                   impedit officia, nisi eum quas sunt et expedita doloribus iste a nobis, consequatur esse vitae odit!
@@ -86,35 +126,40 @@ const ChatContent = ({ setShowSidebarInfo, channelId }) => {
                   quasi possimus, id quidem minus consectetur ipsa? Lorem ipsum dolor sit amet consectetur adipisicing
                   elit. Architecto, distinctio necessitatibus consequatur omnis at voluptas dolor ratione, laudantium,
                   quibusdam id perferendis asperiores veniam. Doloribus beatae nesciunt repellat culpa ullam aspernatur!
-                </span>
-              </div>
-              <div className="chat-msg ">
-                <span className="chat-msg__text">Test</span>
-              </div>
-              <div className="chat-msg__timestamp">
+                </ChatMsgText>
+              </ChatMsg>
+              <ChatMsg className="chat-msg ">
+                <ChatMsgText className="chat-msg__text">Test</ChatMsgText>
+              </ChatMsg>
+              <ChatMsgTimestamp className="chat-msg__timestamp">
                 <Avatar className="chat-msg__avatar" /> Username <span className="datetime">3:35pm</span>
-              </div>
-              <div className="chat-msg__typing">Username is typing...</div>
-            </div>
+              </ChatMsgTimestamp>
+              <ChatMsgTyping className="chat-msg__typing">Username is typing...</ChatMsgTyping>
+            </ChatViewContent>
           </ChatViewContainer>
         </ChatView>
         <ChatFooter className="chat-footer">
-          <div className="chat-footer__container">
-            <div className="chat-footer__textarea">
-              <div className="textarea">
-                <div className="textarea__custom" role="textbox" contentEditable="true" aria-multiline="true"></div>
-              </div>
-              <div className="textarea-buttons">
+          <ChatFooterContainer className="chat-footer__container">
+            <ChatFooterTextarea className="chat-footer__textarea">
+              <Textarea className="textarea">
+                <TextareaCustom
+                  className="textarea__custom"
+                  role="textbox"
+                  contentEditable="true"
+                  aria-multiline="true"
+                ></TextareaCustom>
+              </Textarea>
+              <TextareaButtons className="textarea-buttons">
                 <AttachFile />
                 <Mood />
-              </div>
-            </div>
+              </TextareaButtons>
+            </ChatFooterTextarea>
 
-            <div className="chat-footer__send">
+            <ChatFooterSend className="chat-footer__send">
               <Send />
               <span>Send</span>
-            </div>
-          </div>
+            </ChatFooterSend>
+          </ChatFooterContainer>
         </ChatFooter>
       </ChatWrapper>
     </>

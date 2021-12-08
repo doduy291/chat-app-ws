@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import bgImage from '../../assets/images/bg-img.jpg';
 
 export const AuthWrapper = styled.div`
   display: flex;
@@ -7,6 +8,7 @@ export const AuthWrapper = styled.div`
   width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
+  background-image: url(${bgImage});
 `;
 
 export const AuthContainer = styled.div`
@@ -28,73 +30,10 @@ export const AuthContainer = styled.div`
 export const Form = styled.form`
   color: #b9bbbe !important;
 
-  .form__title {
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
   .form-block {
     margin-top: 20px;
   }
-  .form__label {
-    display: flex;
-    align-items: center;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-bottom: 3px;
-    color: #fff;
-  }
-  .form__input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 3px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    background-color: rgba(0, 0, 0, 0.2);
-    color: #b9bbbe !important;
-    font-size: 14px;
-    transition: 200ms ease-out;
 
-    &:hover {
-      border-color: var(--main-lighter-color);
-    }
-    &:focus {
-      border-color: var(--main-color);
-    }
-    &.form__input--error {
-      border: 1px solid var(--danger-color);
-    }
-  }
-  .form__text-link {
-    margin-top: 5px;
-    font-size: 13px;
-    color: var(--main-lighter-color);
-
-    span {
-      color: #72767d;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  }
-  .form__button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    border-radius: 3px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #fff;
-    background-color: var(--main-color);
-    margin-top: 20px;
-    padding: 16px 0;
-
-    &:hover {
-      background-color: var(--main-brighter-color);
-    }
-  }
   .form__errorMessage {
     color: var(--danger-color);
     text-transform: none;
@@ -108,20 +47,89 @@ export const Form = styled.form`
       padding: 0 4px;
     }
   }
+`;
 
-  .form__password {
-    position: relative;
-    display: flex;
-    align-items: center;
+export const FormTitle = styled.h3`
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+`;
 
-    input {
-      padding-right: 10%;
-    }
-    .MuiSvgIcon-root {
-      position: absolute;
-      right: 10px;
-      color: #fff;
-    }
+export const FormLabel = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+  color: #fff;
+`;
+
+export const FormInput = styled.input`
+  width: 100%;
+  padding: 10px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #b9bbbe !important;
+  font-size: 14px;
+  transition: 200ms ease-out;
+
+  &:hover {
+    border-color: var(--main-lighter-color);
+  }
+  &:focus {
+    border-color: var(--main-color);
+  }
+  &.form__input--error {
+    border: 1px solid var(--danger-color);
+  }
+`;
+
+export const FormTextLink = styled.div`
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--main-lighter-color);
+
+  span {
+    color: #72767d;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+`;
+
+export const FormButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 3px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--main-color);
+  margin-top: 20px;
+  padding: 16px 0;
+
+  &:hover {
+    background-color: var(--main-brighter-color);
+  }
+`;
+
+export const FormPasswordWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input {
+    padding-right: 10%;
+  }
+  .MuiSvgIcon-root {
+    position: absolute;
+    right: 10px;
+    color: #fff;
   }
 `;
 export const LoginContainer = styled.div``;

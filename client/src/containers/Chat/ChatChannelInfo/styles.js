@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Avatar, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 
 export const ChannelInfoWrapper = styled.div`
   display: ${(props) => (props.sidebarInfo ? 'block' : 'none')};
@@ -27,46 +28,66 @@ export const GeneralInfo = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 4rem;
+`;
+export const GeneralInfoAvatar = styled(Avatar)`
+  width: 100px;
+  height: 100px;
+`;
 
-  .general-info__avatar {
-    width: 100px;
-    height: 100px;
-  }
-  .general-info__name {
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin-top: 10px;
-  }
-  .general-info__buttons {
+export const GeneralInfoName = styled.div`
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-top: 10px;
+`;
+export const GeneralInfoButtons = styled.div`
+  display: flex;
+  column-gap: 20px;
+  margin-top: 1.5rem;
+
+  .circle {
+    position: relative;
     display: flex;
-    column-gap: 20px;
-    margin-top: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #ebebeb;
+    cursor: pointer;
+    transition: 0.4s;
+    color: var(--icon-default-color);
 
-    .circle {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid #ebebeb;
-      cursor: pointer;
-      transition: 0.4s;
-      color: var(--icon-default-color);
-
-      &:hover {
-        border: 1px solid var(--main-color);
-        color: #fff;
-        box-shadow: inset 0 0 0 2em var(--main-color);
-      }
-      &.remove:hover {
-        box-shadow: inset 0 0 0 2em var(--danger-color);
-        border: 1px solid var(--danger-color);
-      }
+    &:hover {
+      border: 1px solid var(--main-color);
+      color: #fff;
+      box-shadow: inset 0 0 0 2em var(--main-color);
+    }
+    &.remove:hover {
+      box-shadow: inset 0 0 0 2em var(--danger-color);
+      border: 1px solid var(--danger-color);
     }
   }
 `;
+export const AccordionCustom = styled(Accordion)`
+  box-shadow: none;
+  border-radius: 0 !important;
+`;
+export const AccordionCustomSummary = styled(AccordionSummary)`
+  padding: 0 !important;
+  min-height: 0 !important;
+  color: #000;
+
+  .MuiAccordionSummary-content {
+    margin: 0 !important;
+  }
+  .MuiAccordionSummary-expandIconWrapper.Mui-expanded {
+    transform: rotate(90deg);
+  }
+`;
+export const AccordionCustomDetails = styled(AccordionDetails)`
+  padding: 0 !important;
+`;
+
 export const AboutInfo = styled.div`
   position: relative;
   margin-top: 3rem;
@@ -86,82 +107,33 @@ export const AboutInfo = styled.div`
     border-radius: 50%;
     background-color: #cfcfcf;
   }
-  .accordion-custom {
-    box-shadow: none;
-    border-radius: 0 !important;
-  }
-  .accordion-custom__summary {
-    padding: 0 !important;
-    min-height: 0 !important;
-    color: #000;
+`;
+export const AboutInfoItem = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 
-    .MuiAccordionSummary-content {
-      margin: 0 !important;
-    }
-    .MuiAccordionSummary-expandIconWrapper.Mui-expanded {
-      transform: rotate(90deg);
-    }
+  .MuiSvgIcon-root {
+    position: absolute;
+    right: 6px;
+    color: #9f9f9f;
   }
-  .accordion-custom__details {
-    padding: 0 !important;
-  }
-  .about-info__item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+  &.about-info__item--red {
+    color: var(--danger-color);
     .MuiSvgIcon-root {
-      position: absolute;
-      right: 6px;
-      color: #9f9f9f;
-    }
-    &.about-info__item--red {
       color: var(--danger-color);
-      .MuiSvgIcon-root {
-        color: var(--danger-color);
-      }
     }
   }
 `;
-export const SharedFiles = styled.div`
-  .shared-files__list {
-    margin: 10px 0;
-  }
-  .shared-files__item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 3px;
-  }
-  .shared-files__icon {
-    display: flex;
-    align-items: center;
-    border: 1px solid #e9e9e9;
-    border-radius: 3px;
-    padding: 5px;
+export const SharedFilesList = styled.div`
+  margin: 10px 0;
+`;
+export const SharedFilesItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px;
 
-    img {
-      width: 25px;
-    }
-  }
-  .shared-files__details {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    font-size: 13px;
-
-    .shared-files__name {
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      font-weight: 600;
-    }
-
-    .date-size-wrapper {
-      display: flex;
-      align-items: center;
-      font-size: 12px;
-    }
-  }
   .download-icon {
     position: absolute;
     right: 0;
@@ -175,30 +147,61 @@ export const SharedFiles = styled.div`
     }
   }
 `;
-export const SharedImgs = styled.div`
-  .shared-imgs__list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 100px;
-    grid-gap: 3px 3px;
-    margin: 10px 0;
-  }
-  .shared-imgs__item {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
+export const SharedFilesIcon = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid #e9e9e9;
+  border-radius: 3px;
+  padding: 5px;
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border: 1px solid #e3e3e3;
-    }
+  img {
+    width: 25px;
   }
 `;
+export const SharedFilesDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  font-size: 13px;
+
+  .date-size-wrapper {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+  }
+`;
+export const SharedFilesName = styled.div`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 600;
+`;
+
+export const SharedImgsList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 100px;
+  grid-gap: 3px 3px;
+  margin: 10px 0;
+`;
+
+export const SharedImgsItem = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid #e3e3e3;
+  }
+`;
+
 export const Notification = styled.div`
   position: relative;
+
   .MuiSwitch-root {
     position: absolute;
     top: -10px;

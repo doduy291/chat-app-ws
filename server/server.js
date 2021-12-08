@@ -1,10 +1,11 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import http from 'http';
+import { WebSocketServer } from 'ws';
 import mongoose from 'mongoose';
 import compression from 'compression';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
 import corsConfig from './src/configs/cors.config.js';
 import { globalErrorHandler, notFoundError } from './src/utils/errorHandler.js';
 
@@ -65,4 +66,14 @@ app.use(notFoundError);
 app.use(globalErrorHandler);
 // ======= listen =======
 const port = process.env.PORT;
-app.listen(port, console.log(`App running on port ${port}...`));
+const server = http.createServer(app);
+const wss = new WebSocketServer({ server });
+wss.on('connection', (socket) => {
+  console.log('WebSocket connected ✅');
+  socket.on('close', () => console.log('WebSocket disconnected ❌'));
+  socket.on('message', (message) => {
+    console.log(JSON.parse(message));
+  });
+  socket.send(JSON.stringify({ abc: 'testttttttttttt' }));
+});
+server.listen(port, console.log(`App running on port ${port}...`));

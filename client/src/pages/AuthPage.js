@@ -1,10 +1,18 @@
 import React from 'react';
-import Auth from '../containers/Auth/index';
+import { Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { renderPublicRoutes } from '../configs/router.config';
+import { AuthWrapper } from '../containers/Auth/styles';
 
 const AuthPage = () => {
+  const { isAuthenticated } = useSelector((state) => state.user);
   return (
     <>
-      <Auth />
+      <>
+        <AuthWrapper>
+          <Switch>{renderPublicRoutes(isAuthenticated)}</Switch>
+        </AuthWrapper>
+      </>
     </>
   );
 };

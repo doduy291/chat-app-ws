@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, connect, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { Form, LoginContainer, AuthContainer } from '../styles';
+import {
+  Form,
+  LoginContainer,
+  AuthContainer,
+  FormTitle,
+  FormLabel,
+  FormInput,
+  FormTextLink,
+  FormButton,
+  FormPasswordWrapper,
+} from '../styles';
 import { postLogin } from '../../../redux/actions/auth.action';
 import { emailValidation, passwordValidation } from '../../../validation/auth.validation';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -45,9 +55,9 @@ const Login = ({ isAuth }) => {
       <AuthContainer className={isShown && 'is-shown'}>
         <LoginContainer>
           <Form onSubmit={handleSubmit(loginHandler)}>
-            <h3 className="form__title">Login</h3>
+            <FormTitle className="form__title">Login</FormTitle>
             <div className="form-block">
-              <div className="form__label">
+              <FormLabel className="form__label">
                 Email
                 {errors?.email?.message && (
                   <span className="form__errorMessage">
@@ -55,15 +65,15 @@ const Login = ({ isAuth }) => {
                     {errors.email.message}
                   </span>
                 )}
-              </div>
-              <input
+              </FormLabel>
+              <FormInput
                 {...register('email', { ...emailValidation.login })}
                 className={`form__input ${errors?.email?.message && 'form__input--error'}`}
                 type="text"
               />
             </div>
             <div className="form-block">
-              <div className="form__label">
+              <FormLabel className="form__label">
                 Password
                 {errors?.password?.message && (
                   <span className="form__errorMessage">
@@ -71,9 +81,9 @@ const Login = ({ isAuth }) => {
                     {errors.password.message}
                   </span>
                 )}
-              </div>
-              <div className="form__password">
-                <input
+              </FormLabel>
+              <FormPasswordWrapper className="form__password">
+                <FormInput
                   {...register('password', { ...passwordValidation.login })}
                   className={`form__input ${errors?.password?.message && 'form__input--error'}`}
                   type={!isVisibility ? 'password' : 'text'}
@@ -83,18 +93,18 @@ const Login = ({ isAuth }) => {
                 ) : (
                   <Visibility onClick={() => setIsVisibility((currentState) => !currentState)} />
                 )}
-              </div>
+              </FormPasswordWrapper>
             </div>
-            <div className="form__text-link">
+            <FormTextLink className="form__text-link">
               <Link to="/">Forgot password?</Link>
-            </div>
-            <button className="form__button" type="submit">
+            </FormTextLink>
+            <FormButton className="form__button" type="submit">
               Login
-            </button>
-            <div className="form__text-link">
+            </FormButton>
+            <FormTextLink className="form__text-link">
               <span>Need an account? </span>
               <Link to="/signup">Sign Up</Link>
-            </div>
+            </FormTextLink>
           </Form>
         </LoginContainer>
       </AuthContainer>

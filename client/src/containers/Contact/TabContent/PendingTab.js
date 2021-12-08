@@ -2,7 +2,16 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar } from '@mui/material';
 import { Close, Check } from '@mui/icons-material';
-import { PendingTabContent } from '../styles';
+import {
+  PendingTabContent,
+  TabContentItem,
+  TabContentList,
+  TabContentName,
+  TabContentUser,
+  TabContentButtons,
+  TabContentContainer,
+  TabContentTitle,
+} from './styles';
 import { getPendingRequest, postAcceptRequest, deletePendingRequest } from '../../../redux/actions/contact.action';
 
 const PendingTab = () => {
@@ -24,35 +33,38 @@ const PendingTab = () => {
   };
   return (
     <PendingTabContent className="tabContent__pending">
-      <div className="tabContent__label">Pending (Number)</div>
+      <TabContentTitle className="tabContent__title">Pending (Number)</TabContentTitle>
       <div className="line-container">
         <div className="line"></div>
       </div>
-      <div className="tabContent__container">
-        <div className="tabContent__list scroller">
+      <TabContentContainer className="tabContent__container">
+        <TabContentList className="tabContent__list scroller">
           {!pendings ? (
             <div>Nothing</div>
           ) : (
             pendings.map((element, i) => (
-              <div className="tabContent__item tabContent__item--spread" key={i}>
-                <div className="tabContent__user tabContent__user--spread">
+              <TabContentItem className="tabContent__item tabContent__item--spread" key={i}>
+                <TabContentUser className="tabContent__user tabContent__user--spread">
                   <Avatar />
-                  <div className="tabContent__name tabContent__name--spread">{element.requester.username}</div>
-                </div>
-                <div className="tabContent__button">
+                  <TabContentName className="tabContent__name tabContent__name--spread">
+                    {element.requester.username}
+                  </TabContentName>
+                </TabContentUser>
+                <TabContentButtons className="tabContent__buttons">
                   <div className="circle" onClick={acceptHandler(element.requester._id)}>
                     <Check />
                   </div>
                   <div className="circle remove" onClick={removeHandler(element.requester._id)}>
                     <Close />
                   </div>
-                </div>
-              </div>
+                </TabContentButtons>
+              </TabContentItem>
             ))
           )}
+
           <div className="scrollSpacer"></div>
-        </div>
-      </div>
+        </TabContentList>
+      </TabContentContainer>
     </PendingTabContent>
   );
 };
