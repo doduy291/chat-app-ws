@@ -63,19 +63,28 @@ export const postCreateChannel = asyncHandler(async (req, res) => {
 
 export const getSelectedChannel = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  const channelId = req.params.id;
-
+  const { channelId } = req.params;
   const doesExist = await ChannelModel.exists({ _id: channelId, member: userId });
   if (!doesExist) throw new ErrorResponse(400, 'Channel does not exist');
 
-  const channel = await ChannelModel.findOne({ _id: channelId, member: userId })
+  let channel = await ChannelModel.findOne({ _id: channelId, member: userId })
     .populate({
       path: 'members',
-      select: '-_id username avatar active',
+      select: '_id username avatar active',
       match: { _id: { $ne: userId } },
     })
-    .select('-__v');
+    .select('-__v')
+    .lean(); // in order to add new key into object in mongoose
   if (!channel) throw new ErrorResponse(400, 'Channel does not exist');
 
+  if (channel.channelType === 'direct') {
+    const doesExistContact = await UserModel.exists({
+      _id: userId,
+      contacts: channel.members[0]._id,
+    });
+    if (doesExistContact) {
+      channel.isFriend = true;
+    }
+  }
   res.status(200).json({ channel });
 });

@@ -4,7 +4,7 @@ const MESSAGE_TYPE = ['text', 'file', 'image', 'tag'];
 
 const messageSchema = new mongoose.Schema(
   {
-    message: {
+    text: {
       type: String,
     },
     userId: {

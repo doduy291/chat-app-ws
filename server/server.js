@@ -1,19 +1,21 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import http from 'http';
-import { WebSocketServer } from 'ws';
+
 import mongoose from 'mongoose';
 import compression from 'compression';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import corsConfig from './src/configs/cors.config.js';
 import { globalErrorHandler, notFoundError } from './src/utils/errorHandler.js';
+import useWebSocket from './src/websocket/useWebsocket.js';
 
 // ======= import router =======
 import accountRouter from './src/routers/account.router.js';
 import userRouter from './src/routers/user.router.js';
 import contactRouter from './src/routers/contact.router.js';
 import channelRouter from './src/routers/channel.router.js';
+import messageRouter from './src/routers/message.router.js';
 
 // ======= configs =======
 const app = express();
@@ -60,6 +62,7 @@ app.use('/api/auth', accountRouter);
 app.use('/api/user', userRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/channel', channelRouter);
+app.use('/api/message', messageRouter);
 
 // ======= error handle =======
 app.use(notFoundError);
@@ -67,13 +70,8 @@ app.use(globalErrorHandler);
 // ======= listen =======
 const port = process.env.PORT;
 const server = http.createServer(app);
-const wss = new WebSocketServer({ server });
-wss.on('connection', (socket) => {
-  console.log('WebSocket connected ✅');
-  socket.on('close', () => console.log('WebSocket disconnected ❌'));
-  socket.on('message', (message) => {
-    console.log(JSON.parse(message));
-  });
-  socket.send(JSON.stringify({ abc: 'testttttttttttt' }));
-});
+
+// ======= WebSocket Global Handler =======
+useWebSocket(server);
+
 server.listen(port, console.log(`App running on port ${port}...`));

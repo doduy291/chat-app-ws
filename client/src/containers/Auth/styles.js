@@ -132,5 +132,15 @@ export const FormPasswordWrapper = styled.div`
     color: #fff;
   }
 `;
-export const LoginContainer = styled.div``;
-export const SignupContainer = styled.div``;
+export const LoginContainer = styled.div`
+  &.is-disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+`;
+export const SignupContainer = styled.div`
+  &.is-disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+`;

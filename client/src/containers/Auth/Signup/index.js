@@ -19,6 +19,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Signup = ({ isAuth }) => {
   const [isShown, setIsShown] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [isVisibility, setIsVisibility] = useState(false);
 
   const dispatch = useDispatch();
@@ -38,9 +39,18 @@ const Signup = ({ isAuth }) => {
 
   useEffect(() => {
     setIsShown(true);
+  }, []);
+
+  useEffect(() => {
     if (errorMsg) {
       setError(errorMsg?.name, { type: 'server', message: errorMsg?.message });
     }
+    if (Object.keys(errors).length) {
+      setIsDisabled(false);
+    }
+  }, [errors, errorMsg, setError]);
+
+  useEffect(() => {
     if (isLogged || isAuth) {
       setTimeout(
         () => {
@@ -49,11 +59,11 @@ const Signup = ({ isAuth }) => {
         isLogged ? 1500 : 0
       );
     }
-  }, [redirectPath, isLogged, errorMsg, setError, isAuth]);
+  }, [redirectPath, isLogged, isAuth]);
   return (
     <>
       <AuthContainer className={isShown && 'is-shown'}>
-        <SignupContainer>
+        <SignupContainer className={isDisabled && 'is-disabled'}>
           <Form onSubmit={handleSubmit(signupHandler)}>
             <FormTitle className="form__title">Create an account</FormTitle>
             <div className="form-block">

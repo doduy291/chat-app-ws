@@ -19,6 +19,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Login = ({ isAuth }) => {
   const [isShown, setIsShow] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [isVisibility, setIsVisibility] = useState(false);
 
   const dispatch = useDispatch();
@@ -33,14 +34,24 @@ const Login = ({ isAuth }) => {
 
   const redirectPath = location.search ? location.search.split('=')[1] : '/';
   const loginHandler = async (data) => {
+    setIsDisabled(true);
     dispatch(postLogin(data));
   };
 
   useEffect(() => {
     setIsShow(true);
+  }, []);
+
+  useEffect(() => {
     if (errorMsg) {
       setError(errorMsg?.name, { type: 'server', message: errorMsg?.message });
     }
+    if (Object.keys(errors).length) {
+      setIsDisabled(false);
+    }
+  }, [errors, errorMsg, setError]);
+
+  useEffect(() => {
     if (isLogged || isAuth) {
       setTimeout(
         () => {
@@ -49,11 +60,12 @@ const Login = ({ isAuth }) => {
         isLogged ? 1500 : 0
       );
     }
-  }, [redirectPath, isLogged, errorMsg, setError, isAuth]);
+  }, [redirectPath, isLogged, isAuth]);
+
   return (
     <>
       <AuthContainer className={isShown && 'is-shown'}>
-        <LoginContainer>
+        <LoginContainer className={isDisabled && 'is-disabled'}>
           <Form onSubmit={handleSubmit(loginHandler)}>
             <FormTitle className="form__title">Login</FormTitle>
             <div className="form-block">

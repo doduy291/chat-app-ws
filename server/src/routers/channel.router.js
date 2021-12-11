@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get('/list-DMs', authProtect, getListDMs);
 router.get('/list-group-channels', authProtect, getListGroupChannels);
-router.get('/:id', authProtect, getSelectedChannel);
+router.get('/:channelId', authProtect, getSelectedChannel);
 router.post('/create-channel', authProtect, postCreateChannel);
 
 export default router;

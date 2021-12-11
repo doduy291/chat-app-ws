@@ -41,6 +41,8 @@ import img1 from '../../../assets/shared-imgs/shared-imgs-1.jpg';
 
 const ChatChannelInfo = ({ isShowed }) => {
   const { detailChannel } = useSelector((state) => state.channel);
+  let personContact;
+
   return (
     <ChannelInfoWrapper className="channel-info" sidebarInfo={isShowed.showSidebarInfo}>
       <div className="close" onClick={() => isShowed.setShowSidebarInfo(false)}>
@@ -52,9 +54,17 @@ const ChatChannelInfo = ({ isShowed }) => {
           {detailChannel.channelType === 'direct' ? detailChannel.members[0].username : detailChannel.channelName}
         </GeneralInfoName>
         <GeneralInfoButtons className="general-info__buttons">
-          <div className="circle">
-            <PersonAdd />
-          </div>
+          {detailChannel.channelType === 'direct' && detailChannel.isFriend && (
+            <div className="circle remove">
+              <PersonRemove />
+            </div>
+          )}
+          {detailChannel.channelType === 'direct' && !detailChannel.isFriend && (
+            <div className="circle">
+              <PersonAdd />
+            </div>
+          )}
+
           <div className="circle">
             <Call />
           </div>
