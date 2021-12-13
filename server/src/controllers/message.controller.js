@@ -14,24 +14,36 @@ export const getMessageChannel = asyncHandler(async (req, res) => {
 
   // Total count of messages in channel
   const count = await MessageModel.count({ channel: channelId });
+  if (!count) skipMsg = 1;
   if (!skipMsg) {
+    // Be used to get latest messages
     const defaultSkipMsg = Math.ceil(count / limitMsg);
     skipMsg = defaultSkipMsg;
   }
 
-  const messages = await MessageModel.find({ channel: channelId })
+  let messages = await MessageModel.find({ channel: channelId })
+    .populate({ path: 'userId', select: '_id username avatar' })
+    .select('-_id text userId createdAt')
     .limit(limitMsg)
     .skip(limitMsg * (skipMsg - 1))
-    .populate({ path: 'userId', select: '-_id username avatar' })
-    .select('-_id text userId createdAt');
+    .lean();
 
-  res.status(200).json({ messages });
+  if (messages.length > 0) {
+    messages.map((msg, i) => {
+      if (JSON.stringify(msg.userId._id) === JSON.stringify(userId)) {
+        messages[i].yourMsg = true;
+      }
+    });
+  }
+
+  res.status(200).json({ currentMsgs: messages, pageMsg: skipMsg });
 });
 
 export const postSendMessage = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { channelId } = req.params;
   const { type, text } = req.body;
+
   const doesExist = await ChannelModel.exists({ _id: channelId, member: userId });
   if (!doesExist) throw new ErrorResponse(403, 'Cannot send message, not matching user in channel');
 

@@ -39,13 +39,12 @@ import icon from '../../../assets/file-icons/pdf.png';
 
 import img1 from '../../../assets/shared-imgs/shared-imgs-1.jpg';
 
-const ChatChannelInfo = ({ isShowed }) => {
+const ChatChannelInfo = ({ isShown, toggleInfo }) => {
   const { detailChannel } = useSelector((state) => state.channel);
-  let personContact;
 
   return (
-    <ChannelInfoWrapper className="channel-info" sidebarInfo={isShowed.showSidebarInfo}>
-      <div className="close" onClick={() => isShowed.setShowSidebarInfo(false)}>
+    <ChannelInfoWrapper className="channel-info" sidebarInfo={isShown}>
+      <div className="close" onClick={toggleInfo(false)}>
         <Close />
       </div>
       <GeneralInfo className="general-info">

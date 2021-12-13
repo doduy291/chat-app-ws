@@ -3,10 +3,11 @@ import { Route, Redirect, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // Import Pages
-import HomePage from '../pages/HomePage';
 import Login from '../containers/Auth/Login/index';
 import Signup from '../containers/Auth/Signup/index';
+const HomePage = React.lazy(() => import('../pages/HomePage'));
 const ContactPage = React.lazy(() => import('../pages/ContactPage'));
+const ChannelPage = React.lazy(() => import('../pages/ChannelPage'));
 const SettingPage = React.lazy(() => import('../pages/SettingPage'));
 
 // Route List
@@ -40,12 +41,12 @@ const routePrivateListFn = () => {
     {
       path: '/channel',
       exact: false,
-      page: <HomePage />,
+      page: <ChannelPage />,
     },
     {
       path: '/channel/:channelId',
       exact: false,
-      page: <HomePage />,
+      page: <ChannelPage />,
     },
     {
       path: '/',
@@ -54,7 +55,13 @@ const routePrivateListFn = () => {
     },
   ];
 };
-
+// const  routeSubChannelListFn = () => [
+//   {
+//     path: '/channel/:channelId',
+//     exact: false,
+//     page: <HomePage />,
+//   },
+// ]
 // Public Routes
 export const renderPublicRoutes = (isAuthenticated) => {
   const routeList = routePublicListFn(isAuthenticated);

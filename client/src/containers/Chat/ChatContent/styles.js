@@ -8,6 +8,12 @@ export const ChatWrapper = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   font-size: 14px;
+
+  .scrollSpacer {
+    display: block;
+    width: 100%;
+    height: 10px;
+  }
 `;
 
 export const ChatHeader = styled.div`
@@ -98,7 +104,7 @@ export const ChatView = styled.div`
 
 export const ChatViewContainer = styled.div`
   overflow-y: scroll;
-  padding-top: calc(100% - 85%);
+  padding-top: 20vh;
 
   &.scroller {
     position: absolute;
@@ -156,9 +162,11 @@ export const ChatMsgTimestamp = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: 5px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   margin-bottom: 1rem;
+  margin-left: 2px;
+  margin-right: 2px;
 
   .datetime {
     font-weight: 400;
@@ -173,9 +181,15 @@ export const ChatMsgTimestamp = styled.div`
   }
 `;
 export const ChatMsgTyping = styled.div`
+  position: absolute;
+  bottom: -3px;
+  left: 1.8rem;
+  right: calc(1.5rem + 0.5em);
+  border-radius: 2px;
   font-size: 13px;
   color: #898989;
   font-weight: 500;
+  z-index: 10;
 `;
 
 export const ChatFooter = styled.div`

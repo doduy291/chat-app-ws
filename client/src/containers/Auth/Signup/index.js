@@ -32,7 +32,7 @@ const Signup = ({ isAuth }) => {
     formState: { errors },
   } = useForm();
 
-  const redirectPath = location.search ? location.search.split('=')[1] : '/';
+  const redirectPath = location.search ? location.search.split('=')[1] : '/channel';
   const signupHandler = async (data) => {
     dispatch(postSignup(data));
   };
