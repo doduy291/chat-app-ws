@@ -15,7 +15,6 @@ import {
   ChatHeaderMemberCount,
   ChatViewContent,
   ChatMsg,
-  ChatMsgTimestamp,
   ChatMsgText,
   ChatMsgTyping,
   ChatFooterContainer,
@@ -25,12 +24,11 @@ import {
   TextareaCustom,
   TextareaButtons,
 } from './styles';
-import { formatToTime } from '../../../utils/helpers';
+import { renderConversations } from './conversation';
 
 const ChatContent = ({ toggleInfo }) => {
   const { detailChannel } = useSelector((state) => state.channel);
   const { messages } = useSelector((state) => state.message);
-
   const ws = useRef();
 
   useEffect(() => {
@@ -42,28 +40,27 @@ const ChatContent = ({ toggleInfo }) => {
   }, []);
 
   useEffect(() => {
-    ws.current = new WebSocket(
-      process.env.NODE_ENV === 'development'
-        ? process.env.REACT_APP_API_LOCAL_SOCKET_URL
-        : process.env.REACT_APP_API_SOCKEt_URL
-    );
-    ws.current.onopen = () => {
-      console.log('Connected WebSocket from Server ✅');
-    };
-    ws.current.onmessage = (message) => {
-      console.log(`New message: ${message.data}`);
-    };
-    ws.current.onclose = () => {
-      console.log('Disconnected WebSocket from Server ❌');
-    };
-    // setTimeout(() => {
-    //   ws.current.send(JSON.stringify({ message: 'Helloooooooooo server' }));
-    // }, 2000);
-
-    return () => {
-      console.log('Cleaning up! 🧼');
-      ws.current.close();
-    };
+    //   ws.current = new WebSocket(
+    //     process.env.NODE_ENV === 'development'
+    //       ? process.env.REACT_APP_API_LOCAL_SOCKET_URL
+    //       : process.env.REACT_APP_API_SOCKEt_URL
+    //   );
+    //   ws.current.onopen = () => {
+    //     console.log('Connected WebSocket from Server ✅');
+    //   };
+    //   ws.current.onmessage = (message) => {
+    //     console.log(`New message: ${message.data}`);
+    //   };
+    //   ws.current.onclose = () => {
+    //     console.log('Disconnected WebSocket from Server ❌');
+    //   };
+    //   // setTimeout(() => {
+    //   //   ws.current.send(JSON.stringify({ message: 'Helloooooooooo server' }));
+    //   // }, 2000);
+    //   return () => {
+    //     console.log('Cleaning up! 🧼');
+    //     ws.current.close();
+    //   };
   }, []);
 
   return (
@@ -101,20 +98,7 @@ const ChatContent = ({ toggleInfo }) => {
           <div className="blur-back"></div>
           <ChatViewContainer className="chat-view__container scroller">
             <ChatViewContent className="chat-view__content">
-              {messages?.currentMsgs?.map((msg, i) => (
-                <div className="msg-wrapper" key={i}>
-                  <ChatMsg className={`chat-msg ${msg.yourMsg ? 'chat-msg--you' : ''}`}>
-                    <ChatMsgText className={`chat-msg__text ${msg.yourMsg ? 'chat-msg__text--you' : ''}`}>
-                      {msg.text}
-                    </ChatMsgText>
-                  </ChatMsg>
-                  <ChatMsgTimestamp className={`chat-msg__timestamp ${msg.yourMsg ? 'chat-msg__timestamp--you' : ''}`}>
-                    {!msg.yourMsg && <Avatar className="chat-msg__avatar" />} {msg.userId.username}
-                    <span className="datetime">{formatToTime(msg.createdAt)}</span>
-                  </ChatMsgTimestamp>
-                </div>
-              ))}
-
+              {messages && renderConversations(messages)}
               <div className="scrollSpacer"></div>
             </ChatViewContent>
           </ChatViewContainer>

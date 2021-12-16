@@ -23,6 +23,7 @@ const ChannelPage = () => {
     e.preventDefault();
     setShowSidebarInfo(toggle);
   };
+
   useEffect(() => {
     if (channelId) {
       dispatch(getSelectedChannel({ channelId }));

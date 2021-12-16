@@ -7,7 +7,7 @@ export const getMessageChannel = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { channelId } = req.params;
   let skipMsg = Number(req.query.skipMsg);
-  const limitMsg = 5;
+  const limitMsg = 10;
 
   const doesExist = await ChannelModel.exists({ _id: channelId, member: userId });
   if (!doesExist) throw new ErrorResponse(403, 'Cannot get messages, User is not existing in channel');
