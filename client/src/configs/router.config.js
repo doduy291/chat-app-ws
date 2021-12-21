@@ -3,79 +3,85 @@ import { Route, Redirect, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // Import Pages
-import Login from '../containers/Auth/Login/index';
-import Signup from '../containers/Auth/Signup/index';
+import Login from '../containers/Auth/Login';
+import Signup from '../containers/Auth/Signup';
+import ChatEmpty from '../containers/Chat/ChatEmpty';
+import ChatContent from '../containers/Chat/ChatContent';
 const HomePage = React.lazy(() => import('../pages/HomePage'));
 const ContactPage = React.lazy(() => import('../pages/ContactPage'));
 const ChannelPage = React.lazy(() => import('../pages/ChannelPage'));
 const SettingPage = React.lazy(() => import('../pages/SettingPage'));
 
 // Route List
-const routePublicListFn = (isAuthenticated) => {
-  return [
-    {
-      path: '/login',
-      exact: false,
-      page: <Login isAuth={isAuthenticated} />,
-    },
-    {
-      path: '/signup',
-      exact: false,
-      page: <Signup isAuth={isAuthenticated} />,
-    },
-  ];
-};
+const routePublicList = [
+  {
+    path: '/login',
+    exact: false,
+    page: (isAuthenticated) => <Login isAuth={isAuthenticated} />,
+  },
+  {
+    path: '/signup',
+    exact: false,
+    page: (isAuthenticated) => <Signup isAuth={isAuthenticated} />,
+  },
+];
 
-const routePrivateListFn = () => {
-  return [
-    {
-      path: '/setting',
-      exact: false,
-      page: <SettingPage />,
-    },
-    {
-      path: '/contact',
-      exact: false,
-      page: <ContactPage />,
-    },
-    {
-      path: '/channel',
-      exact: false,
-      page: <ChannelPage />,
-    },
-    {
-      path: '/channel/:channelId',
-      exact: false,
-      page: <ChannelPage />,
-    },
-    {
-      path: '/',
-      exact: false,
-      page: <HomePage />,
-    },
-  ];
-};
-// const  routeSubChannelListFn = () => [
-//   {
-//     path: '/channel/:channelId',
-//     exact: false,
-//     page: <HomePage />,
-//   },
-// ]
+const routePrivateList = [
+  {
+    path: '/setting',
+    exact: false,
+    page: <SettingPage />,
+  },
+  {
+    path: '/contact',
+    exact: false,
+    page: <ContactPage />,
+  },
+  {
+    path: '/channel',
+    exact: false,
+    page: <ChannelPage />,
+  },
+  {
+    path: '/',
+    exact: false,
+    page: <HomePage />,
+  },
+];
+
+const routeSubChannelList = [
+  {
+    path: '/channel',
+    exact: true,
+    component: <ChatEmpty />,
+  },
+  {
+    path: '/channel/:channelId',
+    exact: false,
+    component: <ChatContent />,
+  },
+];
+
+// *********** Render Routes **********
 // Public Routes
 export const renderPublicRoutes = (isAuthenticated) => {
-  const routeList = routePublicListFn(isAuthenticated);
-  return routeList.map((route, index) => {
+  return routePublicList.map((route, index) => {
     const { path, exact, page } = route;
-    return <Route path={path} exact={exact} key={index} render={() => page} />;
+    return <Route path={path} exact={exact} key={index} render={() => page(isAuthenticated)} />;
   });
 };
 // Private Routes
 export const renderPrivateRoutes = () => {
-  const routeList = routePrivateListFn();
-  return routeList.map((route, index) => {
+  return routePrivateList.map((route, index) => {
     const { path, exact, page } = route;
     return <PrivateRoute path={path} exact={exact} key={index} page={page} />;
+  });
+};
+// Sub Channel's Routes
+export const renderSubChannelRoutes = () => {
+  return routeSubChannelList.map((route, index) => {
+    const { path, exact, component } = route;
+    return <PrivateRoute path={path} exact={exact} key={index} page={component} />;
   });
 };
 

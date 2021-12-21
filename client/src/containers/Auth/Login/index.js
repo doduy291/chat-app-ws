@@ -18,6 +18,7 @@ import { emailValidation, passwordValidation } from '../../../validation/auth.va
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Login = ({ isAuth }) => {
+  console.log(isAuth);
   const [isShown, setIsShow] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isVisibility, setIsVisibility] = useState(false);

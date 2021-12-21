@@ -72,6 +72,6 @@ const port = process.env.PORT;
 const server = http.createServer(app);
 
 // ======= WebSocket Global Handler =======
-// useWebSocket(server);
+useWebSocket(server);
 
 server.listen(port, console.log(`App running on port ${port}...`));

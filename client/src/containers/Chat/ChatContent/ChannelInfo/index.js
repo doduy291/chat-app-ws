@@ -35,11 +35,11 @@ import {
   AccordionCustomDetails,
 } from './styles';
 
-import icon from '../../../assets/file-icons/pdf.png';
+import icon from '../../../../assets/file-icons/pdf.png';
 
-import img1 from '../../../assets/shared-imgs/shared-imgs-1.jpg';
+import img1 from '../../../../assets/shared-imgs/shared-imgs-1.jpg';
 
-const ChatChannelInfo = ({ isShown, toggleInfo }) => {
+const ChannelInfo = ({ isShown, toggleInfo }) => {
   const { detailChannel } = useSelector((state) => state.channel);
 
   return (
@@ -148,4 +148,4 @@ const ChatChannelInfo = ({ isShown, toggleInfo }) => {
   );
 };
 
-export default ChatChannelInfo;
+export default ChannelInfo;

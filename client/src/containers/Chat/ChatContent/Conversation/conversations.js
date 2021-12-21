@@ -1,6 +1,6 @@
-import { ChatMsgTimestamp, ChatMsgText, ChatMsg } from './styles';
-import { formatToMsTime, formatToTime } from '../../../utils/helpers';
 import { Avatar } from '@mui/material';
+import { ChatMsgTimestamp, ChatMsgText, ChatMsg } from './styles';
+import { formatToMsTime, formatToTime } from '../../../../utils/helpers';
 
 const renderConversations = (messages) => {
   const tsMsgs = (messages) => {
@@ -23,7 +23,7 @@ const renderConversations = (messages) => {
           cloneMsg.ts = true;
           msgContainer.push(cloneMsg);
         }
-        // currentTime and previousTime are nearby
+        // currentTime and previousTime near each other
         if (currentMsTime < previousMsTime + 5 * 60 * 1000) {
           cloneMsg.ts = true;
           msgContainer.push(cloneMsg);

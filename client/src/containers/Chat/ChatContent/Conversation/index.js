@@ -14,9 +14,6 @@ import {
   ChatHeaderTitle,
   ChatHeaderMemberCount,
   ChatViewContent,
-  ChatMsg,
-  ChatMsgTimestamp,
-  ChatMsgText,
   ChatMsgTyping,
   ChatFooterContainer,
   ChatFooterTextarea,
@@ -25,10 +22,13 @@ import {
   TextareaCustom,
   TextareaButtons,
 } from './styles';
+import { renderConversations } from './conversations';
 
-const ChatContent = ({ setShowSidebarInfo }) => {
+const Conversation = ({ toggleInfo }) => {
   const { detailChannel } = useSelector((state) => state.channel);
+  const { messages } = useSelector((state) => state.message);
   const ws = useRef();
+
   useEffect(() => {
     // Disable pressing Enter to go down a line
     let textarea = document.querySelector('.textarea__custom');
@@ -55,7 +55,6 @@ const ChatContent = ({ setShowSidebarInfo }) => {
     // setTimeout(() => {
     //   ws.current.send(JSON.stringify({ message: 'Helloooooooooo server' }));
     // }, 2000);
-
     return () => {
       console.log('Cleaning up! 🧼');
       ws.current.close();
@@ -87,7 +86,7 @@ const ChatContent = ({ setShowSidebarInfo }) => {
             )}
           </HeaderLeft>
           <HeaderRight className="chat-header__right">
-            <Info onClick={() => setShowSidebarInfo(true)} />
+            <Info onClick={toggleInfo(true)} />
             <MoreVert />
             <Settings />
           </HeaderRight>
@@ -97,51 +96,11 @@ const ChatContent = ({ setShowSidebarInfo }) => {
           <div className="blur-back"></div>
           <ChatViewContainer className="chat-view__container scroller">
             <ChatViewContent className="chat-view__content">
-              <ChatMsg className="chat-msg chat-msg--you">
-                <ChatMsgText className="chat-msg__text chat-msg__text--you">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio accusamus veritatis nobis optio Lorem
-                  ipsum dolor sit amet consectetur, adipisicing elit. Consectetur ea debitis blanditiis quam. Dolorem
-                  impedit officia, nisi eum quas sunt et expedita doloribus iste a nobis, consequatur esse vitae odit!
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. In veniam corporis aut nulla officiis eos
-                  vitae nostrum, atque at voluptates provident, fugiat quasi magni doloremque, veritatis cumque fugit
-                  vel explicabo? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima, voluptate placeat ut
-                  minus vitae officiis, similique blanditiis quisquam id praesentium temporibus eos ex ab repudiandae
-                  magnam consequuntur dolor vel unde. Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                  ducimus repudiandae. Beatae sequi iusto saepe tempore ipsam repellat veritatis quis optio illo laborum
-                  quasi possimus, id quidem minus consectetur ipsa? Lorem ipsum dolor sit amet consectetur adipisicing
-                  elit. Architecto, distinctio necessitatibus consequatur omnis at voluptas dolor ratione, laudantium,
-                  quibusdam id perferendis asperiores veniam. Doloribus beatae nesciunt repellat culpa ullam aspernatur!
-                </ChatMsgText>
-              </ChatMsg>
-              <ChatMsgTimestamp className="chat-msg__timestamp chat-msg__timestamp--you">
-                Username <span className="datetime">3:35pm</span>
-              </ChatMsgTimestamp>
-
-              <ChatMsg className="chat-msg ">
-                <ChatMsgText className="chat-msg__text ">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio accusamus veritatis nobis optio Lorem
-                  ipsum dolor sit amet consectetur, adipisicing elit. Consectetur ea debitis blanditiis quam. Dolorem
-                  impedit officia, nisi eum quas sunt et expedita doloribus iste a nobis, consequatur esse vitae odit!
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. In veniam corporis aut nulla officiis eos
-                  vitae nostrum, atque at voluptates provident, fugiat quasi magni doloremque, veritatis cumque fugit
-                  vel explicabo? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima, voluptate placeat ut
-                  minus vitae officiis, similique blanditiis quisquam id praesentium temporibus eos ex ab repudiandae
-                  magnam consequuntur dolor vel unde. Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                  ducimus repudiandae. Beatae sequi iusto saepe tempore ipsam repellat veritatis quis optio illo laborum
-                  quasi possimus, id quidem minus consectetur ipsa? Lorem ipsum dolor sit amet consectetur adipisicing
-                  elit. Architecto, distinctio necessitatibus consequatur omnis at voluptas dolor ratione, laudantium,
-                  quibusdam id perferendis asperiores veniam. Doloribus beatae nesciunt repellat culpa ullam aspernatur!
-                </ChatMsgText>
-              </ChatMsg>
-              <ChatMsg className="chat-msg ">
-                <ChatMsgText className="chat-msg__text">Test</ChatMsgText>
-              </ChatMsg>
-              <ChatMsgTimestamp className="chat-msg__timestamp">
-                <Avatar className="chat-msg__avatar" /> Username <span className="datetime">3:35pm</span>
-              </ChatMsgTimestamp>
-              <ChatMsgTyping className="chat-msg__typing">Username is typing...</ChatMsgTyping>
+              {messages && renderConversations(messages)}
+              <div className="scrollSpacer"></div>
             </ChatViewContent>
           </ChatViewContainer>
+          <ChatMsgTyping className="chat-msg__typing">Username is typing...</ChatMsgTyping>
         </ChatView>
         <ChatFooter className="chat-footer">
           <ChatFooterContainer className="chat-footer__container">
@@ -171,4 +130,4 @@ const ChatContent = ({ setShowSidebarInfo }) => {
   );
 };
 
-export default ChatContent;
+export default Conversation;

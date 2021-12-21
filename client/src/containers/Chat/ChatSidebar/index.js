@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouteMatch } from 'react-router-dom';
+
 import {
   SidebarWrapper,
   SidebarTitle,
@@ -13,7 +15,10 @@ import {
 import { Avatar, Badge } from '@mui/material';
 import { getListGroupChannels, getListDMs } from '../../../redux/actions/channel.action';
 
-const Sidebar = ({ channelId }) => {
+const Sidebar = () => {
+  const match = useRouteMatch('/channel/:channelId');
+  const channelId = match?.params?.channelId;
+
   const { channels, DMs } = useSelector((state) => state.channel);
   const dispatch = useDispatch();
 
