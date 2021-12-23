@@ -40,17 +40,19 @@ export const getMessageChannel = asyncHandler(async (req, res) => {
 });
 
 export const postSendMessage = asyncHandler(async (req, res) => {
-  const userId = req.user._id;
+  const user = req.user._id;
   const { channelId } = req.params;
-  const { type, text } = req.body;
+  const { textMsg, typeMsg } = req.body;
 
-  const doesExist = await ChannelModel.exists({ _id: channelId, member: userId });
+  const doesExist = await ChannelModel.exists({ _id: channelId, member: user });
   if (!doesExist) throw new ErrorResponse(403, 'Cannot send message, not matching user in channel');
 
-  const newMessage = await MessageModel.create({ text, userId, channel: channelId, messageType: type });
+  let newMessage = await MessageModel.create({ text: textMsg, userId: user, channel: channelId, messageType: typeMsg });
   if (!newMessage) throw new ErrorResponse(400, 'Failed to send message, try again');
 
+  const { text, userId, createdAt } = await newMessage.populate({ path: 'userId', select: '_id username avatar' });
+
   res.status(201).json({
-    message: 'Sent message successfully',
+    message: { text, userId, createdAt },
   });
 });

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AvatarGroup, Avatar } from '@mui/material';
 import { Info, MoreVert, Settings, Mood, AttachFile, Send } from '@mui/icons-material';
 
@@ -23,11 +23,13 @@ import {
   TextareaButtons,
 } from './styles';
 import { renderConversations } from './conversations';
+import { postSendMessage } from '../../../../redux/actions/message.action';
 
-const Conversation = ({ toggleInfo }) => {
+const Conversation = ({ toggleInfo, channelId, ws }) => {
   const { detailChannel } = useSelector((state) => state.channel);
   const { messages } = useSelector((state) => state.message);
-  const ws = useRef();
+  const dispatch = useDispatch();
+  const textRef = useRef();
 
   useEffect(() => {
     // Disable pressing Enter to go down a line
@@ -37,29 +39,12 @@ const Conversation = ({ toggleInfo }) => {
     });
   }, []);
 
-  useEffect(() => {
-    ws.current = new WebSocket(
-      process.env.NODE_ENV === 'development'
-        ? process.env.REACT_APP_API_LOCAL_SOCKET_URL
-        : process.env.REACT_APP_API_SOCKEt_URL
-    );
-    ws.current.onopen = () => {
-      console.log('Connected WebSocket from Server ✅');
-    };
-    ws.current.onmessage = (message) => {
-      console.log(`New message: ${message.data}`);
-    };
-    ws.current.onclose = () => {
-      console.log('Disconnected WebSocket from Server ❌');
-    };
-    // setTimeout(() => {
-    //   ws.current.send(JSON.stringify({ message: 'Helloooooooooo server' }));
-    // }, 2000);
-    return () => {
-      console.log('Cleaning up! 🧼');
-      ws.current.close();
-    };
-  }, []);
+  const sendHandler = (e) => {
+    e.preventDefault();
+    const textMsg = textRef.current.innerText;
+    dispatch(postSendMessage({ channelId, textMsg, type: 'text', ws }));
+    textRef.current.innerText = '';
+  };
 
   return (
     <>
@@ -111,6 +96,7 @@ const Conversation = ({ toggleInfo }) => {
                   role="textbox"
                   contentEditable="true"
                   aria-multiline="true"
+                  ref={textRef}
                 ></TextareaCustom>
               </Textarea>
               <TextareaButtons className="textarea-buttons">
@@ -119,7 +105,7 @@ const Conversation = ({ toggleInfo }) => {
               </TextareaButtons>
             </ChatFooterTextarea>
 
-            <ChatFooterSend className="chat-footer__send">
+            <ChatFooterSend className="chat-footer__send" onClick={sendHandler}>
               <Send />
               <span>Send</span>
             </ChatFooterSend>

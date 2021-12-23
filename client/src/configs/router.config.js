@@ -29,12 +29,12 @@ const routePublicList = [
 const routePrivateList = [
   {
     path: '/setting',
-    exact: false,
+    exact: true,
     page: <SettingPage />,
   },
   {
     path: '/contact',
-    exact: false,
+    exact: true,
     page: <ContactPage />,
   },
   {
@@ -44,7 +44,7 @@ const routePrivateList = [
   },
   {
     path: '/',
-    exact: false,
+    exact: true,
     page: <HomePage />,
   },
 ];
@@ -57,7 +57,7 @@ const routeSubChannelList = [
   },
   {
     path: '/channel/:channelId',
-    exact: false,
+    exact: true,
     component: <ChatContent />,
   },
 ];

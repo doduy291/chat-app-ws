@@ -15,6 +15,8 @@ import {
 } from '../styles';
 import { emailValidation, passwordValidation, usernameValidation } from '../../../validation/auth.validation';
 import { postSignup } from '../../../redux/actions/auth.action';
+import { clearErrorMsg } from '../../../redux/slices/auth.slice';
+
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Signup = ({ isAuth }) => {
@@ -44,11 +46,12 @@ const Signup = ({ isAuth }) => {
   useEffect(() => {
     if (errorMsg) {
       setError(errorMsg?.name, { type: 'server', message: errorMsg?.message });
+      dispatch(clearErrorMsg());
     }
     if (Object.keys(errors).length) {
       setIsDisabled(false);
     }
-  }, [errors, errorMsg, setError]);
+  }, [errors, errorMsg, setError, dispatch]);
 
   useEffect(() => {
     if (isLogged || isAuth) {

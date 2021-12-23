@@ -8,11 +8,9 @@ const AuthPage = () => {
   const { isAuthenticated } = useSelector((state) => state.user);
   return (
     <>
-      <>
-        <AuthWrapper>
-          <Switch>{renderPublicRoutes(isAuthenticated)}</Switch>
-        </AuthWrapper>
-      </>
+      <AuthWrapper>
+        <Switch>{renderPublicRoutes(isAuthenticated)}</Switch>
+      </AuthWrapper>
     </>
   );
 };

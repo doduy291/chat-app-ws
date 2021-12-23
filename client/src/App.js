@@ -17,29 +17,26 @@ const App = () => {
   useEffect(() => {
     dispatch(getUserInfo());
     return () => {};
-  }, [dispatch]);
+  }, [dispatch, pathname]);
   return (
     <>
-      {isLoading ? (
-        <GlobalLoading />
-      ) : (
+      {!isLoading && (
         <BrowserRouter>
           <div className="chat-app">
-            <Suspense fallback={<GlobalLoading />}>
-              <Switch>
-                {/* Get rid of trailing slash, e.g: /channel/ -> /channel */}
-                <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
-
-                <Route exact path={['/login', '/signup']}>
-                  <AuthPage />
-                </Route>
-                <Route exact path={['/channel', '/channel/:channelId', '/setting', '/contact', '/']}>
-                  <Navigation />
+            <Switch>
+              {/* Get rid of trailing slash, e.g: /channel/ -> /channel */}
+              <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
+              <Route exact path={['/login', '/signup']}>
+                <AuthPage />
+              </Route>
+              <Route exact path={['/channel', '/channel/:channelId', '/setting', '/contact', '/']}>
+                <Navigation />
+                <Suspense fallback={<GlobalLoading />}>
                   <Switch>{renderPrivateRoutes()}</Switch>
-                </Route>
-                <Route component={NotFoundPage} />
-              </Switch>
-            </Suspense>
+                </Suspense>
+              </Route>
+              <Route component={NotFoundPage} />
+            </Switch>
           </div>
         </BrowserRouter>
       )}

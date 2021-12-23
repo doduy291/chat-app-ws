@@ -14,11 +14,11 @@ import {
   FormPasswordWrapper,
 } from '../styles';
 import { postLogin } from '../../../redux/actions/auth.action';
+import { clearErrorMsg } from '../../../redux/slices/auth.slice';
 import { emailValidation, passwordValidation } from '../../../validation/auth.validation';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Login = ({ isAuth }) => {
-  console.log(isAuth);
   const [isShown, setIsShow] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isVisibility, setIsVisibility] = useState(false);
@@ -46,11 +46,12 @@ const Login = ({ isAuth }) => {
   useEffect(() => {
     if (errorMsg) {
       setError(errorMsg?.name, { type: 'server', message: errorMsg?.message });
+      dispatch(clearErrorMsg());
     }
     if (Object.keys(errors).length) {
       setIsDisabled(false);
     }
-  }, [errors, errorMsg, setError]);
+  }, [errors, errorMsg, setError, dispatch]);
 
   useEffect(() => {
     if (isLogged || isAuth) {

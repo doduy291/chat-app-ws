@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -12,8 +12,31 @@ const ChatContent = () => {
   const channelId = match?.params?.channelId;
 
   const [showSidebarInfo, setShowSidebarInfo] = useState(false);
-
   const dispatch = useDispatch();
+  const ws = useRef();
+
+  useEffect(() => {
+    ws.current = new WebSocket(
+      process.env.NODE_ENV === 'development'
+        ? process.env.REACT_APP_API_LOCAL_SOCKET_URL
+        : process.env.REACT_APP_API_SOCKET_URL
+    );
+    // Test
+    ws.current.onmessage = (message) => {
+      console.log(JSON.parse(message.data));
+    };
+    ws.current.onopen = () => {
+      console.log('Connected WebSocket from Server ✅');
+    };
+    ws.current.onclose = () => {
+      console.log('Disconnected WebSocket from Server ❌');
+    };
+
+    return () => {
+      console.log('Cleaning up! 🧼');
+      ws.current.close();
+    };
+  }, []);
 
   const toggleInfo = (toggle) => (e) => {
     e.preventDefault();
@@ -29,7 +52,7 @@ const ChatContent = () => {
 
   return (
     <>
-      <Conversation toggleInfo={toggleInfo} />
+      <Conversation toggleInfo={toggleInfo} channelId={channelId} ws={ws} />
       <ChannelInfo isShown={showSidebarInfo} toggleInfo={toggleInfo} />
     </>
   );

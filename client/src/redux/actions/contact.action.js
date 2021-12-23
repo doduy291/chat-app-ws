@@ -3,7 +3,7 @@ import { axiosClient } from '../../configs/axios.config';
 
 const baseURL = '/api/contact';
 
-export const getAllContacts = createAsyncThunk('contact/getAllContacts', async (_, rejectWithValue) => {
+export const getAllContacts = createAsyncThunk('contact/getAllContacts', async (_, { rejectWithValue }) => {
   try {
     const { data } = await axiosClient.get(`${baseURL}/all-contacts`);
     return data;

@@ -4,17 +4,21 @@ import { postLogin, postSignup } from '../actions/auth.action';
 const initialState = {
   isLogged: false,
   isLoading: false,
-  errorMsg: '',
+  errorMsg: null,
 };
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    clearErrorMsg: (state) => {
+      state.errorMsg = null;
+    },
+  },
   extraReducers: {
     [postLogin.fulfilled]: (state, action) => {
       state.isLogged = true;
       state.isLoading = false;
-      state.errorMsg = '';
+      state.errorMsg = null;
     },
     [postLogin.rejected]: (state, action) => {
       state.isLogged = false;
@@ -24,7 +28,7 @@ const authSlice = createSlice({
     [postSignup.fulfilled]: (state, action) => {
       state.isLogged = true;
       state.isLoading = false;
-      state.errorMsg = '';
+      state.errorMsg = null;
     },
     [postSignup.rejected]: (state, action) => {
       state.isLogged = false;
@@ -34,6 +38,6 @@ const authSlice = createSlice({
   },
 });
 
-const { reducer } = authSlice;
-// export const {} = actions;
+const { reducer, actions } = authSlice;
+export const { clearErrorMsg } = actions;
 export default reducer;
