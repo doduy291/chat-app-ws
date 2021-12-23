@@ -1,5 +1,6 @@
 import asyncHandler from '../utils/asyncHandler.js';
 import UserModel from '../models/user.model.js';
+import ChannelModel from '../models/channel.model.js';
 import { ErrorResponse } from '../utils/errorHandler.js';
 
 // !================================================= CONTACT =================================================
@@ -91,7 +92,12 @@ export const postAcceptRequest = asyncHandler(async (req, res) => {
   );
   // * Sender's side
   // Check with findIndex()
-  const checkPending = pending.contactRequests.findIndex((e) => e.requester === requesterId);
+  const checkPending = pending.contactRequests.findIndex((e) => {
+    // Compare 6197a4533ba9cf2c40cfe9f6 with objectId('6197a4533ba9cf2c40cfe9f6') ( using equals() )
+    return e.requester.equals(requesterId);
+  });
+
+  // If pending request was removed
   if (checkPending === -1) {
     // Remove request and add contact
     const newContact = await UserModel.findOneAndUpdate(
@@ -103,13 +109,38 @@ export const postAcceptRequest = asyncHandler(async (req, res) => {
       { new: true }
     );
     // * Recipient's side
-    const checkContactAdded = newContact.contacts.findIndex((e) => e === recipientId);
-    if (checkContactAdded === -1) {
+    const checkContactAdded = newContact.contacts.findIndex((objectIdUser) => {
+      // Compare 2 objectId ( use equals() )
+      return objectIdUser.equals(recipientId);
+    });
+    // If requester's contact includes recipientId
+    if (checkContactAdded !== -1) {
       await UserModel.updateOne({ _id: recipientId }, { $addToSet: { contacts: requesterId } });
     }
   } else {
     throw new ErrorResponse(400, 'Failed to accept');
   }
+
+  // * Create Channel after accepting successfully
+  const newDirectChannel = await ChannelModel.create({ members: [recipientId, requesterId], channelType: 'direct' });
+  if (!newDirectChannel) throw new ErrorResponse(400, 'Cannot create channel');
+
+  // * Update User's channel
+  const updateRecipientChannel = await UserModel.findOneAndUpdate(
+    { _id: recipientId },
+    { $addToSet: { chatChannels: newDirectChannel._id } },
+    { new: true, rawResult: true }
+  );
+  if (!updateRecipientChannel.lastErrorObject.updatedExisting)
+    throw new ErrorResponse(400, 'Cannot add user into channel');
+
+  const updateRequesterChannel = await UserModel.findOneAndUpdate(
+    { _id: requesterId },
+    { $addToSet: { chatChannels: newDirectChannel._id } },
+    { new: true, rawResult: true }
+  );
+  if (!updateRequesterChannel.lastErrorObject.updatedExisting)
+    throw new ErrorResponse(400, 'Cannot add user into channel');
 
   return res.status(200).json({ message: 'Accepted request successfully' });
 });

@@ -37,8 +37,9 @@ const lastMessage = new mongoose.Schema(
     _id: false,
     message: {
       type: String,
+      default: '',
     },
-    sender: { type: String },
+    sender: { type: String, default: '' },
   },
   { timestamps: true }
 );
@@ -57,6 +58,7 @@ const channelSchema = new mongoose.Schema(
     ],
     channelName: {
       type: String,
+      default: '',
     },
     channelType: {
       type: String,
@@ -69,7 +71,10 @@ const channelSchema = new mongoose.Schema(
     },
     sharedFiles: [sharedFilesSchema],
     sharedImages: [sharedImagesSchema],
-    lastMessage: lastMessage,
+    lastMessage: {
+      type: lastMessage,
+      default: () => ({}),
+    },
   },
   {
     timestamps: true,

@@ -45,11 +45,8 @@ export const postCreateChannel = asyncHandler(async (req, res) => {
     members: userId,
     channelName,
     channelType: 'group',
-    lastMessage: {
-      message: '',
-    },
   });
-  if (!newChannel) throw new ErrorResponse(400, 'Cannot create channel, try again');
+  if (!newChannel) throw new ErrorResponse(400, 'Cannot create channel');
 
   const updateUserChannel = await UserModel.findOneAndUpdate(
     { _id: userId },
