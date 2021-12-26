@@ -20,15 +20,3 @@ export const getListDMs = createAsyncThunk('channel/getListDMs', async (_, { rej
     rejectWithValue(error.response?.data);
   }
 });
-
-export const getSelectedChannel = createAsyncThunk(
-  'channel/getSelectedChannel',
-  async ({ channelId }, { rejectWithValue }) => {
-    try {
-      const { data } = await axiosClient.get(`${baseURL}/${channelId}`);
-      return data;
-    } catch (error) {
-      rejectWithValue(error.response?.data);
-    }
-  }
-);

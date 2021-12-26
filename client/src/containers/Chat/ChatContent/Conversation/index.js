@@ -23,13 +23,14 @@ import {
   TextareaButtons,
 } from './styles';
 import { renderConversations } from './conversations';
-import { postSendMessage } from '../../../../redux/actions/message.action';
+import { postSendMessage, getMessageChannel } from '../../../../redux/actions/message.action';
 
-const Conversation = ({ toggleInfo, channelId, ws }) => {
-  const { detailChannel } = useSelector((state) => state.channel);
+const Conversation = React.memo(({ toggleInfo, channelId, ws, detailChannel }) => {
   const { messages } = useSelector((state) => state.message);
   const dispatch = useDispatch();
   const textRef = useRef();
+
+  console.count('Conversation: ');
 
   useEffect(() => {
     // Disable pressing Enter to go down a line
@@ -38,6 +39,12 @@ const Conversation = ({ toggleInfo, channelId, ws }) => {
       if (e.keyCode === 13 && !e.shiftKey) e.preventDefault();
     });
   }, []);
+
+  useEffect(() => {
+    if (channelId) {
+      dispatch(getMessageChannel({ channelId }));
+    }
+  }, [dispatch, channelId]);
 
   const sendHandler = (e) => {
     e.preventDefault();
@@ -114,6 +121,6 @@ const Conversation = ({ toggleInfo, channelId, ws }) => {
       </ChatWrapper>
     </>
   );
-};
+});
 
 export default Conversation;

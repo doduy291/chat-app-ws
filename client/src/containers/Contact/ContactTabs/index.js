@@ -8,7 +8,12 @@ import OnlineTab from '../TabContent/OnlineTab';
 const PendingTab = React.lazy(() => import('../TabContent/PendingTab'));
 const BlockedTab = React.lazy(() => import('../TabContent/BlockedTab'));
 
-const ContentTabs = ({ contacts, handleChange, value, isLoading }) => {
+const ContentTabs = ({ contacts }) => {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   const a11yProps = (index) => {
     return {
       id: `tabBody-${index}`,
@@ -27,7 +32,7 @@ const ContentTabs = ({ contacts, handleChange, value, isLoading }) => {
       </ContactHeader>
       <ContactTabContent className="contact__tabContent">
         <TabPanel value={value} index={0}>
-          {isLoading ? <GlobalLoading /> : <OnlineTab contacts={contacts} />}
+          <OnlineTab contacts={contacts} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Suspense fallback={<GlobalLoading />}>

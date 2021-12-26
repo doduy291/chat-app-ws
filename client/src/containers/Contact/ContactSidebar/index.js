@@ -3,9 +3,7 @@ import { PeopleAlt, Search } from '@mui/icons-material';
 import { Avatar } from '@mui/material';
 import { ContactSidebar, SidebarTitle, SidebarSearch, SidebarList, SidebarItem } from './styles';
 
-import GlobalLoading from '../../../components/UI/GlobalLoading';
-
-const Sidebar = ({ isLoading, contacts }) => {
+const Sidebar = React.memo(({ contacts }) => {
   return (
     <ContactSidebar className="contact-sidebar">
       <SidebarTitle className="contact-sidebar__title">
@@ -18,19 +16,15 @@ const Sidebar = ({ isLoading, contacts }) => {
         <Search />
       </SidebarSearch>
       <SidebarList className="contact-sidebar__list">
-        {isLoading ? (
-          <GlobalLoading />
-        ) : (
-          contacts.map((element, i) => (
-            <SidebarItem className="contact-sidebar__item" key={i}>
-              <Avatar />
-              <span>{element.username}</span>
-            </SidebarItem>
-          ))
-        )}
+        {contacts.map((element, i) => (
+          <SidebarItem className="contact-sidebar__item" key={i}>
+            <Avatar />
+            <span>{element.username}</span>
+          </SidebarItem>
+        ))}
       </SidebarList>
     </ContactSidebar>
   );
-};
+});
 
 export default Sidebar;

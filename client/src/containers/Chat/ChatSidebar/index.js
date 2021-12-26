@@ -15,17 +15,17 @@ import {
 import { Avatar, Badge } from '@mui/material';
 import { getListGroupChannels, getListDMs } from '../../../redux/actions/channel.action';
 
-const Sidebar = () => {
+const Sidebar = React.memo(() => {
   const match = useRouteMatch('/channel/:channelId');
   const channelId = match?.params?.channelId;
 
   const { channels, DMs } = useSelector((state) => state.channel);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getListGroupChannels());
     dispatch(getListDMs());
-    return () => {};
   }, [dispatch]);
 
   return (
@@ -61,6 +61,6 @@ const Sidebar = () => {
       </div>
     </SidebarWrapper>
   );
-};
+});
 
 export default Sidebar;

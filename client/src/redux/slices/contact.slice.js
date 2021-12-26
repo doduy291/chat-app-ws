@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllContacts, getPendingRequest, postAcceptRequest, deletePendingRequest } from '../actions/contact.action';
+import { postAcceptRequest, deletePendingRequest } from '../actions/contact.action';
 
 const initialState = {
   isLoading: true,
-  pendings: [],
-  contacts: [],
+  success: false,
   errorMsg: null,
 };
 
@@ -13,22 +12,6 @@ const contactSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: {
-    [getAllContacts.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.contacts = action.payload?.allContacts?.contacts;
-    },
-    [getAllContacts.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.errorMsg = action.payload?.message;
-    },
-    [getPendingRequest.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.pendings = action.payload?.pendings?.contactRequests;
-    },
-    [getPendingRequest.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.errorMsg = action.payload?.message;
-    },
     [postAcceptRequest.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.success = true;

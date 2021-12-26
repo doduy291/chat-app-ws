@@ -42,9 +42,6 @@ input {
   font-family: inherit;
 }
 
-input:focus {
-  border: 2px solid var(--main-color);
-}
 a,
 button,
 span,

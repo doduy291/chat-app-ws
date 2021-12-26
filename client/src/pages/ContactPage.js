@@ -1,30 +1,23 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 
 import { ContactWrapper } from '../containers/Contact/styles';
-import { getAllContacts } from '../redux/actions/contact.action';
 
 import ContactSidebar from '../containers/Contact/ContactSidebar';
 import ContactTabs from '../containers/Contact/ContactTabs';
+import { fetchGetAllContacts } from '../api/contact.api';
 
 const ContactPage = () => {
-  const { isLoading, contacts } = useSelector((state) => state.contact);
-  const [value, setValue] = React.useState(0);
-
-  const dispatch = useDispatch();
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
-    dispatch(getAllContacts());
+    fetchGetAllContacts(setContacts);
     return () => {};
-  }, [dispatch]);
+  }, []);
+
   return (
     <ContactWrapper>
-      <ContactSidebar contacts={contacts} isLoading={isLoading} />
-      <ContactTabs value={value} handleChange={handleChange} contacts={contacts} isLoading={isLoading} />
+      <ContactSidebar contacts={contacts} />
+      <ContactTabs contacts={contacts} />
     </ContactWrapper>
   );
 };
