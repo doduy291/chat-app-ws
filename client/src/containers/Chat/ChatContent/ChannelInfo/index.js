@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Switch } from '@mui/material';
 import {
   Call,

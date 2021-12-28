@@ -6,7 +6,6 @@ import logo from '../../assets/images/logo.png';
 
 const Navigation = () => {
   const location = useLocation();
-
   const menuItems = [
     {
       icon: <Forum />,

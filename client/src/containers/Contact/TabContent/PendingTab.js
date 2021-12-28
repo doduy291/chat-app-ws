@@ -18,7 +18,7 @@ import { fetchGetPendingRequests } from '../../../api/contact.api';
 const PendingTab = () => {
   const { success } = useSelector((state) => state.contact);
   const [pendings, setPendings] = useState();
-
+  console.count('pending');
   const dispatch = useDispatch();
 
   const acceptHandler = (requesterId) => (e) => {
@@ -30,14 +30,11 @@ const PendingTab = () => {
     dispatch(deletePendingRequest({ requesterId }));
   };
 
-  // success: re-render when clicking accept or remove pending request successfully
-  useEffect(() => {
-    return () => {};
-  }, [success]);
-
   useEffect(() => {
     fetchGetPendingRequests(setPendings);
-  }, []);
+    return () => {};
+    // success: re-render when clicking accept or remove pending request successfully
+  }, [success]);
   return (
     <>
       <PendingTabContent className="tabContent__pending">

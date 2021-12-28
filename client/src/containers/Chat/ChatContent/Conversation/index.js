@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { AvatarGroup, Avatar } from '@mui/material';
 import { Info, MoreVert, Settings, Mood, AttachFile, Send } from '@mui/icons-material';
 
@@ -23,14 +23,13 @@ import {
   TextareaButtons,
 } from './styles';
 import { renderConversations } from './conversations';
-import { postSendMessage, getMessageChannel } from '../../../../redux/actions/message.action';
+import { fetchGetMessageChannel } from '../../../../api/message.api';
+import { postSendMessage } from '../../../../redux/actions/message.action';
 
 const Conversation = React.memo(({ toggleInfo, channelId, ws, detailChannel }) => {
-  const { messages } = useSelector((state) => state.message);
   const dispatch = useDispatch();
+  const [messages, setMessages] = useState([]);
   const textRef = useRef();
-
-  console.count('Conversation: ');
 
   useEffect(() => {
     // Disable pressing Enter to go down a line
@@ -42,9 +41,9 @@ const Conversation = React.memo(({ toggleInfo, channelId, ws, detailChannel }) =
 
   useEffect(() => {
     if (channelId) {
-      dispatch(getMessageChannel({ channelId }));
+      fetchGetMessageChannel({ channelId, setMessages });
     }
-  }, [dispatch, channelId]);
+  }, [channelId]);
 
   const sendHandler = (e) => {
     e.preventDefault();
