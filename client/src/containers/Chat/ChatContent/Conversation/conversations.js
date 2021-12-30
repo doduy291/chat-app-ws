@@ -1,8 +1,9 @@
 import { Avatar } from '@mui/material';
+
 import { ChatMsgTimestamp, ChatMsgText, ChatMsg } from './styles';
 import { formatToMsTime, formatToTime } from '../../../../utils/helpers';
 
-const renderConversations = (messages) => {
+const renderConversations = (messages, user) => {
   const tsMsgs = (messages) => {
     let msgContainer = [];
 
@@ -40,14 +41,16 @@ const renderConversations = (messages) => {
     <>
       {newFilterdMsgs.map((msg, i) => (
         <div className="msg-wrapper" key={i}>
-          <ChatMsg className={`chat-msg ${msg.yourMsg ? 'chat-msg--you' : ''}`}>
-            <ChatMsgText className={`chat-msg__text ${msg.yourMsg ? 'chat-msg__text--you' : ''}`}>
+          <ChatMsg className={`chat-msg ${user._id === msg.userId._id ? 'chat-msg--you' : ''}`}>
+            <ChatMsgText className={`chat-msg__text ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}>
               {msg.text} {msg.createdAt}
             </ChatMsgText>
           </ChatMsg>
           {msg.ts && (
             <div className="ts-wrapper">
-              <ChatMsgTimestamp className={`chat-msg__timestamp ${msg.yourMsg ? 'chat-msg__timestamp--you' : ''}`}>
+              <ChatMsgTimestamp
+                className={`chat-msg__timestamp ${user._id === msg.userId._id ? 'chat-msg__timestamp--you' : ''}`}
+              >
                 {!msg.yourMsg && <Avatar className="chat-msg__avatar" />} {msg.userId.username}
                 <span className="datetime">{formatToTime(msg.createdAt)}</span>
               </ChatMsgTimestamp>

@@ -13,7 +13,7 @@ export const authProtect = asyncHandler(async (req, res, next) => {
   const decoded = verifyToken(token, process.env.JWT_SECRET_KEY);
   if (decoded) {
     const accountId = decoded.accountId;
-    let user = await UserModel.findOne({ accountId }).select('_id username avatar role');
+    let user = await UserModel.findOne({ accountId }).select('_id username avatar');
 
     if (user) {
       user.accountId = accountId;

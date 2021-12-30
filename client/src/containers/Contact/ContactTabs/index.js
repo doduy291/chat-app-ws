@@ -9,7 +9,6 @@ const PendingTab = React.lazy(() => import('../TabContent/PendingTab'));
 const BlockedTab = React.lazy(() => import('../TabContent/BlockedTab'));
 
 const ContentTabs = ({ contacts }) => {
-  console.count('Content Tabs');
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {

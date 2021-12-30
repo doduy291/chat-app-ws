@@ -2,8 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getUserInfo } from '../actions/user.action';
 
 const initialState = {
-  username: '',
-  avatar: '',
+  user: {},
   isLoading: true,
   isAuthenticated: false,
 };
@@ -17,11 +16,10 @@ const userSlice = createSlice({
       state.isLoading = true;
     },
     [getUserInfo.fulfilled]: (state, action) => {
-      const { username, avatar } = action.payload.user;
+      const { _id, username, avatar } = action.payload.user;
       state.isLoading = false;
       state.isAuthenticated = true;
-      state.username = username;
-      state.avatar = avatar;
+      state.user = { _id, username, avatar };
     },
     [getUserInfo.rejected]: (state, action) => {
       state.isLoading = false;

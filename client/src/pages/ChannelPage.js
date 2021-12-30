@@ -7,7 +7,6 @@ import ChatSidebar from '../containers/Chat/ChatSidebar';
 import { renderSubChannelRoutes } from '../configs/router.config';
 
 const ChannelPage = () => {
-  console.count('Channel Page');
   return (
     <>
       <Grid container spacing={0}>

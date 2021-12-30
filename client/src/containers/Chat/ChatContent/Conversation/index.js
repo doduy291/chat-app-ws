@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AvatarGroup, Avatar } from '@mui/material';
 import { Info, MoreVert, Settings, Mood, AttachFile, Send } from '@mui/icons-material';
 
@@ -26,10 +26,48 @@ import { renderConversations } from './conversations';
 import { fetchGetMessageChannel } from '../../../../api/message.api';
 import { postSendMessage } from '../../../../redux/actions/message.action';
 
-const Conversation = React.memo(({ toggleInfo, channelId, ws, detailChannel }) => {
+const Conversation = ({ toggleInfo, channelId, detailChannel }) => {
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState({});
   const textRef = useRef();
+  const ws = useRef();
+  const scrollTarget = useRef(null);
+
+  console.count('Conversation');
+
+  // Websocket Connection
+  useEffect(() => {
+    ws.current = new WebSocket(
+      process.env.NODE_ENV === 'development'
+        ? process.env.REACT_APP_API_LOCAL_SOCKET_URL
+        : process.env.REACT_APP_API_SOCKET_URL
+    );
+
+    ws.current.onopen = () => {
+      console.log('Connected WebSocket from Server ✅');
+      ws.current.send(JSON.stringify({ channelId, userId: user._id, type: 'channel-connection' }));
+    };
+    ws.current.onmessage = (resWS) => {
+      const res = JSON.parse(resWS.data);
+      console.log(res);
+      if (res?.type === 'res-send-message') {
+        setMessages((cur) => {
+          let newMsgs = [...cur.currentMsgs, res.msg];
+          let page = cur.pageMsg;
+          return { currentMsgs: newMsgs, pageMsg: page };
+        });
+      }
+    };
+    ws.current.onclose = () => {
+      console.log('Disconnected WebSocket from Server ❌');
+    };
+
+    return () => {
+      console.log('Cleaning up! 🧼');
+      ws.current.close();
+    };
+  }, [channelId, user]);
 
   useEffect(() => {
     // Disable pressing Enter to go down a line
@@ -39,16 +77,24 @@ const Conversation = React.memo(({ toggleInfo, channelId, ws, detailChannel }) =
     });
   }, []);
 
+  // Fetch
   useEffect(() => {
     if (channelId) {
       fetchGetMessageChannel({ channelId, setMessages });
     }
   }, [channelId]);
 
+  // Scroll
+  useEffect(() => {
+    if (scrollTarget.current) {
+      scrollTarget.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages?.currentMsgs?.length]);
+
   const sendHandler = (e) => {
     e.preventDefault();
     const textMsg = textRef.current.innerText;
-    dispatch(postSendMessage({ channelId, textMsg, type: 'text', ws }));
+    dispatch(postSendMessage({ channelId, textMsg, typeMsg: 'text', ws }));
     textRef.current.innerText = '';
   };
 
@@ -87,8 +133,8 @@ const Conversation = React.memo(({ toggleInfo, channelId, ws, detailChannel }) =
           <div className="blur-back"></div>
           <ChatViewContainer className="chat-view__container scroller">
             <ChatViewContent className="chat-view__content">
-              {messages && renderConversations(messages)}
-              <div className="scrollSpacer"></div>
+              {messages && renderConversations(messages, user)}
+              <div className="scrollSpacer" ref={scrollTarget}></div>
             </ChatViewContent>
           </ChatViewContainer>
           <ChatMsgTyping className="chat-msg__typing">Username is typing...</ChatMsgTyping>
@@ -120,6 +166,6 @@ const Conversation = React.memo(({ toggleInfo, channelId, ws, detailChannel }) =
       </ChatWrapper>
     </>
   );
-});
+};
 
 export default Conversation;

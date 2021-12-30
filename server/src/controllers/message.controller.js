@@ -23,18 +23,10 @@ export const getMessageChannel = asyncHandler(async (req, res) => {
 
   let messages = await MessageModel.find({ channel: channelId })
     .populate({ path: 'userId', select: '_id username avatar' })
-    .select('-_id text userId createdAt')
+    .select('-_id text userId createdAt channel')
     .limit(limitMsg)
     .skip(limitMsg * (skipMsg - 1))
     .lean();
-
-  if (messages.length > 0) {
-    messages.map((msg, i) => {
-      if (JSON.stringify(msg.userId._id) === JSON.stringify(userId)) {
-        messages[i].yourMsg = true;
-      }
-    });
-  }
 
   res.status(200).json({ currentMsgs: messages, pageMsg: skipMsg });
 });
@@ -50,9 +42,12 @@ export const postSendMessage = asyncHandler(async (req, res) => {
   let newMessage = await MessageModel.create({ text: textMsg, userId: user, channel: channelId, messageType: typeMsg });
   if (!newMessage) throw new ErrorResponse(400, 'Failed to send message, try again');
 
-  const { text, userId, createdAt } = await newMessage.populate({ path: 'userId', select: '_id username avatar' });
+  const { text, userId, channel, createdAt } = await newMessage.populate({
+    path: 'userId',
+    select: '_id username avatar',
+  });
 
   res.status(201).json({
-    message: { text, userId, createdAt },
+    message: { text, userId, channel, createdAt },
   });
 });
