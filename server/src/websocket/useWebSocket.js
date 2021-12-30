@@ -12,7 +12,6 @@ const useWebSocket = (server) => {
 
     socket.on('message', (message) => {
       const data = JSON.parse(message);
-      console.log(data);
 
       switch (data.type) {
         case 'channel-connection':
