@@ -22,4 +22,5 @@ const messageSlice = createSlice({
 });
 
 const { reducer } = messageSlice;
+
 export default reducer;

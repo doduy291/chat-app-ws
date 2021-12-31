@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AvatarGroup, Avatar } from '@mui/material';
-import { Info, MoreVert, Settings, Mood, AttachFile, Send } from '@mui/icons-material';
+import { Info, MoreVert, Settings, AttachFile, Send, Mood } from '@mui/icons-material';
 
 import {
   ChatWrapper,
@@ -18,18 +18,23 @@ import {
   ChatFooterContainer,
   ChatFooterTextarea,
   ChatFooterSend,
-  Textarea,
+  TextareaContainer,
+  TextareaTyping,
   TextareaCustom,
   TextareaButtons,
 } from './styles';
+import EmojiPicker from '../../../../components/EmojiPicker';
 import { renderConversations } from './conversations';
 import { fetchGetMessageChannel } from '../../../../api/message.api';
 import { postSendMessage } from '../../../../redux/actions/message.action';
+import { useCallback } from 'react';
 
 const Conversation = ({ toggleInfo, channelId, detailChannel }) => {
   const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
   const [messages, setMessages] = useState({});
+  const [emojiOpen, setEmojiOpen] = useState(false);
+
+  const dispatch = useDispatch();
   const textRef = useRef();
   const ws = useRef();
   const scrollTarget = useRef(null);
@@ -93,9 +98,21 @@ const Conversation = ({ toggleInfo, channelId, detailChannel }) => {
 
   const sendHandler = (e) => {
     e.preventDefault();
+    if (textRef.current.innerText.length === 0) {
+      return false;
+    }
     const textMsg = textRef.current.innerText;
     dispatch(postSendMessage({ channelId, textMsg, typeMsg: 'text', ws }));
     textRef.current.innerText = '';
+  };
+
+  const emojiOpenHandler = useCallback((e) => {
+    setEmojiOpen((curEmojiOpen) => !curEmojiOpen);
+  }, []);
+
+  const addEmojiToTextarea = (native) => {
+    const textMsg = textRef.current.innerText + native;
+    textRef.current.innerText = textMsg;
   };
 
   return (
@@ -141,21 +158,28 @@ const Conversation = ({ toggleInfo, channelId, detailChannel }) => {
         </ChatView>
         <ChatFooter className="chat-footer">
           <ChatFooterContainer className="chat-footer__container">
-            <ChatFooterTextarea className="chat-footer__textarea">
-              <Textarea className="textarea">
-                <TextareaCustom
-                  className="textarea__custom"
-                  role="textbox"
-                  contentEditable="true"
-                  aria-multiline="true"
-                  ref={textRef}
-                ></TextareaCustom>
-              </Textarea>
-              <TextareaButtons className="textarea-buttons">
-                <AttachFile />
-                <Mood />
-              </TextareaButtons>
-            </ChatFooterTextarea>
+            <TextareaContainer>
+              <ChatFooterTextarea className="chat-footer__textarea">
+                <TextareaTyping className="textarea__typing">
+                  <TextareaCustom
+                    className="textarea__custom"
+                    role="textbox"
+                    contentEditable="true"
+                    aria-multiline="true"
+                    ref={textRef}
+                  ></TextareaCustom>
+                </TextareaTyping>
+                <TextareaButtons className="textarea__buttons">
+                  <AttachFile />
+                  <Mood onClick={emojiOpenHandler} />
+                </TextareaButtons>
+              </ChatFooterTextarea>
+              <EmojiPicker
+                emojiOpenHandler={emojiOpenHandler}
+                emojiOpen={emojiOpen}
+                addEmojiToTextarea={addEmojiToTextarea}
+              />
+            </TextareaContainer>
 
             <ChatFooterSend className="chat-footer__send" onClick={sendHandler}>
               <Send />

@@ -218,7 +218,11 @@ export const ChatFooterTextarea = styled.div`
   border: 1px solid #dde0dc;
   background-color: #ffffff;
 `;
-export const Textarea = styled.div`
+export const TextareaContainer = styled.div`
+  width: 100%;
+  position: relative;
+`;
+export const TextareaTyping = styled.div`
   position: relative;
   width: 100%;
   background-color: transparent;
@@ -230,6 +234,7 @@ export const Textarea = styled.div`
 export const TextareaCustom = styled.div`
   user-select: text;
   padding: 12px;
+  height: 100%;
   max-height: 50vh;
   overflow-y: auto;
 
