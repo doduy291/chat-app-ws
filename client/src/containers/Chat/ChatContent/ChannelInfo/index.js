@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch } from '@mui/material';
 import {
   Call,
@@ -38,10 +38,22 @@ import icon from '../../../../assets/file-icons/pdf.png';
 
 import img1 from '../../../../assets/shared-imgs/shared-imgs-1.jpg';
 
-const ChannelInfo = React.memo(({ isShown, toggleInfo, detailChannel }) => {
+const ChannelInfo = React.memo(({ isShown, toggleInfo, detailChannel, setIsShown }) => {
+  console.log('channelInfo');
+  useEffect(() => {
+    const conversation = document.querySelector('.conversation');
+
+    const updateSidebar = (e) => {
+      if (conversation?.offsetWidth <= 400) {
+        setIsShown(false);
+      }
+    };
+    window.addEventListener('resize', updateSidebar);
+    return () => window.removeEventListener('resize', updateSidebar);
+  }, [setIsShown]);
   return (
     <>
-      <ChannelInfoWrapper className="channel-info" sidebarInfo={isShown}>
+      <ChannelInfoWrapper className={`channel-info ${isShown ? 'active' : ''}`} sidebarInfo={isShown}>
         <div className="close" onClick={toggleInfo(false)}>
           <Close />
         </div>

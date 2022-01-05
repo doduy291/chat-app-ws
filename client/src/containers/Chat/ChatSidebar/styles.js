@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 export const SidebarWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1 1;
-  max-width: 330px;
+  flex: 0 0 auto;
+  width: 300px;
   background-color: #ffffff;
   border-right: 1px solid #e5e5e5;
 
@@ -16,6 +16,11 @@ export const SidebarWrapper = styled.div`
   .channel__avatar {
     width: 40px;
     height: 40px;
+  }
+
+  @media screen and (max-width: 680px) {
+    width: 0;
+    border-right: none;
   }
 `;
 
@@ -90,6 +95,15 @@ export const ChannelItem = styled.div`
     }
     &.busy > .MuiBadge-badge {
       background-color: #faa81a;
+    }
+  }
+
+  @media screen and (max-width: 680px) {
+    &.active {
+      background-color: transparent;
+    }
+    .MuiBadge-root {
+      display: none;
     }
   }
 `;

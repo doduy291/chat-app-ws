@@ -1,43 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AvatarGroup, Avatar } from '@mui/material';
-import { Info, MoreVert, Settings, AttachFile, Send, Mood } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 
-import {
-  ChatWrapper,
-  ChatHeader,
-  HeaderLeft,
-  HeaderRight,
-  ChatView,
-  ChatViewContainer,
-  ChatFooter,
-  ChatHeaderTitle,
-  ChatHeaderMemberCount,
-  ChatViewContent,
-  ChatMsgTyping,
-  ChatFooterContainer,
-  ChatFooterTextarea,
-  ChatFooterSend,
-  TextareaContainer,
-  TextareaTyping,
-  TextareaCustom,
-  TextareaButtons,
-} from './styles';
-import EmojiPicker from '../../../../components/EmojiPicker';
-import { renderConversations } from './conversations';
+import ChatFooter from '../ChatFooter';
+import ChatHeader from '../ChatHeader';
+import { ChatWrapper, ChatView, ChatViewContainer, ChatViewContent, ChatMsgTyping } from './styles';
+
+import { renderConversations } from './data-conversations';
 import { fetchGetMessageChannel } from '../../../../api/message.api';
-import { postSendMessage } from '../../../../redux/actions/message.action';
-import { useCallback } from 'react';
 
-const Conversation = ({ toggleInfo, channelId, detailChannel }) => {
+const Conversation = React.memo(({ toggleInfo, channelId, detailChannel }) => {
   const { user } = useSelector((state) => state.user);
   const [messages, setMessages] = useState({});
-  const [emojiOpen, setEmojiOpen] = useState(false);
 
-  const dispatch = useDispatch();
-  const textRef = useRef();
   const ws = useRef();
-  const scrollTarget = useRef(null);
+  const scrollTargetRef = useRef(null);
 
   console.count('Conversation');
 
@@ -55,7 +31,6 @@ const Conversation = ({ toggleInfo, channelId, detailChannel }) => {
     };
     ws.current.onmessage = (resWS) => {
       const res = JSON.parse(resWS.data);
-      console.log(res);
       if (res?.type === 'res-send-message') {
         setMessages((cur) => {
           let newMsgs = [...cur.currentMsgs, res.msg];
@@ -74,14 +49,6 @@ const Conversation = ({ toggleInfo, channelId, detailChannel }) => {
     };
   }, [channelId, user]);
 
-  useEffect(() => {
-    // Disable pressing Enter to go down a line
-    let textarea = document.querySelector('.textarea__custom');
-    textarea.addEventListener('keydown', (e) => {
-      if (e.keyCode === 13 && !e.shiftKey) e.preventDefault();
-    });
-  }, []);
-
   // Fetch
   useEffect(() => {
     if (channelId) {
@@ -91,105 +58,30 @@ const Conversation = ({ toggleInfo, channelId, detailChannel }) => {
 
   // Scroll
   useEffect(() => {
-    if (scrollTarget.current) {
-      scrollTarget.current.scrollIntoView({ behavior: 'smooth' });
+    if (scrollTargetRef.current) {
+      scrollTargetRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages?.currentMsgs?.length]);
 
-  const sendHandler = (e) => {
-    e.preventDefault();
-    if (textRef.current.innerText.length === 0) {
-      return false;
-    }
-    const textMsg = textRef.current.innerText;
-    dispatch(postSendMessage({ channelId, textMsg, typeMsg: 'text', ws }));
-    textRef.current.innerText = '';
-  };
-
-  const emojiOpenHandler = useCallback((e) => {
-    setEmojiOpen((curEmojiOpen) => !curEmojiOpen);
-  }, []);
-
-  const addEmojiToTextarea = (native) => {
-    const textMsg = textRef.current.innerText + native;
-    textRef.current.innerText = textMsg;
-  };
-
   return (
     <>
-      <ChatWrapper>
-        <ChatHeader className="chat-header overlap-top">
-          <HeaderLeft className="chat-header__left">
-            <ChatHeaderTitle className="chat-header__title">
-              {detailChannel.channelType === 'direct' ? detailChannel.members[0].username : detailChannel.channelName}
-            </ChatHeaderTitle>
-            {detailChannel.channelType === 'group' ? (
-              <>
-                <div className="dot"></div>
-                <ChatHeaderMemberCount className="chat-header__member-count">
-                  <AvatarGroup max={3}>
-                    {detailChannel.members.map((element, i) => (
-                      <Avatar className="chat-header__avatar" key={i} />
-                    ))}
-                  </AvatarGroup>
-                  <span>+{detailChannel.members.filter((element) => element.active === 'online').length} Online</span>
-                </ChatHeaderMemberCount>
-              </>
-            ) : (
-              ''
-            )}
-          </HeaderLeft>
-          <HeaderRight className="chat-header__right">
-            <Info onClick={toggleInfo(true)} />
-            <MoreVert />
-            <Settings />
-          </HeaderRight>
-        </ChatHeader>
-
+      <ChatWrapper className="conversation">
+        <ChatHeader detailChannel={detailChannel} toggleInfo={toggleInfo} />
         <ChatView className="chat-view">
           <div className="blur-back"></div>
           <ChatViewContainer className="chat-view__container scroller">
             <ChatViewContent className="chat-view__content">
               {messages && renderConversations(messages, user)}
-              <div className="scrollSpacer" ref={scrollTarget}></div>
+              <div className="scrollSpacer" ref={scrollTargetRef}></div>
             </ChatViewContent>
           </ChatViewContainer>
           <ChatMsgTyping className="chat-msg__typing">Username is typing...</ChatMsgTyping>
         </ChatView>
-        <ChatFooter className="chat-footer">
-          <ChatFooterContainer className="chat-footer__container">
-            <TextareaContainer>
-              <ChatFooterTextarea className="chat-footer__textarea">
-                <TextareaTyping className="textarea__typing">
-                  <TextareaCustom
-                    className="textarea__custom"
-                    role="textbox"
-                    contentEditable="true"
-                    aria-multiline="true"
-                    ref={textRef}
-                  ></TextareaCustom>
-                </TextareaTyping>
-                <TextareaButtons className="textarea__buttons">
-                  <AttachFile />
-                  <Mood onClick={emojiOpenHandler} />
-                </TextareaButtons>
-              </ChatFooterTextarea>
-              <EmojiPicker
-                emojiOpenHandler={emojiOpenHandler}
-                emojiOpen={emojiOpen}
-                addEmojiToTextarea={addEmojiToTextarea}
-              />
-            </TextareaContainer>
 
-            <ChatFooterSend className="chat-footer__send" onClick={sendHandler}>
-              <Send />
-              <span>Send</span>
-            </ChatFooterSend>
-          </ChatFooterContainer>
-        </ChatFooter>
+        <ChatFooter scrollTargetRef={scrollTargetRef} channelId={channelId} ws={ws} />
       </ChatWrapper>
     </>
   );
-};
+});
 
 export default Conversation;

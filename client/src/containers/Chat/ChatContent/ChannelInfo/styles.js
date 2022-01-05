@@ -4,7 +4,8 @@ import { Avatar, Accordion, AccordionSummary, AccordionDetails } from '@mui/mate
 export const ChannelInfoWrapper = styled.div`
   display: ${(props) => (props.sidebarInfo ? 'block' : 'none')};
   position: relative;
-  flex: 1 1 60px;
+  flex: 0 0 auto;
+  min-width: 0px;
 
   .close {
     position: absolute;

@@ -5,7 +5,12 @@ export const EmojiPickerContainer = styled.div`
   right: 0;
   bottom: 6vh;
   z-index: 10;
-  visibility: ${(props) => (props.emojiOpen ? 'visible' : 'hidden')};
+  /* visibility: ${(props) => (props.emojiOpen ? 'visible' : 'hidden')}; */
+  visibility: hidden;
+
+  &.visible {
+    visibility: visible;
+  }
 
   .emoji-mart-search {
     display: none;

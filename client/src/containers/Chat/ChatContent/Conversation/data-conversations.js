@@ -43,7 +43,7 @@ const renderConversations = (messages, user) => {
         <div className="msg-wrapper" key={i}>
           <ChatMsg className={`chat-msg ${user._id === msg.userId._id ? 'chat-msg--you' : ''}`}>
             <ChatMsgText className={`chat-msg__text ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}>
-              {msg.text} {msg.createdAt}
+              {msg.text}
             </ChatMsgText>
           </ChatMsg>
           {msg.ts && (

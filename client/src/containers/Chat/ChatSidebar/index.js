@@ -10,7 +10,7 @@ const Sidebar = React.memo(() => {
   const channelId = match?.params?.channelId;
 
   return (
-    <SidebarWrapper>
+    <SidebarWrapper className="sidebar-wrapper">
       <div className="channel">
         <SidebarTitle>Chat Room</SidebarTitle>
         <DirectChannel channelId={channelId} />

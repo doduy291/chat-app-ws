@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 import { Grid } from '@mui/material';
-
 import ChatSidebar from '../containers/Chat/ChatSidebar';
 
 import { renderSubChannelRoutes } from '../configs/router.config';
@@ -9,7 +8,7 @@ import { renderSubChannelRoutes } from '../configs/router.config';
 const ChannelPage = () => {
   return (
     <>
-      <Grid container spacing={0}>
+      <Grid container spacing={0} wrap="nowrap">
         <ChatSidebar />
         <Switch>{renderSubChannelRoutes()}</Switch>
       </Grid>

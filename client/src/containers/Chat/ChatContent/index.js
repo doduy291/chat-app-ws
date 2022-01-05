@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { Grid } from '@mui/material';
 import { useRouteMatch } from 'react-router-dom';
 import Conversation from './Conversation';
 import ChannelInfo from './ChannelInfo';
@@ -25,10 +26,17 @@ const ChatContent = () => {
   );
 
   return (
-    <>
+    <Grid container wrap="nowrap">
       <Conversation toggleInfo={toggleInfo} channelId={channelId} detailChannel={detailChannel} />
-      <ChannelInfo isShown={showSidebarInfo} toggleInfo={toggleInfo} detailChannel={detailChannel} />
-    </>
+      {showSidebarInfo && (
+        <ChannelInfo
+          setIsShown={setShowSidebarInfo}
+          isShown={showSidebarInfo}
+          toggleInfo={toggleInfo}
+          detailChannel={detailChannel}
+        />
+      )}
+    </Grid>
   );
 };
 
