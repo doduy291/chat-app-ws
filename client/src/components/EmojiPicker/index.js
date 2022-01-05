@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Picker } from 'emoji-mart';
 import { EmojiPickerContainer } from './styles';
 import 'emoji-mart/css/emoji-mart.css';

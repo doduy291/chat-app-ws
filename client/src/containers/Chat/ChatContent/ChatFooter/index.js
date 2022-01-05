@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { AttachFile, Send, Mood } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 
@@ -16,6 +16,7 @@ import {
   TextareaButtons,
   FileList,
   FileItem,
+  FileItemContainer,
   FileUploadContainer,
 } from './styles';
 
@@ -77,13 +78,21 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
       <ChatFooterContainer className="chat-footer__container">
         <TextareaWrapper>
           <ChatFooterTextarea className="chat-footer__textarea">
-            {/* {fileOpen && (
-              <FileList className="file-list">
-                <FileItem>test</FileItem>
-                <FileItem>test</FileItem>
-                <FileItem>test</FileItem>
-              </FileList>
-            )} */}
+            {fileOpen && (
+              <FileUploadContainer>
+                <FileList className="file-list">
+                  <FileItemContainer className="file-item-container">
+                    <FileItem></FileItem>
+                    <FileItem></FileItem>
+                    <FileItem></FileItem>
+                    <FileItem></FileItem>
+                    <FileItem></FileItem>
+                    <FileItem></FileItem>
+                    <FileItem></FileItem>
+                  </FileItemContainer>
+                </FileList>
+              </FileUploadContainer>
+            )}
             <TextareaContainer className="textarea__container">
               <TextareaTyping className="textarea__typing">
                 <TextareaCustom

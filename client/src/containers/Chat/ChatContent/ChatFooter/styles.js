@@ -4,9 +4,11 @@ export const ChatFooterWrapper = styled.div`
   position: relative;
   width: 100%;
   background-color: #f4f7f4;
+  flex: 0 1 auto;
 `;
 export const ChatFooterContainer = styled.div`
   display: flex;
+  align-items: flex-end;
   width: 100%;
   column-gap: 15px;
   margin-top: 7px;
@@ -28,9 +30,8 @@ export const TextareaContainer = styled.div`
   display: flex;
 `;
 export const TextareaWrapper = styled.div`
-  display: flex;
-  gap: 5px;
   width: 100%;
+  min-width: 0;
   position: relative;
 `;
 export const TextareaTyping = styled.div`
@@ -96,7 +97,6 @@ export const TextareaButtons = styled.div`
 `;
 export const ChatFooterSend = styled.div`
   display: flex;
-  align-items: flex-end;
 `;
 
 export const ChatFooterButton = styled.div`
@@ -122,29 +122,30 @@ export const ChatFooterButton = styled.div`
   }
 `;
 
-export const FileList = styled.ul`
+export const FileList = styled.div`
+  position: relative;
   display: flex;
-  gap: 15px;
-  padding: 10px 10px;
-  /* width: 100%; */
+  align-items: center;
+  width: 100%;
+  height: 150px;
   white-space: nowrap;
+  overflow-y: hidden;
   overflow-x: auto;
-  background-color: #c2c5c7;
 `;
-
-export const FileItem = styled.li`
+export const FileItemContainer = styled.div`
+  position: absolute;
+  padding: 0 15px;
+`;
+export const FileItem = styled.div`
+  position: relative;
   display: inline-block;
   background-color: var(--icon-default-color);
   padding: 8px;
-  position: relative;
+  margin-right: 10px;
   min-width: 100px;
-  max-width: 100px;
   min-height: 100px;
-  max-height: 100px;
-  /* margin-right: 10px; */
 `;
 
 export const FileUploadContainer = styled.div`
-  width: 100px;
-  height: 100%;
+  background-color: #c2c5c7;
 `;

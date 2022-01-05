@@ -5,10 +5,10 @@ export const ChatWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  width: 100%;
   font-size: 14px;
   flex: 1 1 auto;
   min-width: 0;
+  max-width: 100%;
 
   .scrollSpacer {
     display: block;
