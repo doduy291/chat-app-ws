@@ -3,7 +3,7 @@ import { Picker } from 'emoji-mart';
 import { EmojiPickerContainer } from './styles';
 import 'emoji-mart/css/emoji-mart.css';
 
-const EmojiPicker = ({ emojiPickerRef, addEmojiToTextarea }) => {
+const EmojiPicker = React.memo(({ emojiPickerRef, addEmojiToTextarea }) => {
   console.count('Emoji Picker');
 
   const emojiCloseHandler = useCallback(
@@ -31,6 +31,6 @@ const EmojiPicker = ({ emojiPickerRef, addEmojiToTextarea }) => {
       </EmojiPickerContainer>
     </>
   );
-};
+});
 
 export default EmojiPicker;

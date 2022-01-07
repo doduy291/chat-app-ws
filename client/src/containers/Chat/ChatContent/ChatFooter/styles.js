@@ -121,31 +121,84 @@ export const ChatFooterButton = styled.div`
     }
   }
 `;
-
+export const FileWrapper = styled.div`
+  background-color: #c2c5c7;
+`;
 export const FileList = styled.div`
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
-  height: 150px;
+  height: 200px;
   white-space: nowrap;
   overflow-y: hidden;
   overflow-x: auto;
 `;
-export const FileItemContainer = styled.div`
+export const FileItemBox = styled.div`
+  display: flex;
   position: absolute;
   padding: 0 15px;
 `;
 export const FileItem = styled.div`
   position: relative;
-  display: inline-block;
-  background-color: var(--icon-default-color);
-  padding: 8px;
-  margin-right: 10px;
-  min-width: 100px;
-  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  background-color: #7e7e7e;
+  margin-right: 16px;
+  min-width: 150px;
+  max-width: 150px;
+  min-height: 150px;
+  max-height: 150px;
+  border-radius: 3px;
+  padding: 10px;
 `;
 
-export const FileUploadContainer = styled.div`
-  background-color: #c2c5c7;
+export const ActionBar = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  border-radius: 3px;
+  background-color: #585858;
+  top: -5px;
+  right: -8px;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.2);
+  }
+
+  .MuiSvgIcon-root {
+    width: 25px;
+    height: 23px;
+    color: var(--danger-color);
+  }
+`;
+
+export const FileItemName = styled.span`
+  margin-top: auto;
+  color: #fff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 300;
+`;
+
+export const FileItemDisplay = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .MuiSvgIcon-root {
+    color: var(--main-lighter-color);
+    font-size: 5rem;
+  }
 `;

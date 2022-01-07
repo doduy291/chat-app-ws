@@ -1,3 +1,4 @@
+import { v2 as cloudinary } from 'cloudinary';
 import asyncHandler from '../utils/asyncHandler.js';
 import { ErrorResponse } from '../utils/errorHandler.js';
 import MessageModel from '../models/message.model.js';
