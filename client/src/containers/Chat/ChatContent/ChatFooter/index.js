@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { AttachFile, Send, Mood, DeleteForever, InsertDriveFile } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import EmojiPicker from '../../../../components/EmojiPicker';
 import {
@@ -27,11 +27,13 @@ import { postSendMessage } from '../../../../redux/actions/message.action';
 import ModalError from '../../../../components/UI/ModalError';
 import { fileTypes } from '../../../../utils/constants';
 
+let convertedFiles = [];
+
 const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
   console.count('Chat Footer');
   const dispatch = useDispatch();
 
-  const [uploadedFile, setUploadedFile] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploadedError, setUploadedError] = useState(false);
 
   const emojiPickerRef = useRef();
@@ -44,20 +46,32 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
       e.preventDefault();
     }
     if (e.keyCode === 13 && e.shiftKey) {
-      console.log('Insert a line');
-      console.log(textRef.current.offsetHeight);
       scrollTargetRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const sendHandler = (e) => {
     e.preventDefault();
-    if (textRef.current.innerText.length === 0) {
-      return false;
-    }
     const textMsg = textRef.current.innerText;
-    dispatch(postSendMessage({ channelId, textMsg, typeMsg: 'text', ws }));
-    textRef.current.innerText = '';
+    if (textMsg.length > 0) {
+      dispatch(postSendMessage({ channelId, textMsg, ws }));
+      textRef.current.innerText = '';
+    }
+    if (uploadedFiles.length > 0) {
+      sendFile(uploadedFiles);
+    }
+  };
+
+  const sendFile = (uploadedFiles) => {
+    console.log(uploadedFiles);
+    let formData = new FormData();
+    uploadedFiles.map((file) => formData.append('uploaded-files', file));
+    formData.append('typeMsg', 'image');
+
+    dispatch(postSendMessage({ channelId, formData, ws, typeMsg: 'image' }));
+
+    setUploadedFiles([]);
+    convertedFiles.splice(0, convertedFiles.length);
   };
 
   const emojiOpenHandler = (e) => {
@@ -75,52 +89,48 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
   };
 
   const fileSelectedHandler = (e) => {
+    e.preventDefault();
     const selectedFiles = e.target.files;
-    console.log(selectedFiles);
+
     for (let i = 0; i < selectedFiles.length; i++) {
       if (selectedFiles[i].size > 5000000) {
         // ~ 5mb
-        setUploadedFile([]);
+        setUploadedFiles([]);
+        convertedFiles.splice(0, convertedFiles.length);
         setUploadedError(true);
         return;
       }
-      setUploadedFile((current) => [
-        ...current,
-        {
-          name: selectedFiles[i].name,
-          size: selectedFiles[i].size,
-          type: selectedFiles[i].type,
-          file: URL.createObjectURL(selectedFiles[i]),
-        },
-      ]);
-      //selectedFiles[i] ~ selectedFiles.key ~ key have name is '0','1',...
-      //! NOT ELEMENT IN ARRAY
+      convertedFiles.push({
+        name: selectedFiles[i].name,
+        type: selectedFiles[i].type,
+        file: URL.createObjectURL(selectedFiles[i]),
+      });
+      setUploadedFiles((current) => {
+        return [...current, selectedFiles[i]];
+      });
+      // selectedFiles[i] ~ selectedFiles.key ~ key have name is '0','1',...
+      // ! NOT ELEMENT IN ARRAY
+      // fileUploadInputRef.current.value = '';
     }
   };
 
   const removeFileHandler = (index) => (e) => {
-    setUploadedFile((current) => [...current.filter((_, i) => i !== index)]);
+    convertedFiles = convertedFiles.filter((_, i) => i !== index);
+    setUploadedFiles((current) => [...current.filter((_, i) => i !== index)]);
   };
 
   return (
     <>
       <ChatFooterWrapper className="chat-footer">
         <ChatFooterContainer className="chat-footer__container">
-          <input
-            type="file"
-            id="file-upload"
-            multiple
-            style={{ width: '0px', height: '0px' }}
-            ref={fileUploadInputRef}
-            onChange={fileSelectedHandler}
-          />
+          <input type="file" id="file-upload" multiple ref={fileUploadInputRef} onChange={fileSelectedHandler} />
           <TextareaWrapper>
             <ChatFooterTextarea className="chat-footer__textarea">
-              {uploadedFile.length > 0 && (
+              {convertedFiles.length > 0 && (
                 <FileWrapper className="file-wrapper">
                   <FileList className="file__list">
                     <FileItemBox>
-                      {uploadedFile.map((item, i) => (
+                      {convertedFiles.map((item, i) => (
                         <FileItem className="file__item" key={i}>
                           {fileTypes.includes(item.type.split('/')[1]) ? (
                             <FileItemDisplay>

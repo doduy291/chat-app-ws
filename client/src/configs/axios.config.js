@@ -11,6 +11,9 @@ const axiosClient = axios.create({
   withCredentials: true, // Use to pass cookie from server to browser
 });
 
+const formDataConfig = {
+  'Content-type': 'multipart/form-data',
+};
 // axiosClient.interceptors.response.use(
 //   (response) => {
 //     const config = response.config;
@@ -32,4 +35,4 @@ const axiosClient = axios.create({
 //   }
 // );
 
-export { axiosClient };
+export { axiosClient, formDataConfig };

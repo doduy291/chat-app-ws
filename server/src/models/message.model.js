@@ -1,12 +1,35 @@
 import mongoose from 'mongoose';
 
 const MESSAGE_TYPE = ['text', 'file', 'image', 'tag'];
+const filesSchema = new mongoose.Schema({
+  filename: {
+    type: String,
+    required: true,
+  },
+  contentType: {
+    type: String,
+    required: true,
+  },
+  size: {
+    type: Number,
+    required: true,
+  },
+  url: {
+    type: String,
+    required: true,
+  },
+  created_at: {
+    type: String,
+  },
+});
 
 const messageSchema = new mongoose.Schema(
   {
     text: {
       type: String,
+      default: '',
     },
+
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'user',
@@ -22,6 +45,7 @@ const messageSchema = new mongoose.Schema(
       default: 'text',
       required: true,
     },
+    files: [filesSchema],
   },
   {
     timestamps: true,

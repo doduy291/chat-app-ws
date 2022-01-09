@@ -15,6 +15,12 @@ export const ChatFooterContainer = styled.div`
   margin-bottom: 1.5rem;
   margin-right: 0.5em;
   padding: 0 1.5rem;
+
+  #file-upload {
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
 `;
 
 export const ChatFooterTextarea = styled.div`

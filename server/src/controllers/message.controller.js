@@ -3,6 +3,7 @@ import asyncHandler from '../utils/asyncHandler.js';
 import { ErrorResponse } from '../utils/errorHandler.js';
 import MessageModel from '../models/message.model.js';
 import ChannelModel from '../models/channel.model.js';
+import { uploadStreamAsync } from '../utils/uploadStreamAsync.js';
 
 export const getMessageChannel = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -24,7 +25,7 @@ export const getMessageChannel = asyncHandler(async (req, res) => {
 
   let messages = await MessageModel.find({ channel: channelId })
     .populate({ path: 'userId', select: '_id username avatar' })
-    .select('-_id text userId createdAt channel')
+    .select('-_id text userId createdAt channel files')
     .limit(limitMsg)
     .skip(limitMsg * (skipMsg - 1))
     .lean();
@@ -36,19 +37,63 @@ export const postSendMessage = asyncHandler(async (req, res) => {
   const user = req.user._id;
   const { channelId } = req.params;
   const { textMsg, typeMsg } = req.body;
+  const uploadedFiles = req.files;
 
-  const doesExist = await ChannelModel.exists({ _id: channelId, member: user });
-  if (!doesExist) throw new ErrorResponse(403, 'Cannot send message, not matching user in channel');
+  if (typeMsg === 'text') {
+    const doesExist = await ChannelModel.exists({ _id: channelId, member: user });
+    if (!doesExist) throw new ErrorResponse(403, 'Cannot send message, not matching user in channel');
 
-  let newMessage = await MessageModel.create({ text: textMsg, userId: user, channel: channelId, messageType: typeMsg });
-  if (!newMessage) throw new ErrorResponse(400, 'Failed to send message, try again');
+    let newMessage = await MessageModel.create({
+      text: textMsg,
+      userId: user,
+      channel: channelId,
+      messageType: typeMsg,
+    });
+    if (!newMessage) throw new ErrorResponse(400, 'Failed to send message, try again');
 
-  const { text, userId, channel, createdAt } = await newMessage.populate({
-    path: 'userId',
-    select: '_id username avatar',
-  });
+    const { text, userId, channel, createdAt, files } = await newMessage.populate({
+      path: 'userId',
+      select: '_id username avatar',
+    });
 
-  res.status(201).json({
-    message: { text, userId, channel, createdAt },
-  });
+    res.status(201).json({
+      message: { text, userId, channel, createdAt, files },
+    });
+  }
+
+  if (uploadedFiles && typeMsg === 'image') {
+    let uploadedToCloud = [];
+    const doesExist = await ChannelModel.exists({ _id: channelId, member: user });
+    if (!doesExist) throw new ErrorResponse(403, 'Cannot send message, not matching user in channel');
+
+    for (const file of uploadedFiles) {
+      const uploaded = await uploadStreamAsync(file.buffer, { folder: 'chat_app_ws' });
+      uploadedToCloud.push({
+        filename: file.originalname,
+        contentType: file.mimetype,
+        size: file.size,
+        url: uploaded.url,
+        created_at: uploaded.created_at,
+      });
+    }
+
+    if (uploadedToCloud.length > 0) {
+      let newMessage = await MessageModel.create({
+        files: [...uploadedToCloud],
+        userId: user,
+        channel: channelId,
+        messageType: typeMsg,
+      });
+      if (!newMessage) throw new ErrorResponse(400, 'Failed to send message, try again');
+
+      const { text, userId, channel, createdAt, files, messageType } = await newMessage.populate({
+        path: 'userId',
+        select: '_id username avatar',
+      });
+
+      res.status(201).json({
+        message: { text, userId, channel, createdAt, files, messageType },
+      });
+    }
+  }
 });
