@@ -1,7 +1,8 @@
 import { Avatar } from '@mui/material';
 
 import { ChatMsgTimestamp, ChatMsgText, ChatMsg } from './styles';
-import { formatToMsTime, formatToTime } from '../../../../utils/helpers';
+import { formatToMsTime, formatToTime } from '../../../../utils/timeFormat';
+import { imgOptimize } from '../../../../utils/cloudinaryImgOptimize';
 
 const renderConversations = (messages, user) => {
   const tsMsgs = (messages) => {
@@ -42,9 +43,21 @@ const renderConversations = (messages, user) => {
       {newFilterdMsgs.map((msg, i) => (
         <div className="msg-wrapper" key={i}>
           <ChatMsg className={`chat-msg ${user._id === msg.userId._id ? 'chat-msg--you' : ''}`}>
-            <ChatMsgText className={`chat-msg__text ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}>
-              {msg.text}
-            </ChatMsgText>
+            {msg.messageType === 'text' && (
+              <ChatMsgText className={`chat-msg__text' ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}>
+                {msg.text}
+              </ChatMsgText>
+            )}
+            {msg.messageType === 'image' &&
+              msg.files.map((file, j) => (
+                <ChatMsgText
+                  key={j}
+                  style={{ padding: '0' }}
+                  className={`chat-msg__text' ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}
+                >
+                  <img src={imgOptimize(file.url, file.width, file.height)} alt="" />
+                </ChatMsgText>
+              ))}
           </ChatMsg>
           {msg.ts && (
             <div className="ts-wrapper">
@@ -63,17 +76,3 @@ const renderConversations = (messages, user) => {
 };
 
 export { renderConversations };
-
-// GROUP TEXT
-// const result = messages?.currentMsgs?.reduce((pre, cur) => {
-//   const lastMessage = pre[pre.length - 1];
-//   const cloneCur = Object.assign({}, cur);
-//   if (!lastMessage || formatToMsTime(cloneCur.createdAt) - formatToMsTime(lastMessage.createdAt) >= 60 * 1000) {
-//     cloneCur.groupText = [cloneCur.text];
-//     delete cloneCur.text;
-//     pre.push(cloneCur);
-//   } else {
-//     lastMessage.groupText.push(cloneCur.text);
-//   }
-//   return pre;
-// }, []);

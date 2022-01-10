@@ -2,35 +2,29 @@ import mongoose from 'mongoose';
 
 const CHANNEL_TYPES = ['direct', 'group'];
 
-const sharedFilesSchema = new mongoose.Schema(
-  {
-    _id: false,
-    file: {
-      type: String,
-      required: true,
-    },
-    sender: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
+const sharedFilesSchema = new mongoose.Schema({
+  _id: false,
+  file: {
+    type: String,
+    required: true,
   },
-  { timestamps: true }
-);
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+});
 
-const sharedImagesSchema = new mongoose.Schema(
-  {
-    _id: false,
-    image: {
-      type: String,
-      required: true,
-    },
-    sender: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
+const sharedImagesSchema = new mongoose.Schema({
+  _id: false,
+  image: {
+    type: String,
+    required: true,
   },
-  { timestamps: true }
-);
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+});
 
 const lastMessage = new mongoose.Schema(
   {

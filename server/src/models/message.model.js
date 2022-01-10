@@ -18,6 +18,12 @@ const filesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  width: {
+    type: Number,
+  },
+  height: {
+    type: Number,
+  },
   created_at: {
     type: String,
   },

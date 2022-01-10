@@ -1,4 +1,3 @@
-import { v2 as cloudinary } from 'cloudinary';
 import asyncHandler from '../utils/asyncHandler.js';
 import { ErrorResponse } from '../utils/errorHandler.js';
 import MessageModel from '../models/message.model.js';
@@ -25,7 +24,7 @@ export const getMessageChannel = asyncHandler(async (req, res) => {
 
   let messages = await MessageModel.find({ channel: channelId })
     .populate({ path: 'userId', select: '_id username avatar' })
-    .select('-_id text userId createdAt channel files')
+    .select('-_id text userId createdAt channel files messageType')
     .limit(limitMsg)
     .skip(limitMsg * (skipMsg - 1))
     .lean();
@@ -38,62 +37,54 @@ export const postSendMessage = asyncHandler(async (req, res) => {
   const { channelId } = req.params;
   const { textMsg, typeMsg } = req.body;
   const uploadedFiles = req.files;
+  let uploadedToCloud = [];
 
-  if (typeMsg === 'text') {
-    const doesExist = await ChannelModel.exists({ _id: channelId, member: user });
-    if (!doesExist) throw new ErrorResponse(403, 'Cannot send message, not matching user in channel');
-
-    let newMessage = await MessageModel.create({
-      text: textMsg,
-      userId: user,
-      channel: channelId,
-      messageType: typeMsg,
-    });
-    if (!newMessage) throw new ErrorResponse(400, 'Failed to send message, try again');
-
-    const { text, userId, channel, createdAt, files } = await newMessage.populate({
-      path: 'userId',
-      select: '_id username avatar',
-    });
-
-    res.status(201).json({
-      message: { text, userId, channel, createdAt, files },
-    });
-  }
+  const doesExist = await ChannelModel.exists({ _id: channelId, member: user });
+  if (!doesExist) throw new ErrorResponse(403, 'Cannot send message, not matching user in channel');
 
   if (uploadedFiles && typeMsg === 'image') {
-    let uploadedToCloud = [];
-    const doesExist = await ChannelModel.exists({ _id: channelId, member: user });
-    if (!doesExist) throw new ErrorResponse(403, 'Cannot send message, not matching user in channel');
-
     for (const file of uploadedFiles) {
-      const uploaded = await uploadStreamAsync(file.buffer, { folder: 'chat_app_ws' });
+      const uploaded = await uploadStreamAsync(file.buffer, { folder: 'chat_app_ws/chat-img' });
       uploadedToCloud.push({
         filename: file.originalname,
         contentType: file.mimetype,
-        size: file.size,
+        size: uploaded.bytes,
         url: uploaded.url,
+        width: uploaded.width,
+        height: uploaded.width,
         created_at: uploaded.created_at,
       });
     }
+  }
+  let newMessage = await MessageModel.create({
+    text: textMsg,
+    userId: user,
+    channel: channelId,
+    messageType: typeMsg,
+    files: [...uploadedToCloud],
+  });
+  if (!newMessage) throw new ErrorResponse(400, 'Failed to send message, try again');
 
-    if (uploadedToCloud.length > 0) {
-      let newMessage = await MessageModel.create({
-        files: [...uploadedToCloud],
-        userId: user,
-        channel: channelId,
-        messageType: typeMsg,
-      });
-      if (!newMessage) throw new ErrorResponse(400, 'Failed to send message, try again');
+  const { text, userId, channel, createdAt, files, messageType } = await newMessage.populate({
+    path: 'userId',
+    select: '_id username avatar',
+  });
 
-      const { text, userId, channel, createdAt, files, messageType } = await newMessage.populate({
-        path: 'userId',
-        select: '_id username avatar',
-      });
+  for (const sharedImg of files) {
+    let updateSharedImgChannel = await ChannelModel.findOneAndUpdate(
+      {
+        _id: channel,
+      },
+      { $push: { sharedImages: { sender: userId, image: sharedImg.url } } },
+      { new: true, rawResult: true }
+    );
 
-      res.status(201).json({
-        message: { text, userId, channel, createdAt, files, messageType },
-      });
+    if (!updateSharedImgChannel.lastErrorObject.updatedExisting) {
+      throw new ErrorResponse(400, 'Cannot push image to shared images');
     }
   }
+
+  res.status(201).json({
+    message: { text, userId, channel, createdAt, files, messageType },
+  });
 });

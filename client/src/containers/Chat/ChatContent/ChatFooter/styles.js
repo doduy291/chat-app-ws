@@ -128,7 +128,7 @@ export const ChatFooterButton = styled.div`
   }
 `;
 export const FileWrapper = styled.div`
-  background-color: #c2c5c7;
+  background-color: #f3f3f3;
 `;
 export const FileList = styled.div`
   position: relative;
@@ -149,7 +149,7 @@ export const FileItem = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #7e7e7e;
+  background-color: #90dfae96;
   margin-right: 16px;
   min-width: 150px;
   max-width: 150px;
@@ -166,7 +166,7 @@ export const ActionBar = styled.div`
   height: 25px;
   border-radius: 3px;
   background-color: #585858;
-  top: -5px;
+  top: -10px;
   right: -8px;
   cursor: pointer;
 
@@ -183,12 +183,12 @@ export const ActionBar = styled.div`
 
 export const FileItemName = styled.span`
   margin-top: auto;
-  color: #fff;
+  color: #333;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 500;
 `;
 
 export const FileItemDisplay = styled.div`

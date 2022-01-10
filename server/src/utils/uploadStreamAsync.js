@@ -1,9 +1,9 @@
-import { v2 as cloudinary } from 'cloudinary';
+import { cloudinary } from '../configs/cloudinary.config.js';
 
-export const uploadStreamAsync = (buffer, options) => {
+export const uploadStreamAsync = (buffer, folder) => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader
-      .upload_stream(options, (error, result) => {
+      .upload_stream({ ...folder, transformation: [{ quality: '80', format: 'auto' }] }, (error, result) => {
         if (error) {
           return reject(error);
         }
@@ -12,3 +12,5 @@ export const uploadStreamAsync = (buffer, options) => {
       .end(buffer);
   });
 };
+
+// transformation: optimize before uploading

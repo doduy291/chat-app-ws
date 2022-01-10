@@ -71,8 +71,6 @@ export const ChatViewContent = styled.div`
 `;
 export const ChatMsg = styled.div`
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
 
   &.chat-msg--you {
     flex-direction: row-reverse;
@@ -87,9 +85,15 @@ export const ChatMsgText = styled.span`
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 2px;
   word-wrap: break-word;
   white-space: pre-wrap;
+  overflow: hidden;
 
   &.chat-msg__text--you {
     background-color: var(--main-lighter-color2);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
   }
 `;
 

@@ -6,7 +6,6 @@ import mongoose from 'mongoose';
 import compression from 'compression';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { v2 as cloudinary } from 'cloudinary';
 import corsConfig from './src/configs/cors.config.js';
 import { globalErrorHandler, notFoundError } from './src/utils/errorHandler.js';
 import useWebSocket from './src/websocket/useWebsocket.js';
@@ -21,11 +20,7 @@ import messageRouter from './src/routers/message.router.js';
 // ======= configs =======
 const app = express();
 dotenv.config();
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+
 // ======= middlewares =======
 app.use(cors(corsConfig));
 // app.use(cors());

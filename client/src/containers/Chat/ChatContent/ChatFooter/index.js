@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { AttachFile, Send, Mood, DeleteForever, InsertDriveFile } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import EmojiPicker from '../../../../components/EmojiPicker';
 import {
@@ -53,7 +53,7 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
   const sendHandler = (e) => {
     e.preventDefault();
     const textMsg = textRef.current.innerText;
-    if (textMsg.length > 0) {
+    if (textMsg) {
       dispatch(postSendMessage({ channelId, textMsg, ws }));
       textRef.current.innerText = '';
     }

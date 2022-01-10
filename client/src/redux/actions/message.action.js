@@ -12,13 +12,11 @@ export const postSendMessage = createAsyncThunk(
           textMsg: textMsg.trim(),
           typeMsg,
         });
-        console.log(data);
         ws.current.send(JSON.stringify({ msg: data.message, type: 'res-send-message' }));
         return data;
       }
       if (typeMsg === 'image') {
         const { data } = await axiosClient.post(`${baseURL}/${channelId}/send-message`, formData, formDataConfig);
-        console.log(data);
         ws.current.send(JSON.stringify({ msg: data.message, type: 'res-send-message' }));
         return data;
       }
