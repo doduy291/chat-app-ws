@@ -1,10 +1,14 @@
+import React, { useState } from 'react';
 import { Avatar } from '@mui/material';
 
 import { ChatMsgTimestamp, ChatMsgText, ChatMsg } from './styles';
 import { formatToMsTime, formatToTime } from '../../../../utils/timeFormat';
 import { imgOptimize } from '../../../../utils/cloudinaryImgOptimize';
+import ModalImage from '../../../../components/UI/ModalImage';
 
-const renderConversations = (messages, user) => {
+const Conversations = ({ messages, user }) => {
+  const [modalImg, setModalImg] = useState(false);
+  const [imgUrl, setImgUrl] = useState();
   const tsMsgs = (messages) => {
     let msgContainer = [];
 
@@ -38,6 +42,11 @@ const renderConversations = (messages, user) => {
 
   const newFilterdMsgs = tsMsgs(messages);
 
+  const imgModalHandler = (fileUrl) => (e) => {
+    setImgUrl(fileUrl);
+    setModalImg(true);
+  };
+
   return (
     <>
       {newFilterdMsgs.map((msg, i) => (
@@ -55,7 +64,11 @@ const renderConversations = (messages, user) => {
                   style={{ padding: '0' }}
                   className={`chat-msg__text' ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}
                 >
-                  <img src={imgOptimize(file.url, file.width, file.height)} alt="" />
+                  <img
+                    src={imgOptimize(file.url, file.width, file.height)}
+                    alt="img"
+                    onClick={imgModalHandler(file.url)}
+                  />
                 </ChatMsgText>
               ))}
           </ChatMsg>
@@ -71,8 +84,9 @@ const renderConversations = (messages, user) => {
           )}
         </div>
       ))}
+      {modalImg && <ModalImage modalImg={modalImg} setModalImg={setModalImg} imgUrl={imgUrl} />}
     </>
   );
 };
 
-export { renderConversations };
+export default Conversations;

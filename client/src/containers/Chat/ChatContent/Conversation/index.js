@@ -4,8 +4,7 @@ import { useSelector } from 'react-redux';
 import ChatFooter from '../ChatFooter';
 import ChatHeader from '../ChatHeader';
 import { ChatWrapper, ChatView, ChatViewContainer, ChatViewContent, ChatMsgTyping } from './styles';
-
-import { renderConversations } from './data-conversations';
+import Conversations from './Conversations';
 import { fetchGetMessageChannel } from '../../../../api/message.api';
 
 const Conversation = React.memo(({ toggleInfo, channelId, detailChannel }) => {
@@ -71,7 +70,7 @@ const Conversation = React.memo(({ toggleInfo, channelId, detailChannel }) => {
           <div className="blur-back"></div>
           <ChatViewContainer className="chat-view__container scroller">
             <ChatViewContent className="chat-view__content">
-              {messages && renderConversations(messages, user)}
+              {messages && <Conversations messages={messages} user={user} />}
               <div className="scrollSpacer" ref={scrollTargetRef}></div>
             </ChatViewContent>
           </ChatViewContainer>

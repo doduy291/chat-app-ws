@@ -92,8 +92,11 @@ export const ChatMsgText = styled.span`
   }
 
   img {
+    max-width: 400px;
+    max-height: 300px;
     width: 100%;
     height: 100%;
+    cursor: pointer;
   }
 `;
 
