@@ -2,7 +2,7 @@ import asyncHandler from '../utils/asyncHandler.js';
 import { ErrorResponse } from '../utils/errorHandler.js';
 import MessageModel from '../models/message.model.js';
 import ChannelModel from '../models/channel.model.js';
-import { uploadStreamAsync } from '../utils/uploadStreamAsync.js';
+import { uploadStreamAsync, folderName } from '../utils/uploadStreamAsync.js';
 
 export const getMessageChannel = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -35,23 +35,39 @@ export const getMessageChannel = asyncHandler(async (req, res) => {
 export const postSendMessage = asyncHandler(async (req, res) => {
   const user = req.user._id;
   const { channelId } = req.params;
-  const { textMsg, typeMsg } = req.body;
+  const { textMsg } = req.body;
   const uploadedFiles = req.files;
+  let typeMsg = 'text'; // default = 'text'
+  let cloudinaryFolderName;
   let uploadedToCloud = [];
 
   const doesExist = await ChannelModel.exists({ _id: channelId, member: user });
   if (!doesExist) throw new ErrorResponse(403, 'Cannot send message, not matching user in channel');
 
-  if (uploadedFiles && typeMsg === 'image') {
+  if (uploadedFiles) {
+    // change message type = 'file' if it has file which is uploaded
+    typeMsg = 'file';
+
+    // filter file to up into correct folder on cloudinary
     for (const file of uploadedFiles) {
-      const uploaded = await uploadStreamAsync(file.buffer, { folder: 'chat_app_ws/chat-img' });
+      const filemimetype = file.mimetype.split('/')[0];
+
+      // default cloudinaryFolderName = image
+      cloudinaryFolderName = folderName['image'];
+
+      if (filemimetype === 'application') {
+        cloudinaryFolderName = folderName['application'];
+      }
+
+      const uploaded = await uploadStreamAsync(file.buffer, { folder: cloudinaryFolderName });
+
       uploadedToCloud.push({
         filename: file.originalname,
         contentType: file.mimetype,
         size: uploaded.bytes,
         url: uploaded.url,
-        width: uploaded.width,
-        height: uploaded.width,
+        width: filemimetype === 'image' ? uploaded.width : '',
+        height: filemimetype === 'image' ? uploaded.width : '',
         created_at: uploaded.created_at,
       });
     }

@@ -11,15 +11,14 @@ export const Modal = styled(ModalUnstyled)`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
 `;
 export const ModalContainer = styled.div`
-  border-radius: 5px;
   overflow: hidden;
 
   img {
     max-width: 900px;
-    max-height: 300px;
+    min-width: 100%;
+    min-height: 100%;
     object-fit: cover;
   }
 `;
@@ -42,6 +41,6 @@ export const Backdrop = styled.div`
   bottom: 0;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   -webkit-tap-highlight-color: transparent;
 `;

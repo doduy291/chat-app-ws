@@ -1,6 +1,9 @@
 // optimize images
-export const imgOptimize = (originSrc, width = 0, height = 0, quality) => {
+export const imgOptimize = (originSrc, contentType = '', width = 0, height = 0, quality) => {
   if (!originSrc) return '';
+  let type = contentType.split('/')[1];
+  let delay;
+  let flags;
 
   const cloudinaryBaseURL = 'http://res.cloudinary.com/duy-do/image/upload';
   const checkURL = originSrc.indexOf(cloudinaryBaseURL);
@@ -9,6 +12,7 @@ export const imgOptimize = (originSrc, width = 0, height = 0, quality) => {
     return originSrc;
   }
 
+  // Optimize Width and Height
   const maxWidth = 400;
   const maxHeight = 300;
   const ratio = maxWidth / width < maxHeight / height ? maxWidth / width : maxHeight / height;
@@ -18,8 +22,18 @@ export const imgOptimize = (originSrc, width = 0, height = 0, quality) => {
     height = height * ratio;
   }
 
-  let optimize = `${width ? `w_${width}` : ''}/${height ? `h_${height}` : ''}/${quality ? `q_${quality}` : 'q_auto'}`;
+  // Optimize with file "gif"
+  if (type === 'gif') {
+    quality = 50;
+    delay = 200;
+    flags = true;
+  }
 
+  let optimize = `${width ? `w_${width}` : ''}/${height ? `h_${height}` : ''}/${quality ? `q_${quality}` : 'q_auto'}/${
+    delay ? `dl_${delay}` : ''
+  }/${flags ? 'fl_lossy' : ''}`;
+
+  // Remove slash "/" in last line
   if (optimize[optimize.length - 1] === '/') optimize = optimize.slice(0, optimize.length - 1);
 
   return originSrc.replace(cloudinaryBaseURL, `${cloudinaryBaseURL}/${optimize}`);

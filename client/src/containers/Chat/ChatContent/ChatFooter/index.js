@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
+import { Tooltip } from '@mui/material';
 import { AttachFile, Send, Mood, DeleteForever, InsertDriveFile } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 
@@ -25,9 +26,8 @@ import {
 
 import { postSendMessage } from '../../../../redux/actions/message.action';
 import ModalError from '../../../../components/UI/ModalError';
-import { fileTypes } from '../../../../utils/constants';
 
-let convertedFiles = [];
+let previewedFiles = [];
 
 const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
   console.count('Chat Footer');
@@ -53,25 +53,24 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
   const sendHandler = (e) => {
     e.preventDefault();
     const textMsg = textRef.current.innerText;
+    let formData = new FormData();
     if (textMsg) {
-      dispatch(postSendMessage({ channelId, textMsg, ws }));
+      formData.append('textMsg', textMsg);
+    }
+    if (uploadedFiles.length > 0) {
+      uploadedFiles.map((file) => formData.append('uploaded-files', file));
+    }
+
+    dispatch(postSendMessage({ channelId, formData, ws }));
+
+    // Clean
+    if (textMsg) {
       textRef.current.innerText = '';
     }
     if (uploadedFiles.length > 0) {
-      sendFile(uploadedFiles);
+      previewedFiles.splice(0, previewedFiles.length);
+      setUploadedFiles([]);
     }
-  };
-
-  const sendFile = (uploadedFiles) => {
-    console.log(uploadedFiles);
-    let formData = new FormData();
-    uploadedFiles.map((file) => formData.append('uploaded-files', file));
-    formData.append('typeMsg', 'image');
-
-    dispatch(postSendMessage({ channelId, formData, ws, typeMsg: 'image' }));
-
-    setUploadedFiles([]);
-    convertedFiles.splice(0, convertedFiles.length);
   };
 
   const emojiOpenHandler = (e) => {
@@ -91,16 +90,17 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
   const fileSelectedHandler = (e) => {
     e.preventDefault();
     const selectedFiles = e.target.files;
+    console.log(selectedFiles);
 
     for (let i = 0; i < selectedFiles.length; i++) {
       if (selectedFiles[i].size > 5000000) {
         // ~ 5mb
         setUploadedFiles([]);
-        convertedFiles.splice(0, convertedFiles.length);
+        previewedFiles.splice(0, previewedFiles.length);
         setUploadedError(true);
         return;
       }
-      convertedFiles.push({
+      previewedFiles.push({
         name: selectedFiles[i].name,
         type: selectedFiles[i].type,
         file: URL.createObjectURL(selectedFiles[i]),
@@ -115,7 +115,7 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
   };
 
   const removeFileHandler = (index) => (e) => {
-    convertedFiles = convertedFiles.filter((_, i) => i !== index);
+    previewedFiles = previewedFiles.filter((_, i) => i !== index);
     setUploadedFiles((current) => [...current.filter((_, i) => i !== index)]);
   };
 
@@ -126,22 +126,25 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
           <input type="file" id="file-upload" multiple ref={fileUploadInputRef} onChange={fileSelectedHandler} />
           <TextareaWrapper>
             <ChatFooterTextarea className="chat-footer__textarea">
-              {convertedFiles.length > 0 && (
+              {previewedFiles.length > 0 && (
                 <FileWrapper className="file-wrapper">
                   <FileList className="file__list">
                     <FileItemBox>
-                      {convertedFiles.map((item, i) => (
+                      {previewedFiles.map((item, i) => (
                         <FileItem className="file__item" key={i}>
-                          {fileTypes.includes(item.type.split('/')[1]) ? (
+                          {item.type.split('/')[0] === 'image' && (
                             <FileItemDisplay>
                               <img src={item.file} alt="" />
                             </FileItemDisplay>
-                          ) : (
+                          )}
+                          {item.type.split('/')[0] === 'application' && (
                             <FileItemDisplay>
                               <InsertDriveFile />
                             </FileItemDisplay>
                           )}
-                          <FileItemName>{item.name}</FileItemName>
+                          <Tooltip title={item.name}>
+                            <FileItemName>{item.name}</FileItemName>
+                          </Tooltip>
                           <ActionBar className="action-bar">
                             <DeleteForever className="action-bar__remove" onClick={removeFileHandler(i)} />
                           </ActionBar>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Avatar } from '@mui/material';
+import { InsertDriveFile } from '@mui/icons-material';
 
-import { ChatMsgTimestamp, ChatMsgText, ChatMsg } from './styles';
+import { ChatMsgTimestamp, ChatMsgText, ChatMsg, ChatMsgFile } from './styles';
 import { formatToMsTime, formatToTime } from '../../../../utils/timeFormat';
 import { imgOptimize } from '../../../../utils/cloudinaryImgOptimize';
 import ModalImage from '../../../../components/UI/ModalImage';
@@ -42,8 +43,8 @@ const Conversations = ({ messages, user }) => {
 
   const newFilterdMsgs = tsMsgs(messages);
 
-  const imgModalHandler = (fileUrl) => (e) => {
-    setImgUrl(fileUrl);
+  const imgModalHandler = (fileUrl, fileContentType) => (e) => {
+    setImgUrl({ fileUrl, fileContentType });
     setModalImg(true);
   };
 
@@ -51,27 +52,38 @@ const Conversations = ({ messages, user }) => {
     <>
       {newFilterdMsgs.map((msg, i) => (
         <div className="msg-wrapper" key={i}>
-          <ChatMsg className={`chat-msg ${user._id === msg.userId._id ? 'chat-msg--you' : ''}`}>
-            {msg.messageType === 'text' && (
-              <ChatMsgText className={`chat-msg__text' ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}>
+          {msg.text && (
+            <ChatMsg className={`chat-msg ${user._id === msg.userId._id ? 'chat-msg--you' : ''}`}>
+              <ChatMsgText className={`chat-msg__text ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}>
                 {msg.text}
               </ChatMsgText>
-            )}
-            {msg.messageType === 'image' &&
-              msg.files.map((file, j) => (
-                <ChatMsgText
-                  key={j}
-                  style={{ padding: '0' }}
-                  className={`chat-msg__text' ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}
-                >
-                  <img
-                    src={imgOptimize(file.url, file.width, file.height)}
-                    alt="img"
-                    onClick={imgModalHandler(file.url)}
-                  />
-                </ChatMsgText>
-              ))}
-          </ChatMsg>
+            </ChatMsg>
+          )}
+          {msg.messageType === 'file' &&
+            msg.files.map((file, j) => (
+              <ChatMsg className={`chat-msg ${user._id === msg.userId._id ? 'chat-msg--you' : ''}`} key={j}>
+                {file.contentType.split('/')[0] === 'image' && (
+                  <ChatMsgText
+                    style={{ padding: '0' }}
+                    className={`chat-msg__text ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}
+                  >
+                    <img
+                      src={imgOptimize(file.url, file.contentType, file.width, file.height)}
+                      alt="img"
+                      onClick={imgModalHandler(file.url, file.contentType)}
+                    />
+                  </ChatMsgText>
+                )}
+                {file.contentType.split('/')[0] === 'application' && (
+                  <ChatMsgText className={`chat-msg__text ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}>
+                    <ChatMsgFile href={file.url} target="_blank">
+                      <InsertDriveFile />
+                      {file.filename}
+                    </ChatMsgFile>
+                  </ChatMsgText>
+                )}
+              </ChatMsg>
+            ))}
           {msg.ts && (
             <div className="ts-wrapper">
               <ChatMsgTimestamp

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MESSAGE_TYPE = ['text', 'file', 'image', 'tag'];
+const MESSAGE_TYPE = ['text', 'file', 'tag'];
 const filesSchema = new mongoose.Schema({
   filename: {
     type: String,

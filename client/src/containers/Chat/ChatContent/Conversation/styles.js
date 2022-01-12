@@ -94,8 +94,8 @@ export const ChatMsgText = styled.span`
   img {
     max-width: 400px;
     max-height: 300px;
-    width: 100%;
-    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
     cursor: pointer;
   }
 `;
@@ -132,4 +132,15 @@ export const ChatMsgTyping = styled.div`
   color: #898989;
   font-weight: 500;
   z-index: 10;
+`;
+
+export const ChatMsgFile = styled.a`
+  display: flex;
+  font-size: 13px;
+  font-weight: 500;
+
+  .MuiSvgIcon-root {
+    color: var(--main-lighter-color);
+    font-size: 1.2rem;
+  }
 `;
