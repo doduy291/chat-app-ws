@@ -7,14 +7,6 @@ export const postSendMessage = createAsyncThunk(
   'message/postSendMessage',
   async ({ channelId, formData, ws }, { rejectWithValue }) => {
     try {
-      // if (typeMsg === 'text') {
-      //   const { data } = await axiosClient.post(`${baseURL}/${channelId}/send-message`, {
-      //     textMsg: textMsg.trim(),
-      //     typeMsg,
-      //   });
-      //   ws.current.send(JSON.stringify({ msg: data.message, type: 'res-send-message' }));
-      //   return data;
-      // }
       const { data } = await axiosClient.post(`${baseURL}/${channelId}/send-message`, formData, formDataConfig);
       ws.current.send(JSON.stringify({ msg: data.message, type: 'res-send-message' }));
       console.log(data);

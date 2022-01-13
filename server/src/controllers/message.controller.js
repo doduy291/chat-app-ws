@@ -86,17 +86,28 @@ export const postSendMessage = asyncHandler(async (req, res) => {
     select: '_id username avatar',
   });
 
-  for (const sharedImg of files) {
-    let updateSharedImgChannel = await ChannelModel.findOneAndUpdate(
-      {
-        _id: channel,
-      },
-      { $push: { sharedImages: { sender: userId, image: sharedImg.url } } },
-      { new: true, rawResult: true }
-    );
-
+  for (const sharedFile of files) {
+    let updateSharedImgChannel;
+    if (sharedFile.contentType.split('/')[0] === 'image') {
+      updateSharedImgChannel = await ChannelModel.findOneAndUpdate(
+        {
+          _id: channel,
+        },
+        { $push: { sharedImages: { sender: userId, image: sharedFile.url } } },
+        { new: true, rawResult: true }
+      );
+    }
+    if (sharedFile.contentType.split('/')[0] === 'application') {
+      updateSharedImgChannel = await ChannelModel.findOneAndUpdate(
+        {
+          _id: channel,
+        },
+        { $push: { sharedFiles: { sender: userId, file: sharedFile.url } } },
+        { new: true, rawResult: true }
+      );
+    }
     if (!updateSharedImgChannel.lastErrorObject.updatedExisting) {
-      throw new ErrorResponse(400, 'Cannot push image to shared images');
+      throw new ErrorResponse(400, 'Cannot push file to shared files');
     }
   }
 

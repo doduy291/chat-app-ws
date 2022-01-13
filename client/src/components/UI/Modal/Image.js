@@ -9,7 +9,7 @@ const ModalImage = ({ modalImg, setModalImg, imgUrl }) => {
   };
   return (
     <Modal open={modalImg} onClose={handleClose} BackdropComponent={Backdrop} keepMounted>
-      <ModalContainer>
+      <ModalContainer className="image">
         <img src={imgOptimize(imgUrl.fileUrl, imgUrl.fileContentType)} alt="img" />
         <ModalDescription>
           <a href={imgUrl.fileUrl} target="_blank" rel="noreferrer">

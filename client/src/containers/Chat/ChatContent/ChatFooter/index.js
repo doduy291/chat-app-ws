@@ -25,7 +25,8 @@ import {
 } from './styles';
 
 import { postSendMessage } from '../../../../redux/actions/message.action';
-import ModalError from '../../../../components/UI/ModalError';
+import ModalError from '../../../../components/UI/Modal/Error';
+import { checkFile } from '../../../../validation/checkFile.validation';
 
 let previewedFiles = [];
 
@@ -34,7 +35,7 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
   const dispatch = useDispatch();
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [uploadedError, setUploadedError] = useState(false);
+  const [uploadedError, setUploadedError] = useState({ error: false, errorMsg: '' });
 
   const emojiPickerRef = useRef();
   const fileUploadInputRef = useRef();
@@ -82,22 +83,23 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
     textRef.current.innerText = textMsg;
   }, []);
 
+  // ** Upload File **//
   const clickOpenFileHandler = (e) => {
     e.preventDefault();
     fileUploadInputRef.current.click();
   };
 
+  // Display previewed file
   const fileSelectedHandler = (e) => {
     e.preventDefault();
     const selectedFiles = e.target.files;
     console.log(selectedFiles);
 
     for (let i = 0; i < selectedFiles.length; i++) {
-      if (selectedFiles[i].size > 5000000) {
-        // ~ 5mb
+      if (!checkFile(selectedFiles[i].type, selectedFiles[i].size).correct) {
         setUploadedFiles([]);
         previewedFiles.splice(0, previewedFiles.length);
-        setUploadedError(true);
+        setUploadedError({ error: true, errorMsg: checkFile(selectedFiles[i].type, selectedFiles[i].size).msg });
         return;
       }
       previewedFiles.push({
@@ -114,6 +116,7 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
     }
   };
 
+  // Remove file from array
   const removeFileHandler = (index) => (e) => {
     previewedFiles = previewedFiles.filter((_, i) => i !== index);
     setUploadedFiles((current) => [...current.filter((_, i) => i !== index)]);
@@ -184,7 +187,11 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
         </ChatFooterContainer>
       </ChatFooterWrapper>
 
-      {uploadedError && <ModalError open={uploadedError} setUploadedError={setUploadedError} />}
+      {uploadedError.error && (
+        <ModalError open={uploadedError.error} setUploadedError={setUploadedError}>
+          {uploadedError.errorMsg}
+        </ModalError>
+      )}
     </>
   );
 });

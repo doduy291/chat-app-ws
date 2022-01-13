@@ -5,7 +5,7 @@ import { InsertDriveFile } from '@mui/icons-material';
 import { ChatMsgTimestamp, ChatMsgText, ChatMsg, ChatMsgFile } from './styles';
 import { formatToMsTime, formatToTime } from '../../../../utils/timeFormat';
 import { imgOptimize } from '../../../../utils/cloudinaryImgOptimize';
-import ModalImage from '../../../../components/UI/ModalImage';
+import ModalImage from '../../../../components/UI/Modal/Image';
 
 const Conversations = ({ messages, user }) => {
   const [modalImg, setModalImg] = useState(false);
