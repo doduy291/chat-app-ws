@@ -1,7 +1,7 @@
 // optimize images
 export const imgOptimize = (originSrc, contentType = '', width = 0, height = 0, quality) => {
   if (!originSrc) return '';
-  let type = contentType.split('/')[1];
+  let typeSplit = contentType.split('/')[1];
   let delay;
   let flags;
 
@@ -23,10 +23,15 @@ export const imgOptimize = (originSrc, contentType = '', width = 0, height = 0, 
   }
 
   // Optimize with file "gif"
-  if (type === 'gif') {
+  if (typeSplit === 'gif') {
     quality = 50;
     delay = 200;
     flags = true;
+  }
+
+  if (contentType === 'sharedImg') {
+    width = 100;
+    height = 100;
   }
 
   let optimize = `${width ? `w_${width}` : ''}/${height ? `h_${height}` : ''}/${quality ? `q_${quality}` : 'q_auto'}/${

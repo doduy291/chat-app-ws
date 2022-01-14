@@ -4,19 +4,31 @@ const CHANNEL_TYPES = ['direct', 'group'];
 
 const sharedFilesSchema = new mongoose.Schema({
   _id: false,
-  file: {
+  url: {
     type: String,
     required: true,
+  },
+  filename: {
+    type: String,
+  },
+  size: {
+    type: Number,
+  },
+  contentType: {
+    type: String,
   },
   sender: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  created_at: {
+    type: String,
+  },
 });
 
 const sharedImagesSchema = new mongoose.Schema({
   _id: false,
-  image: {
+  url: {
     type: String,
     required: true,
   },

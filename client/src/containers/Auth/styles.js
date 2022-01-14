@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import bgImage from '../../assets/images/bg-img.jpg';
 
 export const AuthWrapper = styled.div`
   display: flex;
@@ -8,7 +7,7 @@ export const AuthWrapper = styled.div`
   width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url(${bgImage});
+  background-image: url('/assets/images/bg-img.jpg');
 `;
 
 export const AuthContainer = styled.div`

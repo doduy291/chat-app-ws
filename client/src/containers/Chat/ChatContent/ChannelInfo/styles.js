@@ -6,6 +6,7 @@ export const ChannelInfoWrapper = styled.div`
   position: relative;
   flex: 0 0 auto;
   min-width: 0px;
+  overflow-y: auto;
 
   .close {
     position: absolute;
@@ -21,6 +22,21 @@ export const ChannelInfoWrapper = styled.div`
         color: var(--main-color);
       }
     }
+  }
+
+  &::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+    position: absolute;
+    right: 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #e1e4ea;
+  }
+  &::-webkit-scrollbar-track {
+    background: #f1f2f3;
+    border-radius: 6px;
   }
 `;
 
@@ -136,7 +152,7 @@ export const SharedFilesItem = styled.div`
   margin-bottom: 3px;
 
   .download-icon {
-    position: absolute;
+    display: flex;
     right: 0;
 
     .MuiSvgIcon-root {
@@ -149,14 +165,18 @@ export const SharedFilesItem = styled.div`
   }
 `;
 export const SharedFilesIcon = styled.div`
-  display: flex;
-  align-items: center;
   border: 1px solid #e9e9e9;
   border-radius: 3px;
   padding: 5px;
 
-  img {
-    width: 25px;
+  .icon-img-container {
+    display: flex;
+    align-items: center;
+    width: 1.5rem;
+  }
+
+  .MuiSvgIcon-root {
+    color: var(--main-lighter-color);
   }
 `;
 export const SharedFilesDetails = styled.div`
@@ -164,6 +184,8 @@ export const SharedFilesDetails = styled.div`
   flex-direction: column;
   margin-left: 10px;
   font-size: 13px;
+  max-width: 150px;
+  flex: 1 1;
 
   .date-size-wrapper {
     display: flex;
@@ -179,18 +201,27 @@ export const SharedFilesName = styled.div`
 `;
 
 export const SharedImgsList = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 100px;
-  grid-gap: 3px 3px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   margin: 10px 0;
 `;
 
 export const SharedImgsItem = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
   cursor: pointer;
+  flex-basis: 33.33%;
+
+  .img-item-wrapper {
+    position: relative;
+    padding-top: 100%;
+  }
+  .img-item-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 
   img {
     width: 100%;

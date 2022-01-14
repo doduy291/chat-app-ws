@@ -13,6 +13,7 @@ const ChatContent = () => {
 
   useEffect(() => {
     if (channelId) {
+      setShowSidebarInfo(false);
       fetchGetDetailChannel(channelId, setDetailChannel);
     }
   }, [channelId]);

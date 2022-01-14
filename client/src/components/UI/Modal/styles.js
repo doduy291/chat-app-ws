@@ -30,6 +30,7 @@ export const ModalContainer = styled.div`
     max-width: 900px;
     min-width: 100%;
     min-height: 100%;
+    max-height: 80vh;
     object-fit: cover;
   }
 `;

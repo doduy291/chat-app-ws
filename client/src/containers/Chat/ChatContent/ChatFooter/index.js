@@ -96,10 +96,10 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
     console.log(selectedFiles);
 
     for (let i = 0; i < selectedFiles.length; i++) {
-      if (!checkFile(selectedFiles[i].type, selectedFiles[i].size).correct) {
+      if (!checkFile(selectedFiles[i].name, selectedFiles[i].size).correct) {
         setUploadedFiles([]);
         previewedFiles.splice(0, previewedFiles.length);
-        setUploadedError({ error: true, errorMsg: checkFile(selectedFiles[i].type, selectedFiles[i].size).msg });
+        setUploadedError({ error: true, errorMsg: checkFile(selectedFiles[i].name, selectedFiles[i].size).msg });
         return;
       }
       previewedFiles.push({
@@ -135,12 +135,11 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
                     <FileItemBox>
                       {previewedFiles.map((item, i) => (
                         <FileItem className="file__item" key={i}>
-                          {item.type.split('/')[0] === 'image' && (
+                          {item.type.split('/')[0] === 'image' ? (
                             <FileItemDisplay>
                               <img src={item.file} alt="" />
                             </FileItemDisplay>
-                          )}
-                          {item.type.split('/')[0] === 'application' && (
+                          ) : (
                             <FileItemDisplay>
                               <InsertDriveFile />
                             </FileItemDisplay>

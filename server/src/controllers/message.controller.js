@@ -93,7 +93,7 @@ export const postSendMessage = asyncHandler(async (req, res) => {
         {
           _id: channel,
         },
-        { $push: { sharedImages: { sender: userId, image: sharedFile.url } } },
+        { $push: { sharedImages: { sender: userId, url: sharedFile.url } } },
         { new: true, rawResult: true }
       );
     }
@@ -102,7 +102,18 @@ export const postSendMessage = asyncHandler(async (req, res) => {
         {
           _id: channel,
         },
-        { $push: { sharedFiles: { sender: userId, file: sharedFile.url } } },
+        {
+          $push: {
+            sharedFiles: {
+              sender: userId,
+              url: sharedFile.url,
+              filename: sharedFile.filename,
+              size: sharedFile.size,
+              contentType: sharedFile.contentType,
+              created_at: sharedFile.created_at,
+            },
+          },
+        },
         { new: true, rawResult: true }
       );
     }

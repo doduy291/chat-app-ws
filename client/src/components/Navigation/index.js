@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Forum, Settings, ContactPage } from '@mui/icons-material';
 import { NavWrapper, NavLogo, NavMenu } from './styles';
-import logo from '../../assets/images/logo.png';
 
 const Navigation = () => {
   const location = useLocation();
@@ -34,7 +33,7 @@ const Navigation = () => {
     <>
       <NavWrapper className="nav">
         <NavLogo className="nav__logo">
-          <img src={logo} alt="" />
+          <img src="/assets/images/logo.png" alt="" />
         </NavLogo>
         <NavMenu className="nav__menu">
           <div className="nav__menu-items">{links}</div>

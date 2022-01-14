@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Switch } from '@mui/material';
+import { Switch, Tooltip } from '@mui/material';
 import {
   Call,
   Videocam,
@@ -12,6 +12,7 @@ import {
   DoDisturbOffOutlined,
   PersonAddDisabled,
   Logout,
+  InsertDriveFile,
 } from '@mui/icons-material';
 import {
   ChannelInfoWrapper,
@@ -33,10 +34,10 @@ import {
   AccordionCustomSummary,
   AccordionCustomDetails,
 } from './styles';
-
-import icon from '../../../../assets/file-icons/pdf.png';
-
-import img1 from '../../../../assets/shared-imgs/shared-imgs-1.jpg';
+import { imgOptimize } from '../../../../utils/cloudinaryImgOptimize';
+import { formatFromByte, formatToDate } from '../../../../utils/format';
+import { fileIconConst } from '../../../../utils/constants';
+import { enumTypes } from '../../../../validation/checkFile.validation';
 
 const ChannelInfo = React.memo(({ isShown, toggleInfo, detailChannel, setIsShown }) => {
   console.log('channelInfo');
@@ -91,22 +92,30 @@ const ChannelInfo = React.memo(({ isShown, toggleInfo, detailChannel, setIsShown
               </AccordionCustomSummary>
               <AccordionCustomDetails className="accordion-custom__details">
                 <SharedFilesList className="shared-files__list">
-                  {[...Array(3)].map((el, i) => (
+                  {detailChannel.sharedFiles.map((item, i) => (
                     <SharedFilesItem className="shared-files__item" key={i}>
                       <SharedFilesIcon className="shared-files__icon">
-                        <img src={icon} alt="" />
+                        <div className="icon-img-container">
+                          {!enumTypes.toLowerCase().includes(item.filename.split('.').pop()) ? (
+                            <InsertDriveFile />
+                          ) : (
+                            <img src={fileIconConst[item.filename.split('.').pop()]} alt="" />
+                          )}
+                        </div>
                       </SharedFilesIcon>
                       <SharedFilesDetails className="shared-files__details">
-                        <SharedFilesName className="shared-files__name">name</SharedFilesName>
+                        <Tooltip title={item.filename}>
+                          <SharedFilesName className="shared-files__name">{item.filename}</SharedFilesName>
+                        </Tooltip>
                         <div className="date-size-wrapper">
-                          <div className="shared-files__date">12 Aug 2021</div>
+                          <div className="shared-files__date">{formatToDate(item.created_at)}</div>
                           <div className="dot"></div>
-                          <div className="shared-files__size">123.4 KB</div>
+                          <div className="shared-files__size">{formatFromByte(item.size)}</div>
                         </div>
                       </SharedFilesDetails>
-                      <div className="download-icon">
+                      <a className="download-icon" href={item.url} target="_blank" rel="noreferrer">
                         <Download />
-                      </div>
+                      </a>
                     </SharedFilesItem>
                   ))}
                 </SharedFilesList>
@@ -122,9 +131,22 @@ const ChannelInfo = React.memo(({ isShown, toggleInfo, detailChannel, setIsShown
               </AccordionCustomSummary>
               <AccordionCustomDetails className="accordion-custom__details">
                 <SharedImgsList className="shared-imgs__list">
-                  {[...Array(5)].map((el, i) => (
+                  {/* {[...Array(4)].map((item, i) => (
                     <SharedImgsItem className="shared-imgs__item" key={i}>
-                      <img src={img1} alt="" />
+                      <a href="!#" target="_blank" rel="noreferrer">
+                        <img src="/assets/shared-imgs/shared-imgs-1.jpg" alt="" />
+                      </a>
+                    </SharedImgsItem>
+                  ))} */}
+                  {detailChannel.sharedImages.reverse().map((item, i) => (
+                    <SharedImgsItem className="shared-imgs__item" key={i}>
+                      <div className="img-item-wrapper">
+                        <div className="img-item-container">
+                          <a href={item.url} target="_blank" rel="noreferrer">
+                            <img src={imgOptimize(item.url, 'sharedImg')} alt="" />
+                          </a>
+                        </div>
+                      </div>
                     </SharedImgsItem>
                   ))}
                 </SharedImgsList>

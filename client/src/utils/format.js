@@ -35,3 +35,16 @@ export const formatToMsTime = (datetime) => {
   const milliseconds = date.getTime();
   return milliseconds;
 };
+
+export const formatToDate = (datetime) => {
+  const timestamp = new Date(datetime);
+  const date = timestamp.toLocaleDateString('vi-VN', {
+    dateStyle: 'short',
+  });
+  return date;
+};
+
+export const formatFromByte = (byte) => {
+  if (byte >= 1000000) return `${Number(byte * 0.000001)} MB`;
+  if (byte < 1000000) return `${Number(byte * 0.001)} KB`;
+};
