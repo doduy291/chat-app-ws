@@ -25,7 +25,7 @@ import {
 } from './styles';
 
 import { postSendMessage } from '../../../../redux/actions/message.action';
-import ModalError from '../../../../components/UI/Modal/Error';
+import DialogError from '../../../../components/UI/Dialog/Error';
 import { checkFile } from '../../../../validation/checkFile.validation';
 
 let previewedFiles = [];
@@ -187,9 +187,9 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
       </ChatFooterWrapper>
 
       {uploadedError.error && (
-        <ModalError open={uploadedError.error} setUploadedError={setUploadedError}>
+        <DialogError open={uploadedError.error} setUploadedError={setUploadedError}>
           {uploadedError.errorMsg}
-        </ModalError>
+        </DialogError>
       )}
     </>
   );

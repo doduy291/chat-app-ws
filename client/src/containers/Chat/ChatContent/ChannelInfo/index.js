@@ -131,13 +131,6 @@ const ChannelInfo = React.memo(({ isShown, toggleInfo, detailChannel, setIsShown
               </AccordionCustomSummary>
               <AccordionCustomDetails className="accordion-custom__details">
                 <SharedImgsList className="shared-imgs__list">
-                  {/* {[...Array(4)].map((item, i) => (
-                    <SharedImgsItem className="shared-imgs__item" key={i}>
-                      <a href="!#" target="_blank" rel="noreferrer">
-                        <img src="/assets/shared-imgs/shared-imgs-1.jpg" alt="" />
-                      </a>
-                    </SharedImgsItem>
-                  ))} */}
                   {detailChannel.sharedImages.reverse().map((item, i) => (
                     <SharedImgsItem className="shared-imgs__item" key={i}>
                       <div className="img-item-wrapper">

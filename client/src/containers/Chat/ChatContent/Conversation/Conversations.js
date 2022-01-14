@@ -5,10 +5,10 @@ import { InsertDriveFile } from '@mui/icons-material';
 import { ChatMsgTimestamp, ChatMsgText, ChatMsg, ChatMsgFile } from './styles';
 import { formatToMsTime, formatToTime } from '../../../../utils/format';
 import { imgOptimize } from '../../../../utils/cloudinaryImgOptimize';
-import ModalImage from '../../../../components/UI/Modal/Image';
+import DialogImage from '../../../../components/UI/Dialog/Image';
 
 const Conversations = ({ messages, user }) => {
-  const [modalImg, setModalImg] = useState(false);
+  const [openDialogImg, setOpenDialogImg] = useState(false);
   const [imgUrl, setImgUrl] = useState();
   const tsMsgs = (messages) => {
     let msgContainer = [];
@@ -43,9 +43,9 @@ const Conversations = ({ messages, user }) => {
 
   const newFilterdMsgs = tsMsgs(messages);
 
-  const imgModalHandler = (fileUrl, fileContentType) => (e) => {
+  const imgDialogHandler = (fileUrl, fileContentType) => (e) => {
     setImgUrl({ fileUrl, fileContentType });
-    setModalImg(true);
+    setOpenDialogImg(true);
   };
 
   return (
@@ -70,7 +70,7 @@ const Conversations = ({ messages, user }) => {
                     <img
                       src={imgOptimize(file.url, file.contentType, file.width, file.height)}
                       alt="img"
-                      onClick={imgModalHandler(file.url, file.contentType)}
+                      onClick={imgDialogHandler(file.url, file.contentType)}
                     />
                   </ChatMsgText>
                 )}
@@ -96,7 +96,7 @@ const Conversations = ({ messages, user }) => {
           )}
         </div>
       ))}
-      {modalImg && <ModalImage modalImg={modalImg} setModalImg={setModalImg} imgUrl={imgUrl} />}
+      {openDialogImg && <DialogImage open={openDialogImg} setOpenDialogImg={setOpenDialogImg} imgUrl={imgUrl} />}
     </>
   );
 };

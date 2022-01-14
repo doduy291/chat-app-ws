@@ -5,7 +5,8 @@ export const ChannelInfoWrapper = styled.div`
   display: ${(props) => (props.sidebarInfo ? 'block' : 'none')};
   position: relative;
   flex: 0 0 auto;
-  min-width: 0px;
+  min-width: 268px;
+  max-width: 268px;
   overflow-y: auto;
 
   .close {

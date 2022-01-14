@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { ModalUnstyled } from '@mui/material';
+import { Dialog as DialogMui } from '@mui/material';
 
-export const Modal = styled(ModalUnstyled)`
+export const Dialog = styled(DialogMui)`
   position: fixed;
   z-index: 1300;
   right: 0;
@@ -12,8 +12,13 @@ export const Modal = styled(ModalUnstyled)`
   align-items: center;
   justify-content: center;
   border-radius: 5px;
+
+  .MuiPaper-root {
+    background-color: transparent;
+    box-shadow: none;
+  }
 `;
-export const ModalContainer = styled.div`
+export const DialogContainer = styled.div`
   display: flex;
   justify-content: center;
   padding: 1rem;
@@ -34,7 +39,7 @@ export const ModalContainer = styled.div`
     object-fit: cover;
   }
 `;
-export const ModalDescription = styled.span`
+export const DialogDescription = styled.span`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,16 +59,6 @@ export const ModalDescription = styled.span`
   a {
     font-size: 14px;
   }
-`;
-export const Backdrop = styled.div`
-  z-index: -1;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  -webkit-tap-highlight-color: transparent;
 `;
 
 export const Frame = styled.div`

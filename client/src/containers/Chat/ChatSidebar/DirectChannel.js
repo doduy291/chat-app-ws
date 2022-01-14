@@ -12,21 +12,19 @@ const DirectChannel = React.memo(({ channelId }) => {
 
   return (
     <DMContainer>
-      <ChannelTitle className="channel__title">DIRECT MESSAGES</ChannelTitle>
-      {!DMs ? (
-        <div>No one</div>
-      ) : (
-        DMs?.map((element, i) => (
-          <ChannelItem className={`channel__item ${channelId === element._id ? 'active' : ''}`} key={i}>
-            <ChannelLink to={`/channel/${element._id}`} className="channel__link">
-              <Badge overlap="circular" badgeContent=" " variant="dot" className={`${element.members[0].active}`}>
-                <Avatar className="channel__avatar" />
-              </Badge>
-              <ChannelName className="channel__name">{element.members[0].username}</ChannelName>
-            </ChannelLink>
-          </ChannelItem>
-        ))
-      )}
+      <ChannelTitle className="channel__title">
+        <span>DIRECT MESSAGES</span>
+      </ChannelTitle>
+      {DMs?.map((element, i) => (
+        <ChannelItem className={`channel__item ${channelId === element._id ? 'active' : ''}`} key={i}>
+          <ChannelLink to={`/channel/${element._id}`} className="channel__link">
+            <Badge overlap="circular" badgeContent=" " variant="dot" className={`${element.members[0].active}`}>
+              <Avatar className="channel__avatar" />
+            </Badge>
+            <ChannelName className="channel__name">{element.members[0].username}</ChannelName>
+          </ChannelLink>
+        </ChannelItem>
+      ))}
     </DMContainer>
   );
 });

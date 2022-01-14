@@ -20,6 +20,7 @@ export const SidebarWrapper = styled.div`
 
   @media screen and (max-width: 680px) {
     width: 0;
+    flex: 0;
     border-right: none;
   }
 `;
@@ -50,12 +51,35 @@ export const ChannelContainer = styled.div`
     border-radius: 50%;
   }
 `;
-export const ChannelTitle = styled.span`
+export const ChannelTitle = styled.div`
   display: block;
+  position: relative;
   color: #727473;
-  font-size: 15px;
   margin-bottom: 1rem;
   padding: 0 1.5rem;
+
+  span {
+    font-size: 15px;
+  }
+  .add-icon {
+    position: absolute;
+    top: 0;
+    right: 2rem;
+    cursor: pointer;
+
+    .MuiSvgIcon-root {
+      color: var(--icon-default-color);
+
+      &:hover {
+        color: var(--main-color);
+      }
+    }
+  }
+  @media screen and (max-width: 680px) {
+    .add-icon {
+      display: none;
+    }
+  }
 `;
 
 export const ChannelItem = styled.div`
