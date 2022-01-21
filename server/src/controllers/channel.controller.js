@@ -35,25 +35,32 @@ export const getListGroupChannels = asyncHandler(async (req, res) => {
 
 export const postCreateChannel = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  const { channelName } = req.body;
-  // const testMembers = [userId, userId, userId]; //req.body
-  // const test = testMembers;
-  // const channelMembers = [...test, userId];
+  const { channelName, channelType, members } = req.body;
+  let channelMembers = [userId];
+
+  if (members.length > 0) {
+    members.forEach((member) => (channelMembers = [...channelMembers, member.contactId]));
+  }
 
   const newChannel = await ChannelModel.create({
     creator: userId,
-    members: userId,
+    members: channelMembers,
     channelName,
-    channelType: 'group',
+    channelType,
   });
   if (!newChannel) throw new ErrorResponse(400, 'Cannot create channel');
 
-  const updateUserChannel = await UserModel.findOneAndUpdate(
-    { _id: userId },
-    { $addToSet: { chatChannels: newChannel._id } },
-    { new: true, rawResult: true }
+  Promise.all(
+    channelMembers.forEach(async (memberId) => {
+      const updateUserChannel = await UserModel.findOneAndUpdate(
+        { _id: memberId },
+        { $addToSet: { chatChannels: newChannel._id } },
+        { new: true, rawResult: true }
+      );
+      if (!updateUserChannel.lastErrorObject.updatedExisting)
+        throw new ErrorResponse(400, 'Cannot add user into channel');
+    })
   );
-  if (!updateUserChannel.lastErrorObject.updatedExisting) throw new ErrorResponse(400, 'Cannot add user into channel');
 
   res.status(201).json({ message: 'Created new channel successfully' });
 });
@@ -80,7 +87,7 @@ export const getSelectedChannel = asyncHandler(async (req, res) => {
       contacts: channel.members[0]._id,
     });
     if (doesExistContact) {
-      channel.isFriend = true;
+      channel.isFriend = true; // benefit of .lean()
     }
   }
   res.status(200).json({ channel });

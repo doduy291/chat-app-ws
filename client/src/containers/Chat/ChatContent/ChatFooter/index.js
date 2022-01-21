@@ -55,6 +55,10 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
     e.preventDefault();
     const textMsg = textRef.current.innerText;
     let formData = new FormData();
+
+    if (!textMsg && uploadedFiles.length === 0) {
+      return;
+    }
     if (textMsg) {
       formData.append('textMsg', textMsg);
     }

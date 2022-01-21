@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { ChannelContainer, ChannelTitle, ChannelItem, ChannelLink, ChannelName } from './styles';
-import { fetchGetListGroupChannels } from '../../../api/channel.api';
 import { AddBox } from '@mui/icons-material';
-import { Dialog } from '@mui/material';
+import DialogCreateChannel from '../../../components/UI/Dialog/CreateChannel';
+import { fetchGetListGroupChannels } from '../../../api/channel.api';
+import { fetchGetAllContacts } from '../../../api/contact.api';
+
 const GroupChannel = ({ channelId }) => {
+  console.log('grouP-channel');
+  const { isCreated } = useSelector((state) => state.channel);
   const [groups, setGroups] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [contacts, setContacts] = useState([]);
+  const [dialogCreate, setDialogCreate] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setDialogCreate(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   useEffect(() => {
     fetchGetListGroupChannels(setGroups);
-  }, []);
+  }, [isCreated]);
 
+  useEffect(() => {
+    fetchGetAllContacts(setContacts);
+  }, []);
   return (
     <>
       <ChannelContainer>
@@ -37,14 +43,9 @@ const GroupChannel = ({ channelId }) => {
         ))}
       </ChannelContainer>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        Test
-      </Dialog>
+      {dialogCreate && (
+        <DialogCreateChannel open={dialogCreate} setDialogCreate={setDialogCreate} contacts={contacts} />
+      )}
     </>
   );
 };

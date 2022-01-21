@@ -54,7 +54,7 @@ export const ChannelContainer = styled.div`
 export const ChannelTitle = styled.div`
   display: block;
   position: relative;
-  color: #727473;
+  color: var(--font-lighter-color);
   margin-bottom: 1rem;
   padding: 0 1.5rem;
 

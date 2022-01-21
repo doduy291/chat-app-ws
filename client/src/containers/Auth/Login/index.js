@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, connect, useSelector } from 'react-redux';
+// use connect() to handle error message from server
 import { useForm } from 'react-hook-form';
 import {
   Form,
@@ -33,10 +34,16 @@ const Login = ({ isAuth }) => {
     setError,
   } = useForm();
 
-  const redirectPath = location.search ? location.search.split('=')[1] : '/channel';
-  const loginHandler = async (data) => {
+  // const redirectPath = location.search ? location.search.split('=')[1] : '/channel';
+  const redirectPath = location.search
+    ? location.search.split('=')[1] === '/'
+      ? '/channel'
+      : location.search.split('=')[1]
+    : '';
+
+  const loginHandler = async (dataHookForm) => {
     setIsDisabled(true);
-    dispatch(postLogin(data));
+    dispatch(postLogin({ dataHookForm }));
   };
 
   useEffect(() => {
@@ -55,6 +62,7 @@ const Login = ({ isAuth }) => {
 
   useEffect(() => {
     if (isLogged || isAuth) {
+      console.log(redirectPath);
       setTimeout(
         () => {
           window.location.href = redirectPath;

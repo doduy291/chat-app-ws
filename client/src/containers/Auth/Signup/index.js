@@ -35,8 +35,8 @@ const Signup = ({ isAuth }) => {
   } = useForm();
 
   const redirectPath = location.search ? location.search.split('=')[1] : '/channel';
-  const signupHandler = async (data) => {
-    dispatch(postSignup(data));
+  const signupHandler = async (dataHookForm) => {
+    dispatch(postSignup({ dataHookForm }));
   };
 
   useEffect(() => {

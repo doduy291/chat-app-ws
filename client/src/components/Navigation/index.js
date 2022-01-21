@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Forum, Settings, ContactPage } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
 import { NavWrapper, NavLogo, NavMenu } from './styles';
 
 const Navigation = () => {
@@ -25,7 +26,9 @@ const Navigation = () => {
 
   const links = menuItems.map((item, i) => (
     <Link className={`nav__link ${location.pathname.match(item.url) ? 'active' : ''}`} key={i} to={item.url}>
-      <div className="nav__icon">{item.icon}</div>
+      <Tooltip title={item.title} followCursor>
+        <div className="nav__icon">{item.icon}</div>
+      </Tooltip>
     </Link>
   ));
 

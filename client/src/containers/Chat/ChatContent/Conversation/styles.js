@@ -129,7 +129,7 @@ export const ChatMsgTyping = styled.div`
   right: calc(1.5rem + 0.5em);
   border-radius: 2px;
   font-size: 13px;
-  color: #898989;
+  color: var(--font-lighter-color);
   font-weight: 500;
   z-index: 10;
 `;
