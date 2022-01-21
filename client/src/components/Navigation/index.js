@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Forum, Settings, ContactPage } from '@mui/icons-material';
+import { Forum, Settings, ContactPage, ExitToApp } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
-import { NavWrapper, NavLogo, NavMenu } from './styles';
+import { NavWrapper, NavLogo, NavMenu, NavLogout } from './styles';
+import { useDispatch } from 'react-redux';
+import { getLogout } from '../../redux/actions/auth.action';
 
 const Navigation = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const menuItems = [
     {
@@ -32,6 +35,11 @@ const Navigation = () => {
     </Link>
   ));
 
+  const logoutHandler = (e) => {
+    e.preventDefault();
+    dispatch(getLogout());
+  };
+
   return (
     <>
       <NavWrapper className="nav">
@@ -41,6 +49,9 @@ const Navigation = () => {
         <NavMenu className="nav__menu">
           <div className="nav__menu-items">{links}</div>
         </NavMenu>
+        <NavLogout className="nav__logout">
+          <ExitToApp className="logout-icon" onClick={logoutHandler} />
+        </NavLogout>
       </NavWrapper>
     </>
   );

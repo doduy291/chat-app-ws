@@ -48,6 +48,14 @@ export const postLogin = asyncHandler(async (req, res) => {
   const token = await encodedToken(account._id);
   res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
   return res.status(200).json({
-    message: 'Login succesfully',
+    message: 'Login successfully',
+  });
+});
+
+// ******* LOGOUT *******
+export const getLogout = asyncHandler(async (req, res) => {
+  res.clearCookie('token');
+  return res.status(200).json({
+    message: 'Logout sucessfully',
   });
 });

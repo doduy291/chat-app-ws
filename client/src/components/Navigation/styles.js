@@ -51,3 +51,16 @@ export const NavMenu = styled.div`
     }
   }
 `;
+
+export const NavLogout = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 13px 0;
+  margin-top: 20px;
+
+  .logout-icon {
+    color: var(--icon-default-color);
+    font-size: 30px;
+    cursor: pointer;
+  }
+`;

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { postLogin, postSignup } from '../actions/auth.action';
+import { postLogin, postSignup, getLogout } from '../actions/auth.action';
 
 const initialState = {
   isLogged: false,
@@ -18,7 +18,6 @@ const authSlice = createSlice({
     [postLogin.fulfilled]: (state, action) => {
       state.isLogged = true;
       state.isLoading = false;
-      state.errorMsg = null;
     },
     [postLogin.rejected]: (state, action) => {
       state.isLogged = false;
@@ -28,11 +27,16 @@ const authSlice = createSlice({
     [postSignup.fulfilled]: (state, action) => {
       state.isLogged = true;
       state.isLoading = false;
-      state.errorMsg = null;
     },
     [postSignup.rejected]: (state, action) => {
       state.isLogged = false;
       state.isLoading = false;
+      state.errorMsg = action.payload?.message;
+    },
+    [getLogout.fulfilled]: (state) => {
+      state.isLogged = false;
+    },
+    [getLogout.rejected]: (state, action) => {
       state.errorMsg = action.payload?.message;
     },
   },

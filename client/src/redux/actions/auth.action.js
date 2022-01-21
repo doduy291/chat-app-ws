@@ -26,3 +26,14 @@ export const postSignup = createAsyncThunk('auth/postSignup', async ({ dataHookF
     return rejectWithValue(error.response?.data);
   }
 });
+
+export const getLogout = createAsyncThunk('auth/getLogout', async (_, { rejectWithValue }) => {
+  try {
+    const res = await axiosClient.get(`${baseURL}/logout`);
+    if (res.status === 200) {
+      window.location.href = '/login';
+    }
+  } catch (error) {
+    return rejectWithValue(error.response?.data);
+  }
+});
