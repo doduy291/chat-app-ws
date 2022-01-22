@@ -93,3 +93,29 @@ export const SidebarItem = styled.div`
     border-bottom: 1px solid #e5e5e5;
   }
 `;
+
+export const SidebarAddContact = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 0 24px;
+`;
+export const AddButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border-radius: 5px;
+  padding: 5px;
+  color: #fff;
+  background-color: var(--main-color);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--main-brighter-color);
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+  }
+`;

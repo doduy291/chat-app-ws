@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { postAcceptRequest, deletePendingRequest } from '../actions/contact.action';
+import { postAcceptRequest, deletePendingRequest, postSendRequest } from '../actions/contact.action';
 
 const initialState = {
   isLoading: true,
@@ -12,6 +12,13 @@ const contactSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: {
+    [postSendRequest.fulfilled]: (state, action) => {
+      state.success = true;
+    },
+    [postSendRequest.fulfilled]: (state, action) => {
+      state.success = false;
+      state.errorMsg = action.payload?.message;
+    },
     [postAcceptRequest.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.success = true;

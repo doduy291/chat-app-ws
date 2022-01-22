@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Clear } from '@mui/icons-material';
-import { postCreateChannel } from '../../../../redux/actions/channel.action';
+import { postCreateChannel } from '../../../redux/actions/channel.action';
 import {
   Dialog,
   DialogContainer,
@@ -13,7 +13,7 @@ import {
   MultiSelectItem,
 } from '../styles';
 import ListFriend from './ListFriend';
-import { fieldValidation } from '../../../../validation/field.validation';
+import { fieldValidation } from '../../../validation/field.validation';
 
 const DialogCreateChannel = ({ contacts, open, setDialogCreate }) => {
   console.log('dialog create channel');
@@ -70,7 +70,7 @@ const DialogCreateChannel = ({ contacts, open, setDialogCreate }) => {
           />
           {errors?.channelName?.message && <p className="dialog-error-msg">* {errors?.channelName?.message}</p>}
 
-          <label>Select your friends</label>
+          <label>Select your friends (Optional)</label>
           <MultiSelect className="multiselect">
             {selectedUsers.map((item, i) => (
               <MultiSelectItem key={i} onClick={removeMultiSelectHandler(i)}>

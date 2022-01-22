@@ -79,7 +79,6 @@ export const DialogHeader = styled.div`
 export const DialogContent = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
 
   .dialog-error-msg {
     color: var(--danger-color);

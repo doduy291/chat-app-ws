@@ -36,7 +36,7 @@ import {
 } from './styles';
 import { imgOptimize } from '../../../../utils/cloudinaryImgOptimize';
 import { formatFromByte, formatToDate } from '../../../../utils/format';
-import { fileIconConst } from '../../../../utils/constants';
+import { fileIconConst } from '../../../../constants/icons';
 import { enumTypes } from '../../../../validation/checkFile.validation';
 
 const ChannelInfo = React.memo(({ isShown, toggleInfo, detailChannel, setIsShown }) => {

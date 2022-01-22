@@ -3,6 +3,18 @@ import { axiosClient } from '../../configs/axios.config';
 
 const baseURL = '/api/contact';
 
+export const postSendRequest = createAsyncThunk(
+  'contact/postSendRequest',
+  async ({ dataHookForm }, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosClient.post(`${baseURL}/send-request`, { contact: dataHookForm.contactName });
+      console.log(data);
+    } catch (error) {
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
+
 export const postAcceptRequest = createAsyncThunk(
   'contact/postAcceptRequest',
   async ({ requesterId }, { rejectWithValue }) => {

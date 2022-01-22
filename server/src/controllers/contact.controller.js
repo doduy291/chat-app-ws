@@ -53,9 +53,9 @@ export const getPendingRequest = asyncHandler(async (req, res) => {
 
 // ******* SEND CONTACT REQUEST *******
 export const postSendRequest = asyncHandler(async (req, res) => {
-  const { recipientId } = req.body;
+  const { recipientId, contact } = req.body;
   const requesterId = req.user._id;
-
+  console.log(contact);
   // * Sender's side (sender)
   const newRequest = await UserModel.findOneAndUpdate(
     { _id: requesterId },

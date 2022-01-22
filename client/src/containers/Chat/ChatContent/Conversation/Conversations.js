@@ -5,7 +5,7 @@ import { InsertDriveFile } from '@mui/icons-material';
 import { ChatMsgTimestamp, ChatMsgText, ChatMsg, ChatMsgFile } from './styles';
 import { formatToMsTime, formatToTime } from '../../../../utils/format';
 import { imgOptimize } from '../../../../utils/cloudinaryImgOptimize';
-import DialogImage from '../../../../components/UI/Dialog/Image';
+import DialogImage from '../../../../components/Dialog/Image';
 
 const Conversations = ({ messages, user }) => {
   const [openDialogImg, setOpenDialogImg] = useState(false);
@@ -43,7 +43,7 @@ const Conversations = ({ messages, user }) => {
 
   const newFilterdMsgs = tsMsgs(messages);
 
-  const imgDialogHandler = (fileUrl, fileContentType) => (e) => {
+  const openDialogHandler = (fileUrl, fileContentType) => (e) => {
     setImgUrl({ fileUrl, fileContentType });
     setOpenDialogImg(true);
   };
@@ -70,7 +70,7 @@ const Conversations = ({ messages, user }) => {
                     <img
                       src={imgOptimize(file.url, file.contentType, file.width, file.height)}
                       alt="img"
-                      onClick={imgDialogHandler(file.url, file.contentType)}
+                      onClick={openDialogHandler(file.url, file.contentType)}
                     />
                   </ChatMsgText>
                 )}

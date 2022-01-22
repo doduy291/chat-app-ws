@@ -25,7 +25,7 @@ import {
 } from './styles';
 
 import { postSendMessage } from '../../../../redux/actions/message.action';
-import DialogError from '../../../../components/UI/Dialog/Error';
+import DialogError from '../../../../components/Dialog/Error';
 import { checkFile } from '../../../../validation/checkFile.validation';
 
 let previewedFiles = [];

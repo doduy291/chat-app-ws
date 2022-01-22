@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ChannelContainer, ChannelTitle, ChannelItem, ChannelLink, ChannelName } from './styles';
 import { AddBox } from '@mui/icons-material';
-import DialogCreateChannel from '../../../components/UI/Dialog/CreateChannel';
+import DialogCreateChannel from '../../../components/Dialog/CreateChannel';
 import { fetchGetListGroupChannels } from '../../../api/channel.api';
 import { fetchGetAllContacts } from '../../../api/contact.api';
 
@@ -13,7 +13,7 @@ const GroupChannel = ({ channelId }) => {
   const [contacts, setContacts] = useState([]);
   const [dialogCreate, setDialogCreate] = useState(false);
 
-  const handleClickOpen = () => {
+  const openDialogHandler = () => {
     setDialogCreate(true);
   };
 
@@ -29,7 +29,7 @@ const GroupChannel = ({ channelId }) => {
       <ChannelContainer>
         <ChannelTitle className="channel__title">
           <span>CHANNELS</span>
-          <div className="add-icon" onClick={handleClickOpen}>
+          <div className="add-icon" onClick={openDialogHandler}>
             <AddBox />
           </div>
         </ChannelTitle>

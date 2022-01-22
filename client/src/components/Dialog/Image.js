@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, DialogContainer, DialogDescription } from './styles';
-import { imgOptimize } from '../../../utils/cloudinaryImgOptimize';
+import { imgOptimize } from '../../utils/cloudinaryImgOptimize';
 
 const DialogImage = ({ open, setOpenDialogImg, imgUrl }) => {
   const handleClose = (e) => {
