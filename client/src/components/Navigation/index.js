@@ -50,7 +50,9 @@ const Navigation = () => {
           <div className="nav__menu-items">{links}</div>
         </NavMenu>
         <NavLogout className="nav__logout">
-          <ExitToApp className="logout-icon" onClick={logoutHandler} />
+          <Tooltip title="Logout" followCursor>
+            <ExitToApp className="logout-icon" onClick={logoutHandler} />
+          </Tooltip>
         </NavLogout>
       </NavWrapper>
     </>

@@ -1,5 +1,6 @@
 import asyncHandler from '../utils/asyncHandler.js';
 import UserModel from '../models/user.model.js';
+import AccountModel from '../models/account.model.js';
 import ChannelModel from '../models/channel.model.js';
 import { ErrorResponse } from '../utils/errorHandler.js';
 
@@ -7,10 +8,13 @@ import { ErrorResponse } from '../utils/errorHandler.js';
 // ******* GET ALL CONTACTS (INCLUDE Active: 'online')*******
 export const getAllContacts = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  const contacts = await UserModel.findOne({ _id: userId })
-    .populate({ path: 'contacts', select: 'username avatar active' })
-    .select('contacts');
-  res.status(200).json({ allContacts: contacts });
+  const contactInfo = await UserModel.findOne({ _id: userId })
+    .select('-_id contacts chatChannels')
+    .populate([
+      { path: 'contacts', select: 'username avatar active' },
+      { path: 'chatChannels', select: '_id members channelType', match: { channelType: 'direct' } },
+    ]);
+  res.status(200).json({ allContacts: contactInfo });
 });
 
 // ******* DELETE CONTACT *******
@@ -41,7 +45,6 @@ export const deleteContact = asyncHandler(async (req, res) => {
 // ******* GET PENDING CONTACT REQUEST *******
 export const getPendingRequest = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  if (!userId) throw new ErrorResponse(400, 'Cannot get pending requests');
 
   const pendings = await UserModel.findOne({ _id: userId, contactRequests: { $elemMatch: { status: 1 } } })
     // or findOne({ _id: userId, 'contactRequests.status': '1'})
@@ -53,9 +56,21 @@ export const getPendingRequest = asyncHandler(async (req, res) => {
 
 // ******* SEND CONTACT REQUEST *******
 export const postSendRequest = asyncHandler(async (req, res) => {
-  const { recipientId, contact } = req.body;
+  const { contact } = req.body;
   const requesterId = req.user._id;
-  console.log(contact);
+  let recipientId;
+
+  const emailExist = await AccountModel.findOne({ email: contact }).select('_id');
+  if (emailExist) {
+    const userInfo = await UserModel.findOne({ accountId: emailExist._id }).select('_id');
+    if (!userInfo) throw new ErrorResponse(403, 'Contact does not exist');
+    recipientId = userInfo._id;
+  } else {
+    const userInfo = await UserModel.findOne({ _id: contact }).select('_id');
+    if (!userInfo) throw new ErrorResponse(403, 'Contact does not exist');
+    recipientId = userInfo._id;
+  }
+
   // * Sender's side (sender)
   const newRequest = await UserModel.findOneAndUpdate(
     { _id: requesterId },
@@ -170,4 +185,18 @@ export const deletePendingRequest = asyncHandler(async (req, res) => {
 
   if (!requesterRemove) throw new ErrorResponse(400, 'Cannot delete pending request');
   res.status(200).json({ message: 'Remove successfully' });
+});
+
+// !================================================= BLOCKED =================================================
+// ******* GET BLOCKED CONTACT *******
+export const getBlockedContacts = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const blocks = await UserModel.findOne({ _id: userId })
+    .select('-_id blockedContacts')
+    .populate({ path: 'blockedContacts', select: '_id username avatar' });
+
+  if (!blocks) throw new ErrorResponse(400, 'Cannot get blocked contacts');
+
+  res.status(200).json({ blocks });
 });

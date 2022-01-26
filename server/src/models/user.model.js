@@ -56,6 +56,12 @@ const userSchema = new mongoose.Schema(
       },
     ],
     contactRequests: [contactRequests],
+    blockedContacts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+      },
+    ],
     chatChannels: [
       {
         type: mongoose.Schema.Types.ObjectId,

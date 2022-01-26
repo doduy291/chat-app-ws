@@ -9,7 +9,7 @@ export const getListDMs = asyncHandler(async (req, res) => {
   const directs = await UserModel.findOne({ _id: userId })
     .populate({
       path: 'chatChannels',
-      select: 'channelName lastMessage',
+      select: 'channelName lastMessage members',
       match: { channelType: 'direct' },
       populate: {
         path: 'members',
@@ -19,7 +19,6 @@ export const getListDMs = asyncHandler(async (req, res) => {
     })
     .select('-_id chatChannels');
   if (!directs) throw new ErrorResponse(400, 'Direct Channels are not found');
-
   res.status(200).json({ channels: directs.chatChannels });
 });
 

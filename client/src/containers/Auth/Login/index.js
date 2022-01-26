@@ -62,7 +62,6 @@ const Login = ({ isAuth }) => {
 
   useEffect(() => {
     if (isLogged || isAuth) {
-      console.log(redirectPath);
       setTimeout(
         () => {
           window.location.href = redirectPath;

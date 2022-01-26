@@ -10,7 +10,7 @@ const GroupChannel = ({ channelId }) => {
   console.log('grouP-channel');
   const { isCreated } = useSelector((state) => state.channel);
   const [groups, setGroups] = useState([]);
-  const [contacts, setContacts] = useState([]);
+  const [allContacts, setAllContacts] = useState([]);
   const [dialogCreate, setDialogCreate] = useState(false);
 
   const openDialogHandler = () => {
@@ -22,7 +22,7 @@ const GroupChannel = ({ channelId }) => {
   }, [isCreated]);
 
   useEffect(() => {
-    fetchGetAllContacts(setContacts);
+    fetchGetAllContacts(setAllContacts);
   }, []);
   return (
     <>
@@ -44,7 +44,7 @@ const GroupChannel = ({ channelId }) => {
       </ChannelContainer>
 
       {dialogCreate && (
-        <DialogCreateChannel open={dialogCreate} setDialogCreate={setDialogCreate} contacts={contacts} />
+        <DialogCreateChannel open={dialogCreate} setDialogCreate={setDialogCreate} contacts={allContacts.contacts} />
       )}
     </>
   );

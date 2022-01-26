@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { PeopleAlt, Search } from '@mui/icons-material';
 import { Avatar } from '@mui/material';
 import {
@@ -12,8 +13,9 @@ import {
 } from './styles';
 import { PersonAdd } from '@mui/icons-material';
 import DialogAddContact from '../../../components/Dialog/AddContact';
+import { filteredContactChannel } from '../data';
 
-const Sidebar = React.memo(({ contacts }) => {
+const Sidebar = React.memo(({ allContacts, user }) => {
   const [openDialogAddContact, setOpenDialogAddContact] = useState(false);
 
   const openDialogHandler = () => {
@@ -26,7 +28,7 @@ const Sidebar = React.memo(({ contacts }) => {
         <SidebarTitle className="contact-sidebar__title">
           Contacts
           <PeopleAlt />
-          <div className="count">{contacts?.length}</div>
+          <div className="count">{allContacts?.contacts.length}</div>
         </SidebarTitle>
         <SidebarSearch className="contact-sidebar__search">
           <input type="text" placeholder="Search contact" />
@@ -39,8 +41,12 @@ const Sidebar = React.memo(({ contacts }) => {
           </AddButton>
         </SidebarAddContact>
         <SidebarList className="contact-sidebar__list">
-          {contacts.map((element, i) => (
-            <SidebarItem className="contact-sidebar__item" key={i}>
+          {allContacts?.contacts.map((element, i) => (
+            <SidebarItem
+              className="contact-sidebar__item"
+              key={i}
+              to={filteredContactChannel(element._id, user._id, allContacts)}
+            >
               <Avatar />
               <span>{element.username}</span>
             </SidebarItem>

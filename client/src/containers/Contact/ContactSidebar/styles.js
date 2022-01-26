@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 
 export const ContactSidebar = styled.div`
   display: flex;
@@ -32,7 +33,6 @@ export const SidebarSearch = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  top: -10px;
   padding: 0 24px;
 
   input {
@@ -53,7 +53,7 @@ export const SidebarSearch = styled.div`
 
 export const SidebarList = styled.div`
   position: relative;
-  margin-top: 2rem;
+  margin-top: 1rem;
   overflow-y: scroll;
   overflow-x: hidden;
   flex: 1 1 auto;
@@ -74,7 +74,7 @@ export const SidebarList = styled.div`
   }
 `;
 
-export const SidebarItem = styled.div`
+export const SidebarItem = styled(Link)`
   display: flex;
   align-items: center;
   padding: 10px 24px;
@@ -97,7 +97,7 @@ export const SidebarItem = styled.div`
 export const SidebarAddContact = styled.div`
   display: flex;
   justify-content: center;
-  margin: 0 24px;
+  margin-top: 1rem;
 `;
 export const AddButton = styled.div`
   display: flex;

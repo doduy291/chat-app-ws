@@ -6,12 +6,14 @@ import {
   deleteContact,
   deletePendingRequest,
   getAllContacts,
+  getBlockedContacts,
 } from '../controllers/contact.controller.js';
 import { authProtect } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 router.get('/all-contacts', authProtect, getAllContacts);
 router.get('/pendings', authProtect, getPendingRequest);
+router.get('/blocked-contacts', authProtect, getBlockedContacts);
 router.post('/send-request', authProtect, postSendRequest);
 router.post('/accept-request', authProtect, postAcceptRequest);
 router.put('/delete-pending-request', authProtect, deletePendingRequest);

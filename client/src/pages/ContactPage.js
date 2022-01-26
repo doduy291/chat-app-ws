@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { useSelector } from 'react-redux';
 import { ContactWrapper } from '../containers/Contact/styles';
 
 import ContactSidebar from '../containers/Contact/ContactSidebar';
@@ -7,17 +7,17 @@ import ContactTabs from '../containers/Contact/ContactTabs';
 import { fetchGetAllContacts } from '../api/contact.api';
 
 const ContactPage = () => {
-  const [contacts, setContacts] = useState([]);
-
+  const { user } = useSelector((state) => state.user);
+  const [allContacts, setAllContacts] = useState();
   useEffect(() => {
-    fetchGetAllContacts(setContacts);
+    fetchGetAllContacts(setAllContacts);
     return () => {};
   }, []);
 
   return (
     <ContactWrapper>
-      <ContactSidebar contacts={contacts} />
-      <ContactTabs contacts={contacts} />
+      <ContactSidebar allContacts={allContacts} user={user} />
+      <ContactTabs allContacts={allContacts} user={user} />
     </ContactWrapper>
   );
 };
