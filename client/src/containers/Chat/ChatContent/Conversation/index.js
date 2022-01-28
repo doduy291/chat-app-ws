@@ -12,11 +12,8 @@ const Conversation = React.memo(({ toggleInfo, channelId, detailChannel }) => {
   const { user } = useSelector((state) => state.user);
   const [messages, setMessages] = useState(null);
   const { data: messagesData } = useGetMessageChannel({ channelId });
-  console.log(messages);
   const ws = useRef();
   const scrollTargetRef = useRef(null);
-
-  console.count('Conversation');
 
   // Websocket Connection
   useEffect(() => {

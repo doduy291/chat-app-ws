@@ -31,7 +31,6 @@ import { checkFile } from '../../../../validation/checkFile.validation';
 let previewedFiles = [];
 
 const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
-  console.count('Chat Footer');
   const dispatch = useDispatch();
 
   const [uploadedFiles, setUploadedFiles] = useState([]);

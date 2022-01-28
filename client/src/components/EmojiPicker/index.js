@@ -4,8 +4,6 @@ import { EmojiPickerContainer } from './styles';
 import 'emoji-mart/css/emoji-mart.css';
 
 const EmojiPicker = React.memo(({ emojiPickerRef, addEmojiToTextarea }) => {
-  console.count('Emoji Picker');
-
   const emojiCloseHandler = useCallback(
     (e) => {
       let emojiPickerIcon = document.querySelector('.emoji-picker-icon');

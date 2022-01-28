@@ -24,7 +24,7 @@ const BlockedTab = () => {
       </div>
       <TabContentContainer className="tabContent__container">
         <TabContentList className="tabContent__list scroller">
-          {!data ? (
+          {data?.length <= 0 ? (
             <div>Nothing</div>
           ) : (
             data.map((block, i) => (

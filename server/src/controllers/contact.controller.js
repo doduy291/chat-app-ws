@@ -139,7 +139,7 @@ export const postAcceptRequest = asyncHandler(async (req, res) => {
 
   // * Create Channel after accepting successfully
   const newDirectChannel = await ChannelModel.create({ members: [recipientId, requesterId], channelType: 'direct' });
-  if (!newDirectChannel) throw new ErrorResponse(400, 'Cannot create channel');
+  if (!newDirectChannel) throw new ErrorResponse(403, 'Cannot create channel');
 
   // * Update User's channel
   const updateRecipientChannel = await UserModel.findOneAndUpdate(
@@ -148,7 +148,7 @@ export const postAcceptRequest = asyncHandler(async (req, res) => {
     { new: true, rawResult: true }
   );
   if (!updateRecipientChannel.lastErrorObject.updatedExisting)
-    throw new ErrorResponse(400, 'Cannot add user into channel');
+    throw new ErrorResponse(403, 'Cannot add user into channel');
 
   const updateRequesterChannel = await UserModel.findOneAndUpdate(
     { _id: requesterId },
@@ -156,7 +156,7 @@ export const postAcceptRequest = asyncHandler(async (req, res) => {
     { new: true, rawResult: true }
   );
   if (!updateRequesterChannel.lastErrorObject.updatedExisting)
-    throw new ErrorResponse(400, 'Cannot add user into channel');
+    throw new ErrorResponse(403, 'Cannot add user into channel');
 
   return res.status(200).json({ message: 'Accepted request successfully' });
 });
@@ -174,7 +174,7 @@ export const deletePendingRequest = asyncHandler(async (req, res) => {
     },
     { new: true }
   );
-  if (!recipientRemove) throw new ErrorResponse(400, 'Cannot delete pending request');
+  if (!recipientRemove) throw new ErrorResponse(403, 'Cannot delete pending request');
 
   const requesterRemove = await UserModel.findOneAndUpdate(
     { _id: requesterId, contactRequests: { $elemMatch: { recipient: recipientId, status: 0 } } },
@@ -184,7 +184,7 @@ export const deletePendingRequest = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  if (!requesterRemove) throw new ErrorResponse(400, 'Cannot delete pending request');
+  if (!requesterRemove) throw new ErrorResponse(403, 'Cannot delete pending request');
   res.status(200).json({ message: 'Remove successfully' });
 });
 
@@ -200,4 +200,51 @@ export const getBlockedContacts = asyncHandler(async (req, res) => {
   if (!blocks) throw new ErrorResponse(400, 'Cannot get blocked contacts');
 
   res.status(200).json({ blockedContacts: blocks.blockedContacts });
+});
+
+// ******* SEND BLOCKED CONTACT *******
+export const postSendBlock = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const { blockedContactId } = req.body;
+
+  const doesExist = await UserModel.exists({ _id: blockedContactId });
+  if (!doesExist) throw new ErrorResponse(400, 'User does not exist');
+
+  const newBlock = await UserModel.findOneAndUpdate(
+    {
+      _id: userId,
+    },
+    { $addToSet: { blockedContacts: blockedContactId } },
+    {
+      new: true,
+      rawResult: true,
+    }
+  );
+  if (!newBlock.lastErrorObject.updatedExisting) {
+    throw new ErrorResponse(400, 'Cannot block this contact');
+  }
+
+  res.status(201).json({ message: 'Block successfully' });
+});
+// ******* DELETE BLOCKED CONTACT *******
+export const deleteBlockedContact = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const { blockedContactId } = req.body;
+  const removeBlockedContact = await UserModel.findOneAndUpdate(
+    {
+      _id: userId,
+    },
+    {
+      $pull: { blockedContacts: blockedContactId },
+    },
+    {
+      new: true,
+      rawResult: true,
+    }
+  );
+  if (!removeBlockedContact.lastErrorObject.updatedExisting) {
+    throw new ErrorResponse(400, 'Cannot remove this blocked contact');
+  }
+
+  res.status(201).json({ messagE: 'Removed blocked contact' });
 });

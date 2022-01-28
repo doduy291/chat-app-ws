@@ -14,7 +14,7 @@ export const postSignUp = asyncHandler(async (req, res) => {
   // Check account existence
   const doesExistAccount = await AccountModel.exists({ email });
   if (doesExistAccount) {
-    throw new ErrorResponse(403, { name: 'email', message: 'Email is already in use' });
+    throw new ErrorResponse(409, { name: 'email', message: 'Email is already in use' });
   }
   // Create new account
   const newAccount = await AccountModel.create({ email: email, password: password });
