@@ -8,18 +8,18 @@ const ChatHeader = ({ toggleInfo, detailChannel }) => {
     <ChatHeaderWrapper className="chat-header overlap-top">
       <HeaderLeft className="chat-header__left">
         <ChatHeaderTitle className="chat-header__title">
-          {detailChannel.channelType === 'direct' ? detailChannel.members[0].username : detailChannel.channelName}
+          {detailChannel?.channelType === 'direct' ? detailChannel?.members[0].username : detailChannel?.channelName}
         </ChatHeaderTitle>
-        {detailChannel.channelType === 'group' ? (
+        {detailChannel?.channelType === 'group' ? (
           <>
             <div className="dot"></div>
             <ChatHeaderMemberCount className="chat-header__member-count">
               <AvatarGroup max={3}>
-                {detailChannel.members.map((element, i) => (
+                {detailChannel?.members.map((element, i) => (
                   <Avatar className="chat-header__avatar" key={i} />
                 ))}
               </AvatarGroup>
-              <span>+{detailChannel.members.filter((element) => element.active === 'online').length} Online</span>
+              <span>+{detailChannel?.members.filter((element) => element.active === 'online').length} Online</span>
             </ChatHeaderMemberCount>
           </>
         ) : (

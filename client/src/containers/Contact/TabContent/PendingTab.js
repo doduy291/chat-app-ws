@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar } from '@mui/material';
 import { Close, Check } from '@mui/icons-material';
@@ -13,12 +13,12 @@ import {
   TabContentTitle,
 } from './styles';
 import { postAcceptRequest, deletePendingRequest } from '../../../redux/actions/contact.action';
-import { fetchGetPendingRequests } from '../../../api/contact.api';
+import { useGetPendingRequests } from '../../../services/contact.api';
 
 const PendingTab = () => {
   const { success } = useSelector((state) => state.contact);
-  const [pendings, setPendings] = useState();
-  console.count('pending');
+  const { data } = useGetPendingRequests();
+
   const dispatch = useDispatch();
 
   const acceptHandler = (requesterId) => (e) => {
@@ -30,11 +30,11 @@ const PendingTab = () => {
     dispatch(deletePendingRequest({ requesterId }));
   };
 
-  useEffect(() => {
-    fetchGetPendingRequests(setPendings);
-    return () => {};
-    // success: re-render when clicking accept or remove pending request successfully
-  }, [success]);
+  // useEffect(() => {
+  //   fetchGetPendingRequests(setPendings);
+  //   return () => {};
+  //   // success: re-render when clicking accept or remove pending request successfully
+  // }, [success]);
   return (
     <>
       <PendingTabContent className="tabContent__pending">
@@ -44,10 +44,10 @@ const PendingTab = () => {
         </div>
         <TabContentContainer className="tabContent__container">
           <TabContentList className="tabContent__list scroller">
-            {!pendings ? (
+            {!data ? (
               <div>Nothing</div>
             ) : (
-              pendings.map((element, i) => (
+              data.map((element, i) => (
                 <TabContentItem className="tabContent__item tabContent__item--spread" key={i}>
                   <TabContentUser className="tabContent__user tabContent__user--spread">
                     <Avatar />

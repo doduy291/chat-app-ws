@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { PeopleAlt, Search } from '@mui/icons-material';
 import { Avatar } from '@mui/material';
 import {
@@ -45,7 +44,7 @@ const Sidebar = React.memo(({ allContacts, user }) => {
             <SidebarItem
               className="contact-sidebar__item"
               key={i}
-              to={filteredContactChannel(element._id, user._id, allContacts)}
+              to={filteredContactChannel(element._id, user._id, allContacts?.chatChannels)}
             >
               <Avatar />
               <span>{element.username}</span>

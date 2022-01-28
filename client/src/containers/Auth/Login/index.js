@@ -34,7 +34,6 @@ const Login = ({ isAuth }) => {
     setError,
   } = useForm();
 
-  // const redirectPath = location.search ? location.search.split('=')[1] : '/channel';
   const redirectPath = location.search
     ? location.search.split('=')[1] === '/'
       ? '/channel'

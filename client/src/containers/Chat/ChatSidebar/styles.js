@@ -35,7 +35,7 @@ export const SidebarTitle = styled.h3`
   margin-bottom: 2rem;
 `;
 
-export const DMContainer = styled.div`
+export const DirectChannelContainer = styled.div`
   width: 100%;
   margin-bottom: 2.5rem;
 `;

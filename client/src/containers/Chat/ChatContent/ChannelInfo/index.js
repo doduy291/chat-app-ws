@@ -40,7 +40,6 @@ import { fileIconConst } from '../../../../constants/icons';
 import { enumTypes } from '../../../../validation/checkFile.validation';
 
 const ChannelInfo = React.memo(({ isShown, toggleInfo, detailChannel, setIsShown }) => {
-  console.log('channelInfo');
   useEffect(() => {
     const conversation = document.querySelector('.conversation');
 

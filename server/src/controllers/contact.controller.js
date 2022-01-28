@@ -14,6 +14,7 @@ export const getAllContacts = asyncHandler(async (req, res) => {
       { path: 'contacts', select: 'username avatar active' },
       { path: 'chatChannels', select: '_id members channelType', match: { channelType: 'direct' } },
     ]);
+
   res.status(200).json({ allContacts: contactInfo });
 });
 
@@ -198,5 +199,5 @@ export const getBlockedContacts = asyncHandler(async (req, res) => {
 
   if (!blocks) throw new ErrorResponse(400, 'Cannot get blocked contacts');
 
-  res.status(200).json({ blocks });
+  res.status(200).json({ blockedContacts: blocks.blockedContacts });
 });

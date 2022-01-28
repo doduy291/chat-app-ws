@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { ContactWrapper } from '../containers/Contact/styles';
 
 import ContactSidebar from '../containers/Contact/ContactSidebar';
 import ContactTabs from '../containers/Contact/ContactTabs';
-import { fetchGetAllContacts } from '../api/contact.api';
+import { useGetAllContacts } from '../services/contact.api';
 
 const ContactPage = () => {
   const { user } = useSelector((state) => state.user);
-  const [allContacts, setAllContacts] = useState();
-  useEffect(() => {
-    fetchGetAllContacts(setAllContacts);
-    return () => {};
-  }, []);
+  const { data: allContactsData } = useGetAllContacts();
 
   return (
     <ContactWrapper>
-      <ContactSidebar allContacts={allContacts} user={user} />
-      <ContactTabs allContacts={allContacts} user={user} />
+      <ContactSidebar allContacts={allContactsData} user={user} />
+      <ContactTabs allContacts={allContactsData} user={user} />
     </ContactWrapper>
   );
 };

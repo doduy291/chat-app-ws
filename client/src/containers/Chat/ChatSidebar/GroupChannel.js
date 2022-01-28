@@ -3,14 +3,14 @@ import { useSelector } from 'react-redux';
 import { ChannelContainer, ChannelTitle, ChannelItem, ChannelLink, ChannelName } from './styles';
 import { AddBox } from '@mui/icons-material';
 import DialogCreateChannel from '../../../components/Dialog/CreateChannel';
-import { fetchGetListGroupChannels } from '../../../api/channel.api';
-import { fetchGetAllContacts } from '../../../api/contact.api';
+import { useGetListGroupChannels } from '../../../services/channel.api';
+import { useGetAllContacts } from '../../../services/contact.api';
 
 const GroupChannel = ({ channelId }) => {
-  console.log('grouP-channel');
+  const { data: groupChannelsData, mutate } = useGetListGroupChannels();
+  const { data: contactsData } = useGetAllContacts();
+
   const { isCreated } = useSelector((state) => state.channel);
-  const [groups, setGroups] = useState([]);
-  const [allContacts, setAllContacts] = useState([]);
   const [dialogCreate, setDialogCreate] = useState(false);
 
   const openDialogHandler = () => {
@@ -18,12 +18,11 @@ const GroupChannel = ({ channelId }) => {
   };
 
   useEffect(() => {
-    fetchGetListGroupChannels(setGroups);
-  }, [isCreated]);
+    if (isCreated) {
+      mutate();
+    }
+  }, [isCreated, mutate]);
 
-  useEffect(() => {
-    fetchGetAllContacts(setAllContacts);
-  }, []);
   return (
     <>
       <ChannelContainer>
@@ -33,7 +32,7 @@ const GroupChannel = ({ channelId }) => {
             <AddBox />
           </div>
         </ChannelTitle>
-        {groups?.map((element, i) => (
+        {groupChannelsData?.map((element, i) => (
           <ChannelItem className={`channel__item ${channelId === element._id ? 'active' : ''}`} key={i}>
             <ChannelLink to={`/channel/${element._id}`} className="channel__link">
               <div className="circle">#</div>
@@ -44,7 +43,7 @@ const GroupChannel = ({ channelId }) => {
       </ChannelContainer>
 
       {dialogCreate && (
-        <DialogCreateChannel open={dialogCreate} setDialogCreate={setDialogCreate} contacts={allContacts.contacts} />
+        <DialogCreateChannel open={dialogCreate} setDialogCreate={setDialogCreate} contacts={contactsData.contacts} />
       )}
     </>
   );

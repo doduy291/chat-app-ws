@@ -35,7 +35,7 @@ const OnlineTab = ({ allContacts, user }) => {
                 <TabContentName className="tabContent__name">{contact.username}</TabContentName>
               </TabContentUser>
               <TabContentButtons className="tabContent__buttons">
-                <Link className="circle" to={filteredContactChannel(contact._id, user._id, allContacts)}>
+                <Link className="circle" to={filteredContactChannel(contact._id, user._id, allContacts?.chatChannels)}>
                   <ChatBubble />
                 </Link>
                 <div className="circle">

@@ -5,12 +5,14 @@ import ChatFooter from '../ChatFooter';
 import ChatHeader from '../ChatHeader';
 import { ChatWrapper, ChatView, ChatViewContainer, ChatViewContent, ChatMsgTyping } from './styles';
 import Conversations from './Conversations';
-import { fetchGetMessageChannel } from '../../../../api/message.api';
+// import { fetchGetMessageChannel } from '../../../../api/message.api';
+import { useGetMessageChannel } from '../../../../services/message.api';
 
 const Conversation = React.memo(({ toggleInfo, channelId, detailChannel }) => {
   const { user } = useSelector((state) => state.user);
-  const [messages, setMessages] = useState({});
-
+  const [messages, setMessages] = useState(null);
+  const { data: messagesData } = useGetMessageChannel({ channelId });
+  console.log(messages);
   const ws = useRef();
   const scrollTargetRef = useRef(null);
 
@@ -48,19 +50,19 @@ const Conversation = React.memo(({ toggleInfo, channelId, detailChannel }) => {
     };
   }, [channelId, user]);
 
-  // Fetch
   useEffect(() => {
-    if (channelId) {
-      fetchGetMessageChannel({ channelId, setMessages });
+    if (messagesData) {
+      setMessages(messagesData);
     }
-  }, [channelId]);
+  }, [messagesData]);
 
   // Scroll
   useEffect(() => {
-    if (scrollTargetRef.current) {
+    // Does not work without setTimeout
+    setTimeout(() => {
       scrollTargetRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages?.currentMsgs?.length]);
+    }, 100);
+  }, [messages?.currentMsgs.length]);
 
   return (
     <>
