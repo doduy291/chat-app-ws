@@ -13,11 +13,11 @@ import {
   TabContentTitle,
 } from './styles';
 import { postAcceptRequest, deletePendingRequest } from '../../../redux/actions/contact.action';
-import { useGetPendingRequests } from '../../../services/contact.api';
+import contactService from '../../../services/contact.api';
 
 const PendingTab = () => {
   const { success } = useSelector((state) => state.contact);
-  const { data } = useGetPendingRequests();
+  const { data } = contactService.useGetPendingRequests();
 
   const dispatch = useDispatch();
 

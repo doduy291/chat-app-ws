@@ -74,7 +74,7 @@ export const getSelectedChannel = asyncHandler(async (req, res) => {
     .populate({
       path: 'members',
       select: '_id username avatar active',
-      match: { _id: { $ne: userId } },
+      match: { _id: { $ne: userId } }, // Not equal ~ not including my id
     })
     .select('-__v')
     .lean(); // in order to add new key into object in mongoose
@@ -85,8 +85,16 @@ export const getSelectedChannel = asyncHandler(async (req, res) => {
       _id: userId,
       contacts: channel.members[0]._id,
     });
+    const isBlockedContact = await UserModel.exists({
+      _id: userId,
+      blockedContacts: { $in: [channel.members[0]._id] },
+    });
+
     if (doesExistContact) {
       channel.isFriend = true; // benefit of .lean()
+    }
+    if (isBlockedContact) {
+      channel.isBlocked = true;
     }
   }
   res.status(200).json({ channel });

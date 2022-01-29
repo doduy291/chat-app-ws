@@ -14,10 +14,10 @@ const App = () => {
   const { isLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const pathname = window.location.pathname;
+
   useEffect(() => {
     dispatch(getUserInfo());
-    return () => {};
-  }, [dispatch, pathname]);
+  }, [dispatch]);
   return (
     <>
       {!isLoading && (

@@ -4,11 +4,11 @@ import { ContactWrapper } from '../containers/Contact/styles';
 
 import ContactSidebar from '../containers/Contact/ContactSidebar';
 import ContactTabs from '../containers/Contact/ContactTabs';
-import { useGetAllContacts } from '../services/contact.api';
+import contactService from '../services/contact.api';
 
 const ContactPage = () => {
   const { user } = useSelector((state) => state.user);
-  const { data: allContactsData } = useGetAllContacts();
+  const { data: allContactsData } = contactService.useGetAllContacts();
 
   return (
     <ContactWrapper>

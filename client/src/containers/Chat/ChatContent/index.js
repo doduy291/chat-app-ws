@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { Grid } from '@mui/material';
 import { useRouteMatch } from 'react-router-dom';
 import Conversation from './Conversation';
 import ChannelInfo from './ChannelInfo';
-import { useGetDetailChannel } from '../../../services/channel.api';
+import channelService from '../../../services/channel.api';
 
 const ChatContent = () => {
   const match = useRouteMatch('/channel/:channelId');
   const channelId = match?.params?.channelId;
+  const { success } = useSelector((state) => state.contact);
 
-  const { data: detailChannelData } = useGetDetailChannel(channelId);
+  const { data: detailChannelData, mutate } = channelService.useGetDetailChannel(channelId);
 
   const [showSidebarInfo, setShowSidebarInfo] = useState(false);
 
@@ -26,6 +28,11 @@ const ChatContent = () => {
     },
     []
   );
+  useEffect(() => {
+    if (success) {
+      mutate();
+    }
+  }, [success, mutate]);
 
   return (
     <Grid container wrap="nowrap">

@@ -1,10 +1,10 @@
 import React from 'react';
 import { DirectChannelContainer, ChannelTitle, ChannelItem, ChannelLink, ChannelName } from './styles';
 import { Avatar, Badge } from '@mui/material';
-import { useGetListDirectChannels } from '../../../services/channel.api';
+import channelService from '../../../services/channel.api';
 
 const DirectChannel = React.memo(({ channelId }) => {
-  const { data: directChannelsData } = useGetListDirectChannels();
+  const { data: directChannelsData } = channelService.useGetListDirectChannels();
 
   return (
     <DirectChannelContainer>

@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { postAcceptRequest, deletePendingRequest, postSendRequest } from '../actions/contact.action';
+import {
+  postAcceptRequest,
+  deletePendingRequest,
+  postSendRequest,
+  postSendBlock,
+  deleteBlockedContact,
+} from '../actions/contact.action';
 
 const initialState = {
   isLoading: true,
@@ -12,28 +18,35 @@ const contactSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: {
-    [postSendRequest.fulfilled]: (state, action) => {
+    [postSendRequest.fulfilled]: (state) => {
       state.success = true;
     },
-    [postSendRequest.fulfilled]: (state, action) => {
-      state.success = false;
-      state.errorMsg = action.payload?.message;
+    [postSendRequest.rejected]: (state, action) => {
+      state.errorMsg = action.payload.message;
     },
-    [postAcceptRequest.fulfilled]: (state, action) => {
-      state.isLoading = false;
+    [postAcceptRequest.fulfilled]: (state) => {
       state.success = true;
     },
     [postAcceptRequest.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.errorMsg = action.payload?.message;
+      state.errorMsg = action.payload.message;
     },
-    [deletePendingRequest.fulfilled]: (state, action) => {
-      state.isLoading = false;
+    [deletePendingRequest.fulfilled]: (state) => {
       state.success = true;
     },
     [deletePendingRequest.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.errorMsg = action.payload?.message;
+      state.errorMsg = action.payload.message;
+    },
+    [postSendBlock.fulfilled]: (state) => {
+      state.success = true;
+    },
+    [postSendBlock.rejected]: (state, action) => {
+      state.errorMsg = action.payload.message;
+    },
+    [deleteBlockedContact.fulfilled]: (state) => {
+      state.success = true;
+    },
+    [deleteBlockedContact.rejected]: (state, action) => {
+      state.errorMsg = action.payload.message;
     },
   },
 });

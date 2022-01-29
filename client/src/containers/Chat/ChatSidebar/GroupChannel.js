@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import { ChannelContainer, ChannelTitle, ChannelItem, ChannelLink, ChannelName } from './styles';
 import { AddBox } from '@mui/icons-material';
 import DialogCreateChannel from '../../../components/Dialog/CreateChannel';
-import { useGetListGroupChannels } from '../../../services/channel.api';
-import { useGetAllContacts } from '../../../services/contact.api';
+import contactService from '../../../services/contact.api';
+import channelService from '../../../services/channel.api';
 
 const GroupChannel = ({ channelId }) => {
-  const { data: groupChannelsData, mutate } = useGetListGroupChannels();
-  const { data: contactsData } = useGetAllContacts();
+  const { data: groupChannelsData, mutate } = channelService.useGetListGroupChannels();
+  const { data: contactsData } = contactService.useGetAllContacts();
 
   const { isCreated } = useSelector((state) => state.channel);
   const [dialogCreate, setDialogCreate] = useState(false);

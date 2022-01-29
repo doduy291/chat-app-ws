@@ -5,13 +5,12 @@ import ChatFooter from '../ChatFooter';
 import ChatHeader from '../ChatHeader';
 import { ChatWrapper, ChatView, ChatViewContainer, ChatViewContent, ChatMsgTyping } from './styles';
 import Conversations from './Conversations';
-// import { fetchGetMessageChannel } from '../../../../api/message.api';
-import { useGetMessageChannel } from '../../../../services/message.api';
+import messageService from '../../../../services/message.api';
 
 const Conversation = React.memo(({ toggleInfo, channelId, detailChannel }) => {
   const { user } = useSelector((state) => state.user);
   const [messages, setMessages] = useState(null);
-  const { data: messagesData } = useGetMessageChannel({ channelId });
+  const { data: messagesData } = messageService.useGetMessageChannel({ channelId });
   const ws = useRef();
   const scrollTargetRef = useRef(null);
 
@@ -24,7 +23,6 @@ const Conversation = React.memo(({ toggleInfo, channelId, detailChannel }) => {
     );
 
     ws.current.onopen = () => {
-      console.log('Connected WebSocket from Server ✅');
       ws.current.send(JSON.stringify({ channelId, userId: user._id, type: 'channel-connection' }));
     };
     ws.current.onmessage = (resWS) => {
@@ -37,12 +35,9 @@ const Conversation = React.memo(({ toggleInfo, channelId, detailChannel }) => {
         });
       }
     };
-    ws.current.onclose = () => {
-      console.log('Disconnected WebSocket from Server ❌');
-    };
+    // ws.current.onclose = () => {};
 
     return () => {
-      console.log('Cleaning up! 🧼');
       ws.current.close();
     };
   }, [channelId, user]);
