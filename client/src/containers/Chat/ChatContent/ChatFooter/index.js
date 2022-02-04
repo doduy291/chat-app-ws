@@ -30,7 +30,7 @@ import { checkFile } from '../../../../validation/checkFile.validation';
 
 let previewedFiles = [];
 
-const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
+const ChatFooter = ({ channelId, useWS, scrollTargetRef }) => {
   const dispatch = useDispatch();
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -65,7 +65,7 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
       uploadedFiles.map((file) => formData.append('uploaded-files', file));
     }
 
-    dispatch(postSendMessage({ channelId, formData, ws }));
+    dispatch(postSendMessage({ channelId, formData, useWS }));
 
     // Clean
     if (textMsg) {
@@ -196,6 +196,6 @@ const ChatFooter = React.memo(({ channelId, ws, scrollTargetRef }) => {
       )}
     </>
   );
-});
+};
 
 export default ChatFooter;

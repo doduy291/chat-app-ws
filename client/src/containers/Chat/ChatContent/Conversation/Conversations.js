@@ -7,9 +7,11 @@ import { formatToMsTime, formatToTime } from '../../../../utils/format';
 import { imgOptimize } from '../../../../utils/cloudinaryImgOptimize';
 import DialogImage from '../../../../components/Dialog/Image';
 
-const Conversations = ({ messages, user }) => {
+const Conversations = ({ messages, user, channelId }) => {
+  const getChannelMessages = messages[channelId];
   const [openDialogImg, setOpenDialogImg] = useState(false);
   const [imgUrl, setImgUrl] = useState();
+
   const tsMsgs = (messages) => {
     let msgContainer = [];
 
@@ -41,7 +43,7 @@ const Conversations = ({ messages, user }) => {
     return msgContainer;
   };
 
-  const newFilterdMsgs = tsMsgs(messages);
+  const newFilterdMsgs = tsMsgs(getChannelMessages);
 
   const openDialogHandler = (fileUrl, fileContentType) => (e) => {
     setImgUrl({ fileUrl, fileContentType });

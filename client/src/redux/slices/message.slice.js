@@ -1,16 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import { getMessageChannel, postSendMessage } from '../actions/message.action';
 import { postSendMessage } from '../actions/message.action';
 
 const initialState = {
   isSent: false,
   errorMsg: null,
+  messagesStorage: {},
 };
 
 const messageSlice = createSlice({
   name: 'message',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setMessagesStorage: (state, action) => {
+      // console.log(action.payload);
+      const { channelId, messages } = action.payload;
+      let messagesStorage = {};
+      messagesStorage[channelId] = messages;
+      return { messagesStorage };
+    },
+  },
   extraReducers: {
     [postSendMessage.fulfilled]: (state, action) => {
       state.isSent = true;
@@ -21,6 +29,6 @@ const messageSlice = createSlice({
   },
 });
 
-const { reducer } = messageSlice;
-
+const { reducer, actions } = messageSlice;
+export const { setMessagesStorage } = actions;
 export default reducer;
