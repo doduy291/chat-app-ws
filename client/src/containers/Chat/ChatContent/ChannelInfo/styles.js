@@ -2,12 +2,16 @@ import styled from '@emotion/styled';
 import { Avatar, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 
 export const ChannelInfoWrapper = styled.div`
-  display: ${(props) => (props.sidebarInfo ? 'block' : 'none')};
+  display: none;
   position: relative;
   flex: 0 0 auto;
   min-width: 268px;
   max-width: 268px;
   overflow-y: auto;
+
+  &.active {
+    display: block;
+  }
 
   .close {
     position: absolute;
