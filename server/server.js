@@ -8,7 +8,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import corsConfig from './src/configs/cors.config.js';
 import { globalErrorHandler, notFoundError } from './src/utils/errorHandler.js';
-import useWebSocket from './src/websocket/useWebsocket.js';
+import useWebsocketServer from './src/websocket/useWebsocketServer.js';
 
 // ======= import router =======
 import accountRouter from './src/routers/account.router.js';
@@ -73,6 +73,6 @@ const port = process.env.PORT;
 const server = http.createServer(app);
 
 // ======= WebSocket Global Handler =======
-useWebSocket(server);
+useWebsocketServer(server);
 
 server.listen(port, console.log(`App running on port ${port}...`));
