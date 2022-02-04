@@ -44,7 +44,7 @@ export const postSendMessage = asyncHandler(async (req, res) => {
   const doesExist = await ChannelModel.exists({ _id: channelId, member: user });
   if (!doesExist) throw new ErrorResponse(403, 'Cannot send message, not matching user in channel');
 
-  if (uploadedFiles) {
+  if (uploadedFiles.length > 0) {
     // change message type = 'file' if it has file which is uploaded
     typeMsg = 'file';
 
