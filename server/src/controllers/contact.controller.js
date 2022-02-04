@@ -99,6 +99,7 @@ export const postSendRequest = asyncHandler(async (req, res) => {
 export const postAcceptRequest = asyncHandler(async (req, res) => {
   const { requesterId } = req.body;
   const recipientId = req.user._id;
+  let contactInfoArr = [];
 
   // * Recipient's side
   const pending = await UserModel.findOneAndUpdate(
@@ -106,9 +107,24 @@ export const postAcceptRequest = asyncHandler(async (req, res) => {
     { $pull: { contactRequests: { requester: requesterId, status: 1 } } },
     { new: true }
   );
+  const {
+    username: recipientUsername,
+    avatar: recipientAvatar,
+    active: recipientActive,
+    contactRequests: recipientContactRequests,
+  } = pending;
+
+  // Use for res.json
+  contactInfoArr.push({
+    _id: recipientId,
+    username: recipientUsername,
+    avatar: recipientAvatar,
+    active: recipientActive,
+  });
+
   // * Sender's side
   // Check with findIndex()
-  const checkPending = pending.contactRequests.findIndex((e) => {
+  const checkPending = recipientContactRequests.findIndex((e) => {
     // Compare 6197a4533ba9cf2c40cfe9f6 with objectId('6197a4533ba9cf2c40cfe9f6') ( using equals() )
     return e.requester.equals(requesterId);
   });
@@ -124,8 +140,23 @@ export const postAcceptRequest = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
+    const {
+      username: requesterUsername,
+      avatar: requesterAvatar,
+      active: requesterActive,
+      contacts: requesterContacts,
+    } = newContact;
+
+    contactInfoArr.push({
+      _id: requesterId,
+      username: requesterUsername,
+      avatar: requesterAvatar,
+      active: requesterActive,
+    });
+
     // * Recipient's side
-    const checkContactAdded = newContact.contacts.findIndex((objectIdUser) => {
+    // Check contact in requester side
+    const checkContactAdded = requesterContacts.findIndex((objectIdUser) => {
       // Compare 2 objectId ( use equals() )
       return objectIdUser.equals(recipientId);
     });
@@ -138,27 +169,49 @@ export const postAcceptRequest = asyncHandler(async (req, res) => {
   }
 
   // * Create Channel after accepting successfully
-  const newDirectChannel = await ChannelModel.create({ members: [recipientId, requesterId], channelType: 'direct' });
-  if (!newDirectChannel) throw new ErrorResponse(403, 'Cannot create channel');
+  const doesChannelExist = await ChannelModel.findOne({
+    members: { $all: [recipientId, requesterId] },
+    channelType: 'direct',
+  }).select('_id channelType members');
 
-  // * Update User's channel
-  const updateRecipientChannel = await UserModel.findOneAndUpdate(
-    { _id: recipientId },
-    { $addToSet: { chatChannels: newDirectChannel._id } },
-    { new: true, rawResult: true }
-  );
-  if (!updateRecipientChannel.lastErrorObject.updatedExisting)
-    throw new ErrorResponse(403, 'Cannot add user into channel');
+  // $in is like OR and $all like AND
 
-  const updateRequesterChannel = await UserModel.findOneAndUpdate(
-    { _id: requesterId },
-    { $addToSet: { chatChannels: newDirectChannel._id } },
-    { new: true, rawResult: true }
-  );
-  if (!updateRequesterChannel.lastErrorObject.updatedExisting)
-    throw new ErrorResponse(403, 'Cannot add user into channel');
+  if (!doesChannelExist) {
+    const newDirectChannel = await ChannelModel.create({ members: [recipientId, requesterId], channelType: 'direct' });
+    if (!newDirectChannel) throw new ErrorResponse(403, 'Cannot create channel');
 
-  return res.status(200).json({ message: 'Accepted request successfully' });
+    const { _id: channelId, channelType, members } = newDirectChannel;
+    // * Update User's channel
+    let updateRecipientChannel = await UserModel.findOneAndUpdate(
+      { _id: recipientId },
+      { $addToSet: { chatChannels: newDirectChannel._id } },
+      { new: true, rawResult: true }
+    ).select('_id username avatar active');
+    if (!updateRecipientChannel.lastErrorObject.updatedExisting)
+      throw new ErrorResponse(403, 'Cannot add user into channel');
+
+    let updateRequesterChannel = await UserModel.findOneAndUpdate(
+      { _id: requesterId },
+      { $addToSet: { chatChannels: newDirectChannel._id } },
+      { new: true, rawResult: true }
+    ).select('_id username avatar active');
+    if (!updateRequesterChannel.lastErrorObject.updatedExisting)
+      throw new ErrorResponse(403, 'Cannot add user into channel');
+
+    const contactInfoArr = [updateRecipientChannel.value, updateRequesterChannel.value];
+    // const contactObj = contactArr.reduce((pre, cur) => {
+    //   pre[cur._id] = { ...(pre[cur._id] || []), ...cur._doc };
+    //   return pre;
+    // }, {});
+    return res.status(200).json({ chatChannel: { _id: channelId, channelType, members }, contactInfoArr });
+  }
+
+  // const contactObj = contactInfoArr.reduce((pre, cur) => {
+  //   pre[cur._id] = { ...(pre[cur._id] || []), ...cur };
+  //   return pre;
+  // }, {});
+
+  res.status(200).json({ chatChannel: doesChannelExist, contactInfoArr });
 });
 
 // ******* DELETE PENDING CONTACT REQUEST *******
@@ -246,5 +299,5 @@ export const deleteBlockedContact = asyncHandler(async (req, res) => {
     throw new ErrorResponse(400, 'Cannot remove this blocked contact');
   }
 
-  res.status(201).json({ messagE: 'Removed blocked contact' });
+  res.status(201).json({ message: 'Removed blocked contact' });
 });
