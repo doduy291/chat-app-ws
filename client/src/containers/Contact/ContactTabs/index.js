@@ -8,7 +8,7 @@ import OnlineTab from '../TabContent/OnlineTab';
 const PendingTab = React.lazy(() => import('../TabContent/PendingTab'));
 const BlockedTab = React.lazy(() => import('../TabContent/BlockedTab'));
 
-const ContentTabs = ({ allContacts, user }) => {
+const ContentTabs = ({ allContacts, user, useWS }) => {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -35,7 +35,7 @@ const ContentTabs = ({ allContacts, user }) => {
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Suspense fallback={<GlobalLoading />}>
-            <PendingTab />
+            <PendingTab useWS={useWS} />
           </Suspense>
         </TabPanel>
         <TabPanel value={value} index={2}>

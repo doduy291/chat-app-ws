@@ -16,7 +16,11 @@ const initialState = {
 const contactSlice = createSlice({
   name: 'contact',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    clearBlockSuccess: (state) => {
+      state.success = false;
+    },
+  },
   extraReducers: {
     [postSendRequest.fulfilled]: (state) => {
       state.success = true;
@@ -51,5 +55,6 @@ const contactSlice = createSlice({
   },
 });
 
-const { reducer } = contactSlice;
+const { reducer, actions } = contactSlice;
+export const { clearBlockSuccess } = actions;
 export default reducer;

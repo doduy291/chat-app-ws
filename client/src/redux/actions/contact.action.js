@@ -17,9 +17,10 @@ export const postSendRequest = createAsyncThunk(
 
 export const postAcceptRequest = createAsyncThunk(
   'contact/postAcceptRequest',
-  async ({ requesterId }, { rejectWithValue }) => {
+  async ({ requesterId, useWS }, { rejectWithValue }) => {
     try {
       const { data } = await axiosClient.post(`${baseURL}/accept-request`, { requesterId });
+      useWS.current.send(JSON.stringify({ contactInfoData: data, type: 'res-accept-pending-request' }));
       return data;
     } catch (error) {
       return rejectWithValue(error.response?.data);

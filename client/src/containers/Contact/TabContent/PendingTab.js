@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar } from '@mui/material';
 import { Close, Check } from '@mui/icons-material';
@@ -15,26 +15,27 @@ import {
 import { postAcceptRequest, deletePendingRequest } from '../../../redux/actions/contact.action';
 import contactService from '../../../services/contact.api';
 
-const PendingTab = () => {
+const PendingTab = ({ useWS }) => {
   const { success } = useSelector((state) => state.contact);
-  const { data } = contactService.useGetPendingRequests();
+  const { data, mutate } = contactService.useGetPendingRequests();
 
   const dispatch = useDispatch();
 
   const acceptHandler = (requesterId) => (e) => {
     e.preventDefault();
-    dispatch(postAcceptRequest({ requesterId }));
+    dispatch(postAcceptRequest({ requesterId, useWS }));
   };
   const removeHandler = (requesterId) => (e) => {
     e.preventDefault();
     dispatch(deletePendingRequest({ requesterId }));
   };
 
-  // useEffect(() => {
-  //   fetchGetPendingRequests(setPendings);
-  //   return () => {};
-  //   // success: re-render when clicking accept or remove pending request successfully
-  // }, [success]);
+  useEffect(() => {
+    if (success) {
+      mutate();
+    }
+  }, [success, mutate]);
+
   return (
     <>
       <PendingTabContent className="tabContent__pending">
