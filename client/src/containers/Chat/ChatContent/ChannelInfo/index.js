@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { Switch } from '@mui/material';
 import { Call, Videocam, PersonAdd, PersonRemove, Close, DoDisturbOnOutlined, Logout } from '@mui/icons-material';
@@ -16,11 +16,15 @@ import {
 import SharedFiles from './SharedFiles';
 import SharedImgs from './SharedImgs';
 import { postSendBlock, deleteBlockedContact } from '../../../../redux/actions/contact.action';
+import { clearBlockSuccess } from '../../../../redux/slices/contact.slice';
+import ChatContext from '../../../../contexts/chat.context';
 
-const ChannelInfo = React.memo(({ isShown, toggleInfo, detailChannel, setIsShown }) => {
+const ChannelInfo = React.memo(({ toggleInfo, detailChannel, setIsShown }) => {
+  const { isShown } = useContext(ChatContext);
   const dispatch = useDispatch();
 
   const blockHandler = (contactId, isBlocked) => () => {
+    dispatch(clearBlockSuccess());
     if (!isBlocked) {
       return dispatch(postSendBlock({ contactId }));
     }
@@ -41,7 +45,7 @@ const ChannelInfo = React.memo(({ isShown, toggleInfo, detailChannel, setIsShown
 
   return (
     <>
-      <ChannelInfoWrapper className={`channel-info ${isShown ? 'active' : ''}`} sidebarInfo={isShown}>
+      <ChannelInfoWrapper className={cn('channel-info', { active: isShown })}>
         <div className="close" onClick={toggleInfo(false)}>
           <Close />
         </div>
