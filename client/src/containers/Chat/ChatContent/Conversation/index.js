@@ -20,16 +20,13 @@ const Conversation = ({ toggleInfo, detailChannel }) => {
   const useWS = useWebsocket(channelId, user, setMessages, 'channel-connection');
 
   useEffect(() => {
-    const setData = () => {
-      if (messagesData && !Object.keys(messages).includes(channelId)) {
-        return setMessages((cur) => {
-          let messageChannel = cur;
-          messageChannel[channelId] = messagesData;
-          return messageChannel;
-        });
-      }
-    };
-    setData();
+    if (messagesData && !Object.keys(messages).includes(channelId)) {
+      return setMessages((cur) => {
+        let messageChannel = cur;
+        messageChannel[channelId] = messagesData;
+        return { ...messageChannel };
+      });
+    }
   }, [messagesData, messages, channelId]);
 
   // Scroll;
@@ -48,7 +45,7 @@ const Conversation = ({ toggleInfo, detailChannel }) => {
         <div className="blur-back"></div>
         <ChatViewContainer className="chat-view__container scroller">
           <ChatViewContent className="chat-view__content">
-            <Conversations messages={messages} user={user} channelId={channelId} />
+            {messages[channelId] && <Conversations messages={messages} user={user} channelId={channelId} />}
             <div className="scrollSpacer" ref={scrollTargetRef}></div>
           </ChatViewContent>
         </ChatViewContainer>
