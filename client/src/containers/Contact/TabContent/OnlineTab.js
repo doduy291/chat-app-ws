@@ -16,17 +16,17 @@ import { Avatar, Badge } from '@mui/material';
 import { filteredContactChannel } from '../data';
 
 const OnlineTab = ({ allContacts, user }) => {
-  const onlineContacts = allContacts?.contacts.filter((onlContact) => onlContact.active === 'online');
+  const onlineContacts = allContacts?.contacts?.filter((onlContact) => onlContact.active === 'online');
 
   return (
     <OnlineTabContent className="onlineTab">
-      <TabContentTitle className="tabContent__title">Online ({onlineContacts.length})</TabContentTitle>
+      <TabContentTitle className="tabContent__title">Online ({onlineContacts?.length})</TabContentTitle>
       <div className="line-container">
         <div className="line"></div>
       </div>
       <TabContentContainer className="tabContent__container ">
         <TabContentList className="tabContent__list tabContent__list--square scroller">
-          {onlineContacts.map((contact, i) => (
+          {onlineContacts?.map((contact, i) => (
             <TabContentItem className="tabContent__item tabContent__item--square" key={i}>
               <TabContentUser className="tabContent__user">
                 <Badge color="success" overlap="circular" badgeContent=" " variant="dot">

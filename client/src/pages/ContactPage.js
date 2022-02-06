@@ -21,7 +21,7 @@ const ContactPage = () => {
 
   return (
     <ContactWrapper>
-      <ContactSidebar allContacts={allContacts} user={user} />
+      <ContactSidebar allContacts={allContacts} setAllContacts={setAllContacts} user={user} />
       <ContactTabs allContacts={allContacts} user={user} useWS={useWS} />
     </ContactWrapper>
   );

@@ -39,10 +39,10 @@ const useWebsocket = (channelId, user, setState, wsType) => {
       if (res.type === 'res-accept-pending-request') {
         // "setAllContacts" from 'pages/ContactPage
         setState((cur) => {
-          let cloneAllContacts = Object.assign({}, cur);
+          let cloneAllContacts = cur;
           cloneAllContacts.chatChannels = [res.contactInfoData.chatChannel, ...cloneAllContacts.chatChannels];
           cloneAllContacts.contacts = [...cloneAllContacts.contacts, res.contactInfoData.contact];
-          return cloneAllContacts;
+          return { ...cloneAllContacts };
         });
       }
     };
