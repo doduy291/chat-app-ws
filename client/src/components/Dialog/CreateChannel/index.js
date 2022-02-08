@@ -16,7 +16,6 @@ import ListFriend from './ListFriend';
 import { fieldValidation } from '../../../validation/field.validation';
 
 const DialogCreateChannel = ({ contacts, open, setDialogCreate }) => {
-  console.log('dialog create channel');
   const dispatch = useDispatch();
   const [selectedUsers, setSelectedUsers] = useState([]);
 

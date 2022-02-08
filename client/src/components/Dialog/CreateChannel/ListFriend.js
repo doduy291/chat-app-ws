@@ -10,8 +10,6 @@ import {
 } from '../styles';
 
 const ListFriend = React.memo(({ contacts, addMultiSelectHandler, selectedUsers }) => {
-  console.log('list friend');
-
   return (
     <>
       <ListFriendWrapper>
