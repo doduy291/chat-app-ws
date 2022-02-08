@@ -1,7 +1,10 @@
 // prevent execute continuously a function
-export const debounce = (timer = null, cbFn, delay = 350) => {
-  if (timer) {
-    clearTimeout(timer);
+// Seem to work when to use useRef in React and no "return () => {}"
+export const debounce = (cbFn, delay, ref) => {
+  if (ref.current) {
+    clearTimeout(ref.current);
   }
-  return setTimeout(cbFn, delay);
+  ref.current = setTimeout(() => {
+    cbFn();
+  }, delay);
 };
