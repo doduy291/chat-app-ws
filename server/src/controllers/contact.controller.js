@@ -8,6 +8,7 @@ import { ErrorResponse } from '../utils/errorHandler.js';
 // ******* GET ALL CONTACTS (INCLUDE Active: 'online')*******
 export const getAllContacts = asyncHandler(async (req, res) => {
   const userId = req.user._id;
+  let allContacts = [];
   const contactInfo = await UserModel.findOne({ _id: userId })
     .select('-_id contacts chatChannels')
     .populate([
@@ -15,7 +16,22 @@ export const getAllContacts = asyncHandler(async (req, res) => {
       { path: 'chatChannels', select: '_id members channelType', match: { channelType: 'direct' } },
     ]);
 
-  res.status(200).json({ allContacts: contactInfo });
+  contactInfo.contacts.forEach((contact) => {
+    const comparedArr = [userId.toString(), contact._id.toString()];
+    let contactObj;
+    // Cannot apply "break" while using forEach
+    for (let channel of contactInfo.chatChannels) {
+      const doesExist = channel.members.every((mem) => comparedArr.includes(mem.toString()));
+      const { _id: channelId, members, channelType } = channel;
+      if (doesExist) {
+        contactObj = { ...contact._doc, channelId, members, channelType };
+        break;
+      }
+    }
+    allContacts.push(contactObj);
+  });
+
+  res.status(200).json({ allContacts });
 });
 
 // ******* DELETE CONTACT *******
