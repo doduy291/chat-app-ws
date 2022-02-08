@@ -41,12 +41,17 @@ const ChatFooter = ({ channelId, useWS, scrollTargetRef }) => {
   const textRef = useRef();
 
   // Disable pressing Enter to go down a line
-  const checkKeyCode = (e) => {
-    if (e.keyCode === 13 && !e.shiftKey) {
-      e.preventDefault();
-    }
+  const checkKeyUp = (e) => {
     if (e.keyCode === 13 && e.shiftKey) {
       scrollTargetRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const checkKeyDown = (e) => {
+    if (e.keyCode === 13 && !e.shiftKey) {
+      e.preventDefault();
+      sendHandler(e);
+      return false;
     }
   };
 
@@ -167,7 +172,8 @@ const ChatFooter = ({ channelId, useWS, scrollTargetRef }) => {
                     contentEditable="true"
                     aria-multiline="true"
                     suppressContentEditableWarning={true}
-                    onKeyUp={checkKeyCode}
+                    onKeyUp={checkKeyUp}
+                    onKeyDown={checkKeyDown}
                     ref={textRef}
                   ></TextareaCustom>
                 </TextareaTyping>
