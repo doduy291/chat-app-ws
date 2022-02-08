@@ -43,7 +43,7 @@ const GroupChannel = ({ channelId }) => {
       </ChannelContainer>
 
       {dialogCreate && (
-        <DialogCreateChannel open={dialogCreate} setDialogCreate={setDialogCreate} contacts={contactsData.contacts} />
+        <DialogCreateChannel open={dialogCreate} setDialogCreate={setDialogCreate} contacts={contactsData} />
       )}
     </>
   );

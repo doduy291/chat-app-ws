@@ -13,10 +13,9 @@ import {
   TabContentName,
 } from './styles';
 import { Avatar, Badge } from '@mui/material';
-import { filteredContactChannel } from '../data';
 
-const OnlineTab = ({ allContacts, user }) => {
-  const onlineContacts = allContacts?.contacts?.filter((onlContact) => onlContact.active === 'online');
+const OnlineTab = ({ allContacts }) => {
+  const onlineContacts = allContacts?.filter((onlContact) => onlContact.active === 'online');
 
   return (
     <OnlineTabContent className="onlineTab">
@@ -35,7 +34,7 @@ const OnlineTab = ({ allContacts, user }) => {
                 <TabContentName className="tabContent__name">{contact.username}</TabContentName>
               </TabContentUser>
               <TabContentButtons className="tabContent__buttons">
-                <Link className="circle" to={filteredContactChannel(contact._id, user._id, allContacts?.chatChannels)}>
+                <Link className="circle" to={`/channel/${contact.channelId}`}>
                   <ChatBubble />
                 </Link>
                 <div className="circle">

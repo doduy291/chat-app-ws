@@ -11,7 +11,7 @@ const ContactPage = () => {
   const { user } = useSelector((state) => state.user);
   const { data: allContactsData } = contactService.useGetAllContacts();
 
-  const [allContacts, setAllContacts] = useState(null);
+  const [allContacts, setAllContacts] = useState();
 
   const useWS = useWebsocket(null, user, setAllContacts, 'contact-connection');
 
@@ -21,7 +21,7 @@ const ContactPage = () => {
 
   return (
     <ContactWrapper>
-      <ContactSidebar allContacts={allContacts} setAllContacts={setAllContacts} user={user} />
+      <ContactSidebar allContacts={allContacts} user={user} />
       <ContactTabs allContacts={allContacts} user={user} useWS={useWS} />
     </ContactWrapper>
   );
