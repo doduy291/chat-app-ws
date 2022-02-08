@@ -2,7 +2,6 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Tooltip } from '@mui/material';
 import { AttachFile, Send, Mood, DeleteForever, InsertDriveFile } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
-
 import EmojiPicker from '../../../../components/EmojiPicker';
 import {
   ChatFooterWrapper,
@@ -101,7 +100,13 @@ const ChatFooter = ({ channelId, useWS, scrollTargetRef }) => {
   const fileSelectedHandler = (e) => {
     e.preventDefault();
     const selectedFiles = e.target.files;
-    console.log(selectedFiles);
+    if (selectedFiles.length > 10 || uploadedFiles.length === 10) {
+      setUploadedError({
+        error: true,
+        errorMsg: checkFile(null, null, uploadedFiles.length || selectedFiles.length).msg,
+      });
+      return;
+    }
 
     for (let i = 0; i < selectedFiles.length; i++) {
       if (!checkFile(selectedFiles[i].name, selectedFiles[i].size).correct) {

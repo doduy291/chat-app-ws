@@ -65,13 +65,16 @@ const ChannelInfo = React.memo(({ toggleInfo, detailChannel, setIsShown }) => {
                 <PersonAdd />
               </div>
             )}
-
-            <div className="circle">
-              <Call />
-            </div>
-            <div className="circle">
-              <Videocam />
-            </div>
+            {detailChannel.channelType === 'direct' && (
+              <>
+                <div className="circle">
+                  <Call />
+                </div>
+                <div className="circle">
+                  <Videocam />
+                </div>
+              </>
+            )}
           </GeneralInfoButtons>
         </GeneralInfo>
 
@@ -87,17 +90,18 @@ const ChannelInfo = React.memo(({ toggleInfo, detailChannel, setIsShown }) => {
             <Switch />
           </Notification>
 
-          <div className="line"></div>
-          <AboutInfoItem
-            className={cn('about-info__item', { 'about-info__item--red': detailChannel.isBlocked })}
-            onClick={blockHandler(
-              detailChannel.channelType === 'direct' ? detailChannel.members[0]._id : detailChannel._id,
-              detailChannel.isBlocked
-            )}
-          >
-            {detailChannel.isBlocked ? <span>Unblock</span> : <span>Block</span>}
-            <DoDisturbOnOutlined />
-          </AboutInfoItem>
+          {detailChannel.channelType === 'direct' && (
+            <>
+              <div className="line"></div>
+              <AboutInfoItem
+                className={cn('about-info__item', { 'about-info__item--red': detailChannel.isBlocked })}
+                onClick={blockHandler(detailChannel.members[0]._id, detailChannel.isBlocked)}
+              >
+                {detailChannel.isBlocked ? <span>Unblock</span> : <span>Block</span>}
+                <DoDisturbOnOutlined />
+              </AboutInfoItem>
+            </>
+          )}
 
           <div className="line"></div>
           {detailChannel.channelType === 'direct' ? (
