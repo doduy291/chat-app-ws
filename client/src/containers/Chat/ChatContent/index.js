@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { Grid } from '@mui/material';
 import { useRouteMatch } from 'react-router-dom';
-import ChatContext from '../../../contexts/chat.context';
+import { ChatContext } from '../../../contexts/chat.context';
 import Conversation from './Conversation';
 import ChannelInfo from './ChannelInfo';
 import channelService from '../../../services/channel.api';

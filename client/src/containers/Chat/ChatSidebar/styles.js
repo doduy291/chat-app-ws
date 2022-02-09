@@ -6,7 +6,7 @@ export const SidebarWrapper = styled.div`
   flex-direction: column;
   flex: 0 0 auto;
   width: 300px;
-  background-color: #ffffff;
+  background-color: var(--background-color2);
   border-right: 1px solid #e5e5e5;
 
   .channel {

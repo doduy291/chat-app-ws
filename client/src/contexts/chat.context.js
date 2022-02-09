@@ -2,4 +2,4 @@ import { createContext } from 'react';
 
 const ChatContext = createContext();
 
-export default ChatContext;
+export { ChatContext };

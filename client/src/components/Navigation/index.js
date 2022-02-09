@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Forum, Settings, ContactPage, ExitToApp } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 import { NavWrapper, NavLogo, NavMenu, NavLogout } from './styles';
 import { useDispatch } from 'react-redux';
 import { getLogout } from '../../redux/actions/auth.action';
+import Toggle from '../Toggle';
+import { ThemeContext } from '../../contexts/theme.context';
 
 const Navigation = () => {
+  const { themeToggle, themeMode } = useContext(ThemeContext);
+
   const dispatch = useDispatch();
   const location = useLocation();
   const menuItems = [
@@ -39,7 +43,6 @@ const Navigation = () => {
     e.preventDefault();
     dispatch(getLogout());
   };
-
   return (
     <>
       <NavWrapper className="nav">
@@ -54,6 +57,8 @@ const Navigation = () => {
             <ExitToApp className="logout-icon" onClick={logoutHandler} />
           </Tooltip>
         </NavLogout>
+
+        <Toggle toggleHandler={themeToggle} themeMode={themeMode} />
       </NavWrapper>
     </>
   );

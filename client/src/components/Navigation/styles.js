@@ -5,7 +5,7 @@ export const NavWrapper = styled.nav`
   flex-direction: column;
   min-width: 70px;
   min-height: 100%;
-  background: #fafafa;
+  background: var(--background-color);
   border-right: 1px solid #e5e5e5;
 `;
 export const NavLogo = styled.div`
@@ -44,7 +44,7 @@ export const NavMenu = styled.div`
   }
   .MuiSvgIcon-root {
     font-size: 30px;
-    color: #9ba09e;
+    color: var(--icon-default-color);
 
     &:hover {
       color: var(--main-color);

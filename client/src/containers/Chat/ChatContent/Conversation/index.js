@@ -6,7 +6,7 @@ import ChatHeader from '../ChatHeader';
 import Conversations from './Conversations';
 import messageService from '../../../../services/message.api';
 import useWebsocket from '../../../../hooks/useWebsocket';
-import ChatContext from '../../../../contexts/chat.context';
+import { ChatContext } from '../../../../contexts/chat.context';
 
 // Because of using router params, useState will keep value in state even if moving to other router params
 const Conversation = ({ toggleInfo, detailChannel }) => {

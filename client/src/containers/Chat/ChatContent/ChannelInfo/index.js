@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { Switch } from '@mui/material';
 import { Call, Videocam, PersonAdd, PersonRemove, Close, DoDisturbOnOutlined, Logout } from '@mui/icons-material';
 import cn from 'classnames';
 import {
@@ -15,9 +14,10 @@ import {
 } from './styles';
 import SharedFiles from './SharedFiles';
 import SharedImgs from './SharedImgs';
+import Toggle from '../../../../components/Toggle';
 import { postSendBlock, deleteBlockedContact } from '../../../../redux/actions/contact.action';
 import { clearBlockSuccess } from '../../../../redux/slices/contact.slice';
-import ChatContext from '../../../../contexts/chat.context';
+import { ChatContext } from '../../../../contexts/chat.context';
 
 const ChannelInfo = React.memo(({ toggleInfo, detailChannel, setIsShown }) => {
   const { isShown } = useContext(ChatContext);
@@ -87,7 +87,7 @@ const ChannelInfo = React.memo(({ toggleInfo, detailChannel, setIsShown }) => {
 
           <Notification className="notification">
             <span>Notification</span>
-            <Switch />
+            <Toggle />
           </Notification>
 
           {detailChannel.channelType === 'direct' && (

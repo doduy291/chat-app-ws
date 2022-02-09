@@ -18,7 +18,11 @@
   margin: 0;
   box-sizing: border-box;
 }
-
+[data-theme='dark'] {
+  --font-default-color: #caffe8fa;
+  --background-color: #212222;
+  --background-color2: #2f3136;
+}
 html,
 body {
   font-family: 'Poppins', sans-serif;
