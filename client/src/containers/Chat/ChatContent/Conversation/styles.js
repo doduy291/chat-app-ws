@@ -30,7 +30,7 @@ export const ChatView = styled.div`
     left: 0;
     right: 0;
     height: 80px;
-    background-color: rgba(244, 247, 244, 0.3);
+    background-color: var(--blur-background-color);
     backdrop-filter: blur(12px);
     z-index: 1;
   }
@@ -57,10 +57,10 @@ export const ChatViewContainer = styled.div`
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 6px;
-    background: #e1e4ea;
+    background: var(--scrollbar-thumb-color);
   }
   &::-webkit-scrollbar-track {
-    background: #f1f2f3;
+    background: var(--background-color);
     border-radius: 6px;
   }
 `;

@@ -7,7 +7,7 @@ export const ContactTab = styled.div`
 `;
 export const ContactHeader = styled.div`
   padding: 0 24px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--border-color);
   background-color: var(--background-color);
   flex: 0 1 auto;
 
@@ -24,16 +24,18 @@ export const ContactHeader = styled.div`
     border-radius: 5px;
     text-transform: none;
     margin-right: 15px;
+    color: var(--font-default-color);
 
     &:hover {
       background-color: var(--main-lighter-color2);
     }
     &.Mui-selected {
-      color: #fff;
+      color: #fff !important;
       background-color: var(--main-color);
     }
   }
 `;
 export const ContactTabContent = styled.div`
   flex: 1 1 auto;
+  background-color: var(--background-color2);
 `;

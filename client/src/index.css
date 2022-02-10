@@ -10,7 +10,13 @@
   --font-lighter-color: #898989;
   --background-color: #f4f7f4;
   --background-color2: #fafafa;
+  --background-color3: #f3f3f3;
+  --blur-background-color: rgba(244, 247, 244, 0.3);
   --icon-default-color: #9ba09e;
+  --border-color: #e5e5e5;
+  --border-color2: #e9e9e9;
+  --circle-color: #d5d5d5;
+  --scrollbar-thumb-color: #e1e4ea;
 }
 
 * {
@@ -19,9 +25,17 @@
   box-sizing: border-box;
 }
 [data-theme='dark'] {
-  --font-default-color: #caffe8fa;
+  --main-lighter-color2: rgba(63, 70, 67, 0.9);
+  --font-default-color: #f3fffafa;
+  --font-lighter-color: #fbfbfb;
   --background-color: #212222;
   --background-color2: #2f3136;
+  --background-color3: rgba(56, 56, 56, 0.9);
+  --blur-background-color: rgba(76, 76, 76, 0.3);
+  --border-color: transparent;
+  --border-color2: #505050;
+  --circle-color: #4a4a4a;
+  --scrollbar-thumb-color: #3a3a3a;
 }
 html,
 body {

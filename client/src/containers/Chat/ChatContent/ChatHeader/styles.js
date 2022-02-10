@@ -7,7 +7,7 @@ export const ChatHeaderWrapper = styled.div`
   min-width: 0;
   height: 80px;
   padding: 0 1.5rem;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--border-color);
   flex: 0 0 auto;
 
   &.overlap-top {

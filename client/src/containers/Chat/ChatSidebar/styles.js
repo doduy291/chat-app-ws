@@ -7,7 +7,7 @@ export const SidebarWrapper = styled.div`
   flex: 0 0 auto;
   width: 300px;
   background-color: var(--background-color2);
-  border-right: 1px solid #e5e5e5;
+  border-right: 1px solid var(--border-color);
 
   .channel {
     width: 100%;
@@ -47,7 +47,7 @@ export const ChannelContainer = styled.div`
     justify-content: center;
     width: 32px;
     height: 32px;
-    background-color: #f1f1f1;
+    background-color: var(--circle-color);
     border-radius: 50%;
   }
 `;

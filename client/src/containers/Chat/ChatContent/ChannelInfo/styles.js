@@ -8,6 +8,7 @@ export const ChannelInfoWrapper = styled.div`
   min-width: 268px;
   max-width: 268px;
   overflow-y: auto;
+  background-color: var(--background-color2);
 
   &.active {
     display: block;
@@ -28,7 +29,6 @@ export const ChannelInfoWrapper = styled.div`
       }
     }
   }
-
   &::-webkit-scrollbar {
     width: 0.5em;
     height: 0.5em;
@@ -93,6 +93,7 @@ export const GeneralInfoButtons = styled.div`
 export const AccordionCustom = styled(Accordion)`
   box-shadow: none;
   border-radius: 0 !important;
+  background-color: var(--background-color2);
 `;
 export const AccordionCustomSummary = styled(AccordionSummary)`
   padding: 0 !important;
@@ -104,6 +105,9 @@ export const AccordionCustomSummary = styled(AccordionSummary)`
   }
   .MuiAccordionSummary-expandIconWrapper.Mui-expanded {
     transform: rotate(90deg);
+  }
+  .MuiSvgIcon-root {
+    color: var(--icon-default-color);
   }
 `;
 export const AccordionCustomDetails = styled(AccordionDetails)`
@@ -119,7 +123,7 @@ export const AboutInfo = styled.div`
   .line {
     width: 100%;
     height: 1px;
-    background-color: #e9e9e9;
+    background-color: var(--border-color2);
     margin: 10px 0;
   }
   .dot {
@@ -170,7 +174,7 @@ export const SharedFilesItem = styled.div`
   }
 `;
 export const SharedFilesIcon = styled.div`
-  border: 1px solid #e9e9e9;
+  border: 1px solid var(--border-color2);
   border-radius: 3px;
   padding: 5px;
 
@@ -232,7 +236,7 @@ export const SharedImgsItem = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border: 1px solid #e3e3e3;
+    border: 1px solid var(--background-color2);
   }
 `;
 

@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 export const ChatFooterWrapper = styled.div`
   position: relative;
   width: 100%;
-  background-color: #f4f7f4;
+  background-color: var(--background-color);
   flex: 0 1 auto;
 `;
 export const ChatFooterContainer = styled.div`
@@ -29,11 +29,26 @@ export const ChatFooterTextarea = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   border-radius: 5px;
-  border: 1px solid #dde0dc;
-  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+
+  &::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+    position: absolute;
+    right: 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: var(--scrollbar-thumb-color);
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--background-color2);
+    border-radius: 0 6px 6px 0;
+  }
 `;
 export const TextareaContainer = styled.div`
   display: flex;
+  background-color: var(--background-color2);
 `;
 export const TextareaWrapper = styled.div`
   width: 100%;
@@ -57,6 +72,7 @@ export const TextareaCustom = styled.div`
   overflow-y: auto;
   white-space: break-spaces;
   word-break: break-word;
+  color: var(--font-default-color);
 
   &:empty:before {
     content: 'Write a reply...';
@@ -128,7 +144,7 @@ export const ChatFooterButton = styled.div`
   }
 `;
 export const FileWrapper = styled.div`
-  background-color: #f3f3f3;
+  background-color: var(--background-color3);
 `;
 export const FileList = styled.div`
   position: relative;
@@ -183,7 +199,7 @@ export const ActionBar = styled.div`
 
 export const FileItemName = styled.span`
   margin-top: auto;
-  color: #333;
+  color: var(--font-default-color);
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

@@ -5,7 +5,8 @@ export const ContactSidebar = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 330px;
-  border-right: 1px solid #e5e5e5;
+  border-right: 1px solid var(--border-color);
+  background-color: var(--background-color2);
 `;
 export const SidebarTitle = styled.div`
   display: flex;
@@ -41,7 +42,12 @@ export const SidebarSearch = styled.div`
     border: none;
     padding: 5px;
     padding-left: 2.2rem;
-    background-color: rgba(0, 0, 0, 0.07);
+    background-color: var(--main-lighter-color2);
+    color: var(--font-default-color);
+
+    &::placeholder {
+      color: var(--icon-default-color);
+    }
   }
 
   .MuiSvgIcon-root {
@@ -78,7 +84,7 @@ export const SidebarItem = styled(Link)`
   display: flex;
   align-items: center;
   padding: 10px 24px;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid var(--border-color2);
   cursor: pointer;
 
   span {
@@ -90,7 +96,7 @@ export const SidebarItem = styled(Link)`
     background-color: var(--main-lighter-color2);
   }
   &:last-child {
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid var(--border-color2);
   }
 `;
 

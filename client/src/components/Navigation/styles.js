@@ -6,7 +6,7 @@ export const NavWrapper = styled.nav`
   min-width: 70px;
   min-height: 100%;
   background: var(--background-color);
-  border-right: 1px solid #e5e5e5;
+  border-right: 1px solid var(--border-color);
 `;
 export const NavLogo = styled.div`
   flex: 0.2;

@@ -8,7 +8,7 @@ import { renderSubChannelRoutes } from '../configs/router.config';
 const ChannelPage = () => {
   return (
     <>
-      <Grid container spacing={0} wrap="nowrap">
+      <Grid container spacing={0} wrap="nowrap" style={{ backgroundColor: 'var(--background-color)' }}>
         <ChatSidebar />
         <Switch>{renderSubChannelRoutes()}</Switch>
       </Grid>

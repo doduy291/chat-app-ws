@@ -53,4 +53,7 @@ export const EmojiPickerContainer = styled.div`
       border-radius: 6px;
     }
   }
+  .emoji-mart-category-label span {
+    color: #333;
+  }
 `;

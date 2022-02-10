@@ -43,6 +43,7 @@ export const DialogContainer = styled.div`
     width: 440px;
     flex-direction: column;
     background-color: #fff;
+    background-color: var(--background-color2);
   }
 `;
 export const DialogDescription = styled.span`
@@ -101,6 +102,12 @@ export const DialogContent = styled.div`
     border: 1px solid var(--icon-default-color);
     border-radius: 3px;
     margin-top: 5px;
+    color: var(--font-default-color);
+    background-color: var(--background-color2);
+
+    &::placeholder {
+      color: var(--icon-default-color);
+    }
   }
 `;
 export const DialogFooter = styled.div`
@@ -178,10 +185,10 @@ export const ListFriendWrapper = styled.div`
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 6px;
-    background: #e1e4ea;
+    background: var(--scrollbar-thumb-color);
   }
   &::-webkit-scrollbar-track {
-    background: #f1f2f3;
+    background: var(--background-color2);
     border-radius: 6px;
   }
 `;
