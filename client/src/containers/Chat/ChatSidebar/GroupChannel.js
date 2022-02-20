@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import cn from 'classnames';
 import { ChannelContainer, ChannelTitle, ChannelItem, ChannelLink, ChannelName } from './styles';
 import { AddBox } from '@mui/icons-material';
 import DialogCreateChannel from '../../../components/Dialog/CreateChannel';
@@ -33,7 +34,7 @@ const GroupChannel = ({ channelId }) => {
           </div>
         </ChannelTitle>
         {groupChannelsData?.map((element, i) => (
-          <ChannelItem className={`channel__item ${channelId === element._id ? 'active' : ''}`} key={i}>
+          <ChannelItem className={cn('channel__item', { active: channelId === element._id })} key={i}>
             <ChannelLink to={`/channel/${element._id}`} className="channel__link">
               <div className="circle">#</div>
               <ChannelName className="channel__name">{element.channelName}</ChannelName>
@@ -43,7 +44,7 @@ const GroupChannel = ({ channelId }) => {
       </ChannelContainer>
 
       {dialogCreate && (
-        <DialogCreateChannel open={dialogCreate} setDialogCreate={setDialogCreate} contacts={contactsData} />
+        <DialogCreateChannel open={dialogCreate} setDialogCreate={setDialogCreate} allContacts={contactsData} />
       )}
     </>
   );
