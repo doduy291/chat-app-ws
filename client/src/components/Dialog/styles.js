@@ -143,7 +143,7 @@ export const MultiSelect = styled.div`
   padding: 2px;
 
   input.multiselect__search {
-    width: auto;
+    width: 50px;
     height: 35px;
     border: none;
     margin-top: 0;

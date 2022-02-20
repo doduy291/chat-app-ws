@@ -14,7 +14,7 @@ const ListFriend = React.memo(({ contacts, addMultiSelectHandler, selectedUsers 
     <>
       <ListFriendWrapper>
         <ListFriendBox>
-          {contacts.map((contact, i) => (
+          {contacts?.map((contact, i) => (
             <ListFriendItem
               key={i}
               onClick={addMultiSelectHandler({ contactId: contact._id, contactName: contact.username })}

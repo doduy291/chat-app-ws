@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Clear } from '@mui/icons-material';
@@ -15,9 +15,14 @@ import {
 import ListFriend from './ListFriend';
 import { fieldValidation } from '../../../validation/field.validation';
 
-const DialogCreateChannel = ({ contacts, open, setDialogCreate }) => {
+import { debounce } from '../../../utils/helper';
+
+const DialogCreateChannel = ({ allContacts, open, setDialogCreate }) => {
   const dispatch = useDispatch();
+  const [contacts, setContacts] = useState();
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const inputRef = useRef();
+  const typingTimeoutRef = useRef();
 
   const {
     register,
@@ -53,7 +58,20 @@ const DialogCreateChannel = ({ contacts, open, setDialogCreate }) => {
   const removeMultiSelectHandler = (index) => (e) => {
     setSelectedUsers((currentState) => currentState.filter((_, i) => i !== index));
   };
-  console.log(selectedUsers);
+
+  const searchContactHandler = () => {
+    const searchContacts = () => {
+      const keyword = inputRef.current.value;
+      const filteredContact = allContacts?.filter((contact) => contact.username.match(keyword));
+      setContacts(filteredContact);
+    };
+    debounce(searchContacts, 500, typingTimeoutRef);
+  };
+
+  useEffect(() => {
+    setContacts(allContacts);
+  }, [allContacts]);
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogContainer className="create-channel">
@@ -77,7 +95,13 @@ const DialogCreateChannel = ({ contacts, open, setDialogCreate }) => {
                 <Clear />
               </MultiSelectItem>
             ))}
-            <input type="text" placeholder="Search friends" className="multiselect__search" />
+            <input
+              type="text"
+              placeholder="Search friends"
+              className="multiselect__search"
+              ref={inputRef}
+              onChange={searchContactHandler}
+            />
           </MultiSelect>
 
           <ListFriend addMultiSelectHandler={addMultiSelectHandler} contacts={contacts} selectedUsers={selectedUsers} />
