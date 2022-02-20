@@ -18,17 +18,21 @@ const SharedImages = ({ detailChannel }) => {
         </AccordionCustomSummary>
         <AccordionCustomDetails className="accordion-custom__details">
           <SharedImgsList className="shared-imgs__list">
-            {detailChannel.sharedImages.reverse().map((item, i) => (
-              <SharedImgsItem className="shared-imgs__item" key={i}>
-                <div className="img-item-wrapper">
-                  <div className="img-item-container">
-                    <a href={item.url} target="_blank" rel="noreferrer">
-                      <img src={imgOptimize(item.url, 'sharedImg')} alt="" />
-                    </a>
+            {detailChannel.sharedImages.length === 0 ? (
+              <div className="blank">No Images</div>
+            ) : (
+              detailChannel.sharedImages.reverse().map((item, i) => (
+                <SharedImgsItem className="shared-imgs__item" key={i}>
+                  <div className="img-item-wrapper">
+                    <div className="img-item-container">
+                      <a href={item.url} target="_blank" rel="noreferrer">
+                        <img src={imgOptimize(item.url, 'sharedImg')} alt="" />
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </SharedImgsItem>
-            ))}
+                </SharedImgsItem>
+              ))
+            )}
           </SharedImgsList>
         </AccordionCustomDetails>
       </AccordionCustom>

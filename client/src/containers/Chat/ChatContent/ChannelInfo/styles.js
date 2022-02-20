@@ -154,6 +154,16 @@ export const AboutInfoItem = styled.div`
 `;
 export const SharedFilesList = styled.div`
   margin: 10px 0;
+
+  .blank {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    color: #f3fffafa;
+    background-color: var(--icon-default-color);
+  }
 `;
 export const SharedFilesItem = styled.div`
   display: flex;
@@ -214,6 +224,16 @@ export const SharedImgsList = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   margin: 10px 0;
+
+  .blank {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    color: #f3fffafa;
+    background-color: var(--icon-default-color);
+  }
 `;
 
 export const SharedImgsItem = styled.div`
