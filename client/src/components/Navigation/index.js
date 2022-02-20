@@ -33,7 +33,7 @@ const Navigation = () => {
 
   const links = menuItems.map((item, i) => (
     <Link className={`nav__link ${location.pathname.match(item.url) ? 'active' : ''}`} key={i} to={item.url}>
-      <Tooltip title={item.title} followCursor>
+      <Tooltip title={item.title} followCursor placement="top">
         <div className="nav__icon">{item.icon}</div>
       </Tooltip>
     </Link>
@@ -53,7 +53,7 @@ const Navigation = () => {
           <div className="nav__menu-items">{links}</div>
         </NavMenu>
         <NavLogout className="nav__logout">
-          <Tooltip title="Logout" followCursor>
+          <Tooltip title="Logout" followCursor placement="top">
             <ExitToApp className="logout-icon" onClick={logoutHandler} />
           </Tooltip>
         </NavLogout>

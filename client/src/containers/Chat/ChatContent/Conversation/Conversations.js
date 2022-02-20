@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar } from '@mui/material';
 import { InsertDriveFile } from '@mui/icons-material';
+import cn from 'classnames';
 
 import { ChatMsgTimestamp, ChatMsgText, ChatMsg, ChatMsgFile } from './styles';
 import { formatToMsTime, formatToTime } from '../../../../utils/format';
@@ -55,19 +56,19 @@ const Conversations = ({ messages, user, channelId }) => {
       {newFilterdMsgs.map((msg, i) => (
         <div className="msg-wrapper" key={i}>
           {msg.text && (
-            <ChatMsg className={`chat-msg ${user._id === msg.userId._id ? 'chat-msg--you' : ''}`}>
-              <ChatMsgText className={`chat-msg__text ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}>
+            <ChatMsg className={cn('chat-msg', { 'chat-msg--you': user._id === msg.userId._id })}>
+              <ChatMsgText className={cn('chat-msg__text', { 'chat-msg__text--you': user._id === msg.userId._id })}>
                 {msg.text}
               </ChatMsgText>
             </ChatMsg>
           )}
           {msg.messageType === 'file' &&
             msg.files.map((file, j) => (
-              <ChatMsg className={`chat-msg ${user._id === msg.userId._id ? 'chat-msg--you' : ''}`} key={j}>
+              <ChatMsg className={cn('chat-msg', { 'chat-msg--you': user._id === msg.userId._id })} key={j}>
                 {file.contentType.split('/')[0] === 'image' && (
                   <ChatMsgText
                     style={{ padding: '0' }}
-                    className={`chat-msg__text ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}
+                    className={cn('chat-msg__text', { 'chat-msg__text--you': user._id === msg.userId._id })}
                   >
                     <img
                       src={imgOptimize(file.url, file.contentType, file.width, file.height)}
@@ -77,7 +78,7 @@ const Conversations = ({ messages, user, channelId }) => {
                   </ChatMsgText>
                 )}
                 {file.contentType.split('/')[0] === 'application' && (
-                  <ChatMsgText className={`chat-msg__text ${user._id === msg.userId._id ? 'chat-msg__text--you' : ''}`}>
+                  <ChatMsgText className={cn('chat-msg__text', { 'chat-msg__text--you': user._id === msg.userId._id })}>
                     <ChatMsgFile href={file.url} target="_blank">
                       <InsertDriveFile />
                       {file.filename}
@@ -89,7 +90,7 @@ const Conversations = ({ messages, user, channelId }) => {
           {msg.ts && (
             <div className="ts-wrapper">
               <ChatMsgTimestamp
-                className={`chat-msg__timestamp ${user._id === msg.userId._id ? 'chat-msg__timestamp--you' : ''}`}
+                className={cn('chat-msg__timestamp', { 'chat-msg__timestamp--you': user._id === msg.userId._id })}
               >
                 {!msg.yourMsg && <Avatar className="chat-msg__avatar" />} {msg.userId.username}
                 <span className="datetime">{formatToTime(msg.createdAt)}</span>

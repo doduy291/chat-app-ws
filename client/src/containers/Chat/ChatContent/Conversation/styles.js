@@ -71,8 +71,10 @@ export const ChatViewContent = styled.div`
 `;
 export const ChatMsg = styled.div`
   display: flex;
+  color: var(--font-default-color2);
 
   &.chat-msg--you {
+    color: var(--font-default-color);
     flex-direction: row-reverse;
   }
 `;

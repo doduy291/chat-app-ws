@@ -62,5 +62,9 @@ export const NavLogout = styled.div`
     color: var(--icon-default-color);
     font-size: 30px;
     cursor: pointer;
+
+    &:hover {
+      color: var(--danger-color);
+    }
   }
 `;
