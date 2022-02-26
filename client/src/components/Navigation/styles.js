@@ -18,6 +18,7 @@ export const NavLogo = styled.div`
   }
 `;
 export const NavMenu = styled.div`
+  width: 100%;
   .nav__menu-items {
     display: flex;
     flex-direction: column;
@@ -65,6 +66,36 @@ export const NavLogout = styled.div`
 
     &:hover {
       color: var(--danger-color);
+    }
+  }
+`;
+
+export const NavToggle = styled.div`
+  position: absolute;
+  bottom: 1rem;
+
+  .MuiSwitch-root {
+    width: 65px;
+    height: 46px;
+  }
+
+  .MuiSwitch-switchBase {
+    top: 2px !important;
+    left: 4px !important;
+
+    &.Mui-checked {
+      transform: translateX(18px);
+    }
+  }
+  .MuiSwitch-thumb {
+    width: 20px !important;
+    height: 24px !important;
+    box-shadow: none;
+    background-color: unset;
+
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 `;

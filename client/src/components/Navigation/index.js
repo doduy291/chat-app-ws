@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Forum, Settings, ContactPage, ExitToApp } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
-import { NavWrapper, NavLogo, NavMenu, NavLogout } from './styles';
+import { NavWrapper, NavLogo, NavMenu, NavLogout, NavToggle } from './styles';
 import { useDispatch } from 'react-redux';
 import { getLogout } from '../../redux/actions/auth.action';
 import Toggle from '../Toggle';
@@ -43,6 +43,13 @@ const Navigation = () => {
     e.preventDefault();
     dispatch(getLogout());
   };
+
+  useEffect(() => {
+    let switchThumb = document.querySelector('.MuiSwitch-thumb');
+    switchThumb.innerHTML = themeMode
+      ? '<img src="/assets/svg/moon-6695.svg" alt="" />'
+      : '<img src="/assets/svg/sun-1845.svg" alt="" />';
+  }, [themeMode]);
   return (
     <>
       <NavWrapper className="nav">
@@ -58,7 +65,9 @@ const Navigation = () => {
           </Tooltip>
         </NavLogout>
 
-        <Toggle toggleHandler={themeToggle} themeMode={themeMode} />
+        <NavToggle>
+          <Toggle toggleHandler={themeToggle} themeMode={themeMode} />
+        </NavToggle>
       </NavWrapper>
     </>
   );
