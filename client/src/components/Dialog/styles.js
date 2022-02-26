@@ -155,11 +155,17 @@ export const MultiSelect = styled.div`
 export const MultiSelectItem = styled.div`
   display: flex;
   align-items: center;
-  background-color: var(--main-color);
+  border: solid 1px #bbbbbb;
+  background: linear-gradient(to bottom, #3cd387 0%, #1ebf7b 100%);
+  text-shadow: 0 1px 1px rgb(0 0 0 / 10%);
   border-radius: 3px;
   padding: 5px;
   cursor: pointer;
   gap: 5px;
+
+  &:hover {
+    background: linear-gradient(to bottom, #37855d 0%, #02b76a 100%);
+  }
 
   span {
     font-size: 13px;
