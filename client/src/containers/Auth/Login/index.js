@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { useDispatch, connect, useSelector } from 'react-redux';
 // use connect() to handle error message from server
 import { useForm } from 'react-hook-form';
@@ -26,6 +26,7 @@ const Login = ({ isAuth }) => {
 
   const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
   const { isLogged, errorMsg } = useSelector((state) => state.auth);
   const {
     register,
@@ -38,7 +39,7 @@ const Login = ({ isAuth }) => {
     ? location.search.split('=')[1] === '/'
       ? '/channel'
       : location.search.split('=')[1]
-    : '';
+    : '/channel';
 
   const loginHandler = async (dataHookForm) => {
     setIsDisabled(true);
@@ -60,15 +61,15 @@ const Login = ({ isAuth }) => {
   }, [errors, errorMsg, setError, dispatch]);
 
   useEffect(() => {
-    if (isLogged || isAuth) {
-      setTimeout(
-        () => {
-          window.location.href = redirectPath;
-        },
-        isLogged ? 1500 : 0
-      );
+    if (isLogged) {
+      return setTimeout(() => {
+        window.location.href = redirectPath;
+      }, 1500);
     }
-  }, [redirectPath, isLogged, isAuth]);
+    if (isAuth) {
+      history.push(redirectPath);
+    }
+  }, [redirectPath, isLogged, isAuth, history]);
 
   return (
     <>
