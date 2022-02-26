@@ -17,7 +17,6 @@ export const ToggleSwitch = styled(Switch)`
   }
   .Mui-checked {
     color: var(--main-color) !important;
-    left: 0px !important;
 
     & + .MuiSwitch-track {
       background-color: var(--main-lighter-color) !important;

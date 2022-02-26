@@ -273,22 +273,8 @@ export const Notification = styled.div`
     padding-right: 6px;
   }
   .MuiSwitch-switchBase {
-    top: 4px;
-    left: 4px;
-  }
-  .Mui-checked {
-    color: var(--main-color) !important;
-    left: 0px !important;
-
-    & + .MuiSwitch-track {
-      background-color: var(--main-lighter-color) !important;
+    &.Mui-checked {
+      transform: translateX(16px);
     }
-  }
-  .MuiSwitch-thumb {
-    width: 16px;
-    height: 16px;
-  }
-  .MuiSwitch-track {
-    border-radius: 10px;
   }
 `;
