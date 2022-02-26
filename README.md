@@ -20,12 +20,6 @@ A chat application built with ReactJS and NodeJS
 
 ## Previews
 
-<a href="#" target="_blank">
   <img src="screenshots/1.jpg" alt="Click to see the source" />
-</a>
-<a href="#" target="_blank">
   <img src="screenshots/2.jpg" alt="Click to see the source" />
-</a>
-<a href="#" target="_blank">
   <img src="screenshots/3.jpg" alt="Click to see the source" />
-</a>
