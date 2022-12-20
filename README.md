@@ -1,4 +1,4 @@
-# Chat App WS
+# Weame Chat
 
 A chat application built with ReactJS and NodeJS
 
@@ -20,6 +20,6 @@ A chat application built with ReactJS and NodeJS
 
 ## Previews
 
-  <img src="screenshots/1.jpg" alt="Click to see the source" />
-  <img src="screenshots/2.jpg" alt="Click to see the source" />
-  <img src="screenshots/3.jpg" alt="Click to see the source" />
+  <img src=".screenshots/1.jpg" alt="Click to see the source" />
+  <img src=".screenshots/2.jpg" alt="Click to see the source" />
+  <img src=".screenshots/3.jpg" alt="Click to see the source" />
