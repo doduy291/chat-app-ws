@@ -1,0 +1,35 @@
+{
+  /* Enviroment */
+  // https://eslint.org/docs/latest/user-guide/configuring/language-options#specifying-environments
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  /* Extends */
+  // implement the entire plugins
+  "extends": [
+    "eslint:recommended", // eslint
+    "plugin:@typescript-eslint/recommended", // @typescript-eslint/eslint-plugin
+    "plugin:import/recommended", // eslint-plugin-import
+    "plugin:promise/recommended", // eslint-plugin-promise
+    "plugin:n/recommended-module" // eslint-plugin-n (node)
+  ],
+
+  /* Parser */
+  // Allow Eslint lint typescript code
+  "parser": "@typescript-eslint/parser", // installed with @typescript-eslint/eslint-plugin
+
+  /* Plugins */
+  // Only use "plugins" with customize rules (reference: https://www.npmjs.com/package/eslint-plugin-react-hooks)
+  "plugins": [],
+
+  /* Rules */
+  "rules": {
+    "@typescript-eslint/ban-types": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "promise/always-return": ["error", { "ignoreLastCallback": true }]
+  }
+}
