@@ -7,14 +7,18 @@
 
     /* Language and Environment */
     "target": "ES5" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-    "lib": [] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
     "jsx": "preserve" /* Specify what JSX code is generated. */,
     "useDefineForClassFields": true /* Emit ECMAScript-standard-compliant class fields. */,
 
     /* Modules */
-    "module": "ESNext" /* Specify what module code is generated. */,
+    "module": "CommonJS" /* Specify what module code is generated. */,
     "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
-    // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
+    "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     "types": [] /* Specify type package names to be included without being referenced in a source file. */,
     "resolveJsonModule": true /* Enable importing .json files. */,
@@ -44,5 +48,7 @@
 
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
-  }
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
 }
